@@ -4,7 +4,6 @@ import java.util.List;
 
 public class Airplane {
     private long id;
+    private String model;
     private int seatAmount;
-    private List<Seat> freeSeats;
-    private List<Seat> seats;
 }

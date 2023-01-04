@@ -1,6 +1,7 @@
 package by.piskunou.solvdlaba.domain.classes;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Flight {
     private long id;

@@ -8,4 +8,5 @@ public class Ticket {
     private Flight returnFlight;
     private long price;
     private TicketType ticketType;
+    private Person owner;
 }
