@@ -1,6 +1,4 @@
-package by.piskunou.solvdlaba.domain.classes;
-
-import by.piskunou.solvdlaba.domain.Place;
+package by.piskunou.solvdlaba.domain;
 
 import java.util.List;
 

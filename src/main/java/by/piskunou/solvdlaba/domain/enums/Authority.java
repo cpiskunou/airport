@@ -1,5 +1,5 @@
 package by.piskunou.solvdlaba.domain.enums;
 
-public enum Age {
-    Adult, Child, Infant
+public enum Authority {
+    CLIENT, ADMIN
 }

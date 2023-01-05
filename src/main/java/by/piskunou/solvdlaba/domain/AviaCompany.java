@@ -1,4 +1,4 @@
-package by.piskunou.solvdlaba.domain.classes;
+package by.piskunou.solvdlaba.domain;
 
 public class AviaCompany {
     private long id;

@@ -1,12 +1,13 @@
 spring:
-  mvc:
-    hidden-method:
-      filter:
-        enabled:
-
 # Configuration data sources
   datasource:
     driver-class-name:
     url:
     username:
     password:
+
+# Database initialization
+  sql:
+    init:
+      mode:
+      data-locations:

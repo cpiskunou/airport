@@ -1,4 +1,4 @@
-package by.piskunou.solvdlaba.domain.classes;
+package by.piskunou.solvdlaba.domain;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -10,4 +10,5 @@ public class Flight {
     private LocalDateTime DepartureTime;
     private LocalDateTime ArrivalTime;
     private Airplane airplane;
+    private List<Ticket> tickets;
 }
