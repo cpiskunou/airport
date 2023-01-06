@@ -1,6 +1,8 @@
 package by.piskunou.solvdlaba.domain.exception;
 
-public class UserNotRegisteredException extends RuntimeException {
+import org.springframework.validation.BindException;
+
+public class UserNotRegisteredException extends BindException {
     public UserNotRegisteredException(String message) {
         super(message);
     }

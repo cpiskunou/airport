@@ -1,5 +1,5 @@
 package by.piskunou.solvdlaba.web.url;
 
-public interface AirplaneURLs extends URLs {
+public interface AirplaneUrl extends BaseUrl {
     String BASE = "/airplanes";
 }

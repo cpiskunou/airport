@@ -4,10 +4,7 @@ import by.piskunou.solvdlaba.domain.enums.Authority;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -16,7 +13,6 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@RequiredArgsConstructor
 public class User {
     private long id;
     @NotBlank
@@ -24,5 +20,4 @@ public class User {
     private String username;
     @NotNull
     private Authority authority;
-    private List<Ticket> tickets;
 }

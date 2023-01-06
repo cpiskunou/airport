@@ -1,6 +1,8 @@
 package by.piskunou.solvdlaba.domain.exception;
 
-public class ResourceNotAddedException extends RuntimeException {
+import org.springframework.validation.BindException;
+
+public class ResourceNotAddedException extends BindException {
     public ResourceNotAddedException(String message) {
         super(message);
     }

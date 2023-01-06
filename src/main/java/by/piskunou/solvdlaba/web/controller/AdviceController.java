@@ -2,6 +2,7 @@ package by.piskunou.solvdlaba.web.controller;
 
 import by.piskunou.solvdlaba.domain.exception.ResourceNotFoundException;
 import by.piskunou.solvdlaba.domain.exception.UserNotRegisteredException;
+import by.piskunou.solvdlaba.web.dto.MyErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -9,15 +10,15 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestControllerAdvice
 public class AdviceController {
     @ExceptionHandler(UserNotRegisteredException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleResourceNotFoundException(UserNotRegisteredException e) {
-        return e.getMessage();
+    public MyErrorResponse handleResourceNotFoundException(UserNotRegisteredException e) {
+        return new MyErrorResponse(e.getMessage())
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
@@ -28,11 +29,11 @@ public class AdviceController {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, String> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        Map<String, String> errorResponceMap = new HashMap<>();
+    public List<MyErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        List<MyErrorResponse> myErrorResponseList = new ArrayList<>();
         for(FieldError fieldError: e.getFieldErrors()) {
-            errorResponceMap.put(fieldError.getField(), fieldError.getDefaultMessage());
+            myErrorResponseList.add(new MyErrorResponse(fieldError, fieldError.getDefaultMessage()));
         }
-        return errorResponceMap;
+        return myErrorResponseList;
     }
 }

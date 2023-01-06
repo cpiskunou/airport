@@ -19,7 +19,7 @@ public class AirplaneServiceImpl implements AirplaneService {
 
     @Override
     @Transactional
-    public void save(Airplane airplane) {
+    public void save(Airplane airplane) throws ResourceNotAddedException {
         if(findByModel(airplane.getModel()) != null) {
             throw new ResourceNotAddedException("Such model of airplane already exists");
         }

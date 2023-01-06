@@ -1,5 +1,5 @@
 package by.piskunou.solvdlaba.web.url;
 
-public interface URLs {
+public interface BaseUrl {
     String ID = "/{id}";
 }

@@ -1,5 +1,5 @@
 package by.piskunou.solvdlaba.web.url;
 
-public interface UserURLs extends URLs {
+public interface UserUrl extends BaseUrl {
     String BASE = "/users";
 }

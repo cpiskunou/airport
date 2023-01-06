@@ -3,7 +3,7 @@ package by.piskunou.solvdlaba.web.controller;
 import by.piskunou.solvdlaba.service.UserService;
 import by.piskunou.solvdlaba.web.mapper.UserMapper;
 import by.piskunou.solvdlaba.web.dto.UserDTO;
-import by.piskunou.solvdlaba.web.url.UserURLs;
+import by.piskunou.solvdlaba.web.url.UserUrl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(UserURLs.BASE)
+@RequestMapping(UserUrl.BASE)
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
@@ -25,7 +25,7 @@ public class UserController {
                           .toList();
     }
 
-    @GetMapping(UserURLs.ID)
+    @GetMapping(UserUrl.ID)
     public UserDTO findById(@PathVariable int id) {
         return UserMapper.INSTANCE.toDTO(userService.findById(id));
     }
@@ -36,7 +36,7 @@ public class UserController {
         userService.save(UserMapper.INSTANCE.toEntity(userDTO));
     }
 
-    @DeleteMapping(UserURLs.ID)
+    @DeleteMapping(UserUrl.ID)
     @ResponseStatus(HttpStatus.OK)
     public void remove(@PathVariable int id) {
         userService.removeById(id);
