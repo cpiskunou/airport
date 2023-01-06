@@ -1,8 +1,6 @@
 package by.piskunou.solvdlaba.domain;
 
-import by.piskunou.solvdlaba.domain.Place;
-
-public class Airport implements Place {
+public class Airport {
     private long id;
     String name;
 }

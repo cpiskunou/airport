@@ -6,8 +6,8 @@ import java.util.Optional;
 
 public interface AirplaneService {
     public void save(Airplane airplane);
-    public Optional<Airplane> findById(int id);
-    public Optional<Airplane> findByModel(String model);
-    public void removeById(int id);
+    public Airplane findById(long id);
+    public Airplane findByModel(String model);
+    public void removeById(long id);
     public void removeByModel(String model);
 }

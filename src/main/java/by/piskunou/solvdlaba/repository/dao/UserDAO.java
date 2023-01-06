@@ -11,7 +11,7 @@ import java.util.Optional;
 public class UserDAO {
     public void save(User user) {}
 
-    public Optional<User> findById(int id) {
+    public Optional<User> findById(long id) {
         return Optional.empty();
     }
 
@@ -24,4 +24,8 @@ public class UserDAO {
     }
 
     public void removeById(int id) {}
+
+    public Optional<User> findByUsernameAndByIdNot(long id, String username) {
+        return Optional.empty();
+    }
 }

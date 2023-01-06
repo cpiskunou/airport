@@ -2,7 +2,7 @@ package by.piskunou.solvdlaba.domain;
 
 import java.util.List;
 
-public class City implements Place {
+public class City {
     private long id;
     private String name;
     private List<Airport> airports;

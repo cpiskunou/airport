@@ -9,7 +9,7 @@ import java.util.Optional;
 public class AirplaneDAO {
     public void save(Airplane airplane) {}
 
-    public Optional<Airplane> findById(int id) {
+    public Optional<Airplane> findById(long id) {
         return Optional.empty();
     }
 
@@ -17,7 +17,7 @@ public class AirplaneDAO {
         return Optional.empty();
     }
 
-    public void removeById(int id) {}
+    public void removeById(long id) {}
 
     public void removeByModel(String model) {}
 }
