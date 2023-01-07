@@ -1,9 +1,9 @@
 package by.piskunou.solvdlaba.service.impl;
 
 import by.piskunou.solvdlaba.domain.Airplane;
-import by.piskunou.solvdlaba.domain.exception.ResourceNotAddedException;
+import by.piskunou.solvdlaba.domain.exception.ResourceNotCreateException;
 import by.piskunou.solvdlaba.domain.exception.ResourceNotFoundException;
-import by.piskunou.solvdlaba.repository.dao.AirplaneDAO;
+import by.piskunou.solvdlaba.repository.AirplaneRepository;
 import by.piskunou.solvdlaba.service.AirplaneService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,33 +13,36 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class AirplaneServiceImpl implements AirplaneService {
-    private final AirplaneDAO airplaneDAO;
+    private final AirplaneRepository airplaneRepository;
 
     @Override
     @Transactional
-    public void save(Airplane airplane) throws ResourceNotAddedException {
+    public Airplane create(Airplane airplane) throws ResourceNotCreateException {
         if(findByModel(airplane.getModel()) != null) {
-            throw new ResourceNotAddedException("Such model of airplane already exists");
+            throw new ResourceNotCreateException("Such model of airplane already exists");
         }
-        airplaneDAO.save(airplane);
+        airplane = airplaneRepository.save(airplane);
+
+        return airplane;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Airplane findById(long id) {
-        Optional<Airplane> airplane = airplaneDAO.findById(id);
+        Optional<Airplane> airplane = airplaneRepository.findById(id);
         if(airplane.isEmpty()) {
-            throw new ResourceNotFoundException("This's no  with such id");
+            throw new ResourceNotFoundException("There's no airplane with such id");
         }
         return airplane.get();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Airplane findByModel(String model) {
-        Optional<Airplane> airplane = airplaneDAO.findByModel(model);
+        Optional<Airplane> airplane = airplaneRepository.findByModel(model);
         if(airplane.isEmpty()) {
-            throw new ResourceNotFoundException("This's no such model of airplane");
+            throw new ResourceNotFoundException("There's no such model of airplane");
         }
         return airplane.get();
     }
@@ -47,12 +50,12 @@ public class AirplaneServiceImpl implements AirplaneService {
     @Override
     @Transactional
     public void removeById(long id) {
-        airplaneDAO.removeById(id);
+        airplaneRepository.removeById(id);
     }
 
     @Override
     @Transactional
     public void removeByModel(String model) {
-        airplaneDAO.removeByModel(model);
+        airplaneRepository.removeByModel(model);
     }
 }

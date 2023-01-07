@@ -1,3 +1,10 @@
+drop schema if exists piskunou cascade;
+
+set schema 'public';
+
+drop table if exists flight;
+drop table if exists "user";
+
 TRUNCATE Table "User";
 
 INSERT INTO "User"(username, authority) VALUES ('Bordan', 'ADMIN');

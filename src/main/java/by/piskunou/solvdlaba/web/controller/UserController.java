@@ -1,9 +1,9 @@
 package by.piskunou.solvdlaba.web.controller;
 
+import by.piskunou.solvdlaba.domain.User;
 import by.piskunou.solvdlaba.service.UserService;
 import by.piskunou.solvdlaba.web.mapper.UserMapper;
 import by.piskunou.solvdlaba.web.dto.UserDTO;
-import by.piskunou.solvdlaba.web.url.UserUrl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(UserUrl.BASE)
+@RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+
+    private static final String ID = "/{id}";
 
     @GetMapping
     public List<UserDTO> findAll() {
@@ -25,18 +27,20 @@ public class UserController {
                           .toList();
     }
 
-    @GetMapping(UserUrl.ID)
+    @GetMapping(ID)
     public UserDTO findById(@PathVariable int id) {
-        return UserMapper.INSTANCE.toDTO(userService.findById(id));
+        User user = userService.findById(id);
+
+        return UserMapper.INSTANCE.toDTO(user);
     }
 
     @PostMapping("/registration")
     @ResponseStatus(HttpStatus.OK)
     public void register(@RequestBody @Validated UserDTO userDTO) {
-        userService.save(UserMapper.INSTANCE.toEntity(userDTO));
+        userService.create(UserMapper.INSTANCE.toEntity(userDTO));
     }
 
-    @DeleteMapping(UserUrl.ID)
+    @DeleteMapping(ID)
     @ResponseStatus(HttpStatus.OK)
     public void remove(@PathVariable int id) {
         userService.removeById(id);

@@ -1,12 +1,15 @@
 package by.piskunou.solvdlaba.domain;
 
-import by.piskunou.solvdlaba.domain.enums.Age;
+import by.piskunou.solvdlaba.domain.enums.TicketType;
+
+import java.math.BigDecimal;
 
 public class Ticket {
     private long id;
-    private Flight departureFlight;
-    private Flight returnFlight;
-    private long price;
-    private Age age;
+    private Passenger passenger;
     private User owner;
+    private Flight flight;
+    private BigDecimal price;
+    private String seatNumber;
+    private TicketType ticketType;
 }

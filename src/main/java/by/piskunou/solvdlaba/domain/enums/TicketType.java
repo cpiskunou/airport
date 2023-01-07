@@ -1,5 +1,5 @@
 package by.piskunou.solvdlaba.domain.enums;
 
-public enum SeatType {
+public enum TicketType {
     First, Business, Economy
 }

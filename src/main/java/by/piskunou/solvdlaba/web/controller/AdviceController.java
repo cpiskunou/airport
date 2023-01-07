@@ -17,8 +17,8 @@ import java.util.List;
 public class AdviceController {
     @ExceptionHandler(UserNotRegisteredException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public MyErrorResponse handleResourceNotFoundException(UserNotRegisteredException e) {
-        return new MyErrorResponse(e.getMessage())
+    public String handleResourceNotFoundException(UserNotRegisteredException e) {
+        return e.getMessage();
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)

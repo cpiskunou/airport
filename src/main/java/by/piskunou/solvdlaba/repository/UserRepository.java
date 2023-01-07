@@ -1,8 +1,7 @@
-package by.piskunou.solvdlaba.repository.dao;
+package by.piskunou.solvdlaba.repository;
 
 import by.piskunou.solvdlaba.domain.User;
-import by.piskunou.solvdlaba.domain.enums.Authority;
-import by.piskunou.solvdlaba.repository.sql.UserSql;
+import by.piskunou.solvdlaba.repository.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,24 +18,26 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class UserDAO {
+public class UserRepository {
     private static final Logger logger = LogManager.getLogger();
     private final DataSource dataSource;
-    public void save(User user) {}
+    private final UserMapper mapper;
+    private static final String FIND_BY_ID = "SELECT FROM \"user\" WHERE id = ?";
+
+    public Optional<User> create(User user) {
+        return Optional.empty();
+    }
 
     public Optional<User> findById(long id) {
         try(Connection conn = dataSource.getConnection()) {
-            PreparedStatement preparedStatement = conn.prepareStatement(UserSql.FIND_BY_ID);
+            PreparedStatement preparedStatement = conn.prepareStatement(FIND_BY_ID);
+
 
             preparedStatement.setLong(1, id);
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            User user = new User();
-
-            user.setId(resultSet.getLong("id"));
-            user.setUsername(resultSet.getString("username"));
-            user.setAuthority(Authority.valueOf(resultSet.getString("authority")));
+            User user = mapper.mapRow(resultSet, 3);
 
             return Optional.of(user);
         } catch (SQLException e) {

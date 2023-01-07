@@ -1,0 +1,15 @@
+on delete = on update no action
+default false
+do begin end
+
+выдаліць усе канстантныя клясы
+выдаліць urls
+
+выдаліць доўгія радкі
+абавязкова message
+
+маркерныя інтэрфейсы
+на dto дадаць id
+@Transactional на кожны мэтад
+
+create update штосьці вяртаць

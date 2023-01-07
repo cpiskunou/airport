@@ -1,5 +1,5 @@
 package by.piskunou.solvdlaba.domain.enums;
 
-public enum Authority {
-    CLIENT, ADMIN
+public enum Sex {
+    MALE, FEMALE
 }

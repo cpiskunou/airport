@@ -10,6 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AirplaneDTO {
+    private long id;
     private String model;
     private short seatAmount;
 }

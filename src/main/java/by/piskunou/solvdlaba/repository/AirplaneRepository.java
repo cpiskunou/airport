@@ -1,4 +1,4 @@
-package by.piskunou.solvdlaba.repository.dao;
+package by.piskunou.solvdlaba.repository;
 
 import by.piskunou.solvdlaba.domain.Airplane;
 import org.springframework.stereotype.Component;
@@ -6,8 +6,10 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 @Component
-public class AirplaneDAO {
-    public void save(Airplane airplane) {}
+public class AirplaneRepository {
+    public Airplane save(Airplane airplane) {
+        return null;
+    }
 
     public Optional<Airplane> findById(long id) {
         return Optional.empty();

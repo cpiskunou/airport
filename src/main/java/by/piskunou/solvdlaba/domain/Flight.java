@@ -10,5 +10,5 @@ public class Flight {
     private LocalDateTime DepartureTime;
     private LocalDateTime ArrivalTime;
     private Airplane airplane;
-    private List<Ticket> tickets;
+    private List<String> freeSeats;
 }
