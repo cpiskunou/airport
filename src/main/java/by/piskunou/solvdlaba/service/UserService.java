@@ -5,10 +5,20 @@ import by.piskunou.solvdlaba.domain.User;
 import java.util.List;
 
 public interface UserService {
-    User create(User user);
+
+    User register(User user);
+
     User findById(long id);
+
+    User findUserTickets(long id);
+
     User findByUsername(String username);
-    User findByUsernameAndByIdNot(long id, String username);
+
+    User findByUsernameAndNotById(long id, String username);
+
     List<User> findAll();
+
+    User updateUsernameById(long id, String username);
+
     void removeById(int id);
 }

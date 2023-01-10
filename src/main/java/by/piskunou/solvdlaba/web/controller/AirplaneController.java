@@ -13,31 +13,48 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/airplanes")
 @RequiredArgsConstructor
 public class AirplaneController {
+
     private final AirplaneService airplaneService;
 
+    private final AirplaneMapper mapper;
+
     private static final String ID = "/{id}";
+
+    private static final String MODEL = "/{model}";
 
     @GetMapping(ID)
     public AirplaneDTO findById(@PathVariable int id) {
         Airplane airplane = airplaneService.findById(id);
 
-        return AirplaneMapper.INSTANCE.toDTO(airplane);
+        return mapper.toDTO(airplane);
     }
 
-    @GetMapping("/{model}")
-    public AirplaneDTO findByModel(@PathVariable String model) {
-        Airplane airplane = airplaneService.findByModel(model);
+//    @GetMapping(MODEL)
+//    public AirplaneDTO findByModel(@PathVariable String model) {
+//        Airplane airplane = airplaneService.findByModel(model);
+//
+//        return mapper.toDTO(airplane);
+//    }
 
-        return AirplaneMapper.INSTANCE.toDTO(airplane);
-    }
-
-    @PostMapping("/add")
+    @PostMapping("/create")
     @ResponseStatus(HttpStatus.OK)
-    public Airplane create(@RequestBody @Validated AirplaneDTO airplaneDTO) {
-        Airplane airplane = AirplaneMapper.INSTANCE.toEntity(airplaneDTO);
+    public AirplaneDTO create(@RequestBody @Validated AirplaneDTO airplaneDTO) {
+        Airplane airplane = mapper.toEntity(airplaneDTO);
 
         airplane = airplaneService.create(airplane);
 
-        return airplane;
+        return mapper.toDTO(airplane);
     }
+
+    @DeleteMapping(ID)
+    @ResponseStatus(HttpStatus.OK)
+    public void removeById(@PathVariable int id) {
+        airplaneService.removeById(id);
+    }
+    
+//    @DeleteMapping(MODEL)
+//    @ResponseStatus(HttpStatus.OK)
+//    public void removeByModel(@PathVariable String model) {
+//        airplaneService.removeByModel(model);
+//    }
 }

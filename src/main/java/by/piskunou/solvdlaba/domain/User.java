@@ -1,9 +1,10 @@
 package by.piskunou.solvdlaba.domain;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -13,13 +14,15 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class User {
-    private long id;
 
+    private Long id;
+
+    //TODO: see jakarta.validation.constraints.NotBlank.message
     @NotBlank
-    @Size(max = 300)
+    @Size(max = 300, message = "The username must be less than 300 characters")
     private String username;
 
-    private List<DualTicket> tickets;
+    private List<Ticket> tickets;
 
     public User(long id, String username) {
         this.id = id;

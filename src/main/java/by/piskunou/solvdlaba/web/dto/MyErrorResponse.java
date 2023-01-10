@@ -5,6 +5,8 @@ import org.springframework.validation.FieldError;
 
 @AllArgsConstructor
 public class MyErrorResponse {
+
     private FieldError fieldError;
+
     private String message;
 }

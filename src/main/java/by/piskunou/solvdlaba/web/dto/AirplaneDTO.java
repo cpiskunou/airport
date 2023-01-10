@@ -1,5 +1,10 @@
 package by.piskunou.solvdlaba.web.dto;
 
+import by.piskunou.solvdlaba.web.groups.onCreate;
+import by.piskunou.solvdlaba.web.groups.onUpdate;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Null;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +15,16 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AirplaneDTO {
-    private long id;
+    @Null(groups = onCreate.class)
+    @NotNull(groups = onUpdate.class)
+    private Long id;
+
+    @NotBlank(groups = {onUpdate.class, onCreate.class})
     private String model;
-    private short seatAmount;
+
+    @NotNull(groups = {onUpdate.class, onCreate.class})
+    private Byte rowSeatNo;
+
+    @NotNull(groups = {onUpdate.class, onCreate.class})
+    private Short rowNo;
 }

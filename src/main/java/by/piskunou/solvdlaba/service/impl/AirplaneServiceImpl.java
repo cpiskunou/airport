@@ -9,22 +9,26 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class AirplaneServiceImpl implements AirplaneService {
+
     private final AirplaneRepository airplaneRepository;
 
     @Override
     @Transactional
-    public Airplane create(Airplane airplane) throws ResourceNotCreateException {
-        if(findByModel(airplane.getModel()) != null) {
+    public Airplane create(Airplane airplane) {
+        Optional<Airplane> airplaneOptional = airplaneRepository.findByModel(airplane.getModel());
+        if(airplaneOptional.isPresent()) {
             throw new ResourceNotCreateException("Such model of airplane already exists");
         }
-        airplane = airplaneRepository.save(airplane);
 
-        return airplane;
+        airplaneOptional = airplaneRepository.create(airplane);
+
+        return airplaneOptional.orElseThrow(() -> new ResourceNotCreateException("Airplane wasn't created"));
     }
 
     @Override
@@ -34,6 +38,7 @@ public class AirplaneServiceImpl implements AirplaneService {
         if(airplane.isEmpty()) {
             throw new ResourceNotFoundException("There's no airplane with such id");
         }
+
         return airplane.get();
     }
 
@@ -44,7 +49,14 @@ public class AirplaneServiceImpl implements AirplaneService {
         if(airplane.isEmpty()) {
             throw new ResourceNotFoundException("There's no such model of airplane");
         }
+
         return airplane.get();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Airplane> findAll() {
+        return airplaneRepository.findAll();
     }
 
     @Override

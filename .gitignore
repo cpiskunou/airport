@@ -212,6 +212,7 @@ buildNumber.properties
 application.yaml
 
 ### My ###
-draft.sql
+*draft.sql
+*testData.sql
 
 # End of https://www.toptal.com/developers/gitignore/api/git,maven,intellij,macos,java

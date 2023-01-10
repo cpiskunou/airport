@@ -15,7 +15,10 @@ import java.util.List;
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
+
     private final UserService userService;
+
+    private final UserMapper mapper;
 
     private static final String ID = "/{id}";
 
@@ -23,21 +26,41 @@ public class UserController {
     public List<UserDTO> findAll() {
         return userService.findAll()
                           .stream()
-                          .map(UserMapper.INSTANCE::toDTO)
+                          .map(mapper::toDTO)
                           .toList();
     }
 
     @GetMapping(ID)
-    public UserDTO findById(@PathVariable int id) {
+    public UserDTO findById(@PathVariable long id) {
         User user = userService.findById(id);
 
-        return UserMapper.INSTANCE.toDTO(user);
+        return mapper.toDTO(user);
     }
+
+    @GetMapping(ID + "/tickets")
+    public UserDTO findUserTickets(@PathVariable long id) {
+        User user = userService.findUserTickets(id);
+
+        return mapper.toDTO(user);
+    }
+
 
     @PostMapping("/registration")
     @ResponseStatus(HttpStatus.OK)
-    public void register(@RequestBody @Validated UserDTO userDTO) {
-        userService.create(UserMapper.INSTANCE.toEntity(userDTO));
+    public UserDTO register(@RequestBody @Validated UserDTO userDTO) {
+        User user = mapper.toEntity(userDTO);
+
+        user = userService.register(user);
+
+        return mapper.toDTO(user);
+    }
+
+    @PatchMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public UserDTO updateUsernameById(@PathVariable long id, @RequestParam String username) {
+        User user = userService.updateUsernameById(id, username);
+
+        return mapper.toDTO(user);
     }
 
     @DeleteMapping(ID)

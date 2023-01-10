@@ -2,17 +2,32 @@ package by.piskunou.solvdlaba.domain;
 
 import by.piskunou.solvdlaba.domain.enums.Age;
 import by.piskunou.solvdlaba.domain.enums.Sex;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.util.List;
 
+@Component
+@Getter
+@Setter
+@NoArgsConstructor
 public class Passenger {
-    private long id;
-    private String name;
+
+    private Long id;
+
+    private String firstname;
+
     private String surname;
+
     private Passport passport;
+
     private LocalDate dateOfBirth;
+
     private Age age;
+
     private Sex sex;
-    private List<Ticket> tickets;
+
+    private Country country;
 }

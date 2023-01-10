@@ -1,5 +1,6 @@
 package by.piskunou.solvdlaba.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,8 +10,14 @@ import org.springframework.stereotype.Component;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Airplane {
-    private long id;
+
+    private Long id;
+
     private String model;
-    private short seatAmount;
+
+    private byte rowSeatNo;
+
+    private short rowNo;
 }

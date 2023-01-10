@@ -1,6 +1,7 @@
 package by.piskunou.solvdlaba.web.controller;
 
 import by.piskunou.solvdlaba.domain.exception.ResourceNotFoundException;
+import by.piskunou.solvdlaba.domain.exception.ResourceNotUpdatedException;
 import by.piskunou.solvdlaba.domain.exception.UserNotRegisteredException;
 import by.piskunou.solvdlaba.web.dto.MyErrorResponse;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @RestControllerAdvice
 public class AdviceController {
+
     @ExceptionHandler(UserNotRegisteredException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleResourceNotFoundException(UserNotRegisteredException e) {
@@ -24,6 +26,12 @@ public class AdviceController {
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public String handleResourceNotFoundException(ResourceNotFoundException e) {
+        return e.getMessage();
+    }
+
+    @ExceptionHandler(ResourceNotUpdatedException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String handleResourceNotUpdatedException(ResourceNotUpdatedException e) {
         return e.getMessage();
     }
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="info">
     <Properties>
-        <property name="LOG_DIR">logs</property>
+        <property name="LOG_DIR">log</property>
         <property name="pattern_file">%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{5} - %msg%n</property>
         <property name="pattern_console">%d{HH:mm:ss} [%t] %-5level %logger{1} - %msg%n</property>
     </Properties>
@@ -16,7 +16,7 @@
             </filters>
         </Console>
 
-        <File name="File" fileName="logs/text.log" bufferedIO="true">
+        <File name="File" fileName="log/text.log" bufferedIO="true">
             <PatternLayout pattern="${pattern_file}"/>
         </File>
     </Appenders>
