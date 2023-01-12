@@ -5,6 +5,7 @@ import by.piskunou.solvdlaba.domain.Airline;
 import java.util.List;
 
 public interface AirlineService {
+
     List<Airline> findAll();
 
     Airline findById(long id);
@@ -14,4 +15,9 @@ public interface AirlineService {
     Airline updateNameById(long id, String name);
 
     void removeById(long id);
+
+    boolean isExists(String name);
+
+    boolean isExists(long id);
+
 }

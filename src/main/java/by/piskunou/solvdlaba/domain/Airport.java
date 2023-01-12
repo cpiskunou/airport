@@ -4,11 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 
-@Component
 @Getter
 @Setter
 @NoArgsConstructor
@@ -16,6 +12,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class Airport {
 
     private Long id;
-
     private String name;
+
+    public Airport(Long id) {
+        this.id = id;
+    }
 }

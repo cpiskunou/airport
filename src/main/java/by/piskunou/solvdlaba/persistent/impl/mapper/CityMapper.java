@@ -1,4 +1,4 @@
-package by.piskunou.solvdlaba.repository.mapper;
+package by.piskunou.solvdlaba.persistent.impl.mapper;
 
 import by.piskunou.solvdlaba.domain.Airport;
 import by.piskunou.solvdlaba.domain.City;
@@ -8,7 +8,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -23,6 +22,18 @@ public class CityMapper implements RowMapper<City> {
     public City mapRow(ResultSet rs, int rowNum) {
         return new City(rs.getLong("city_id"),
                         rs.getString("city_name"));
+    }
+
+    @SneakyThrows
+    public City mapFromRow(ResultSet rs) {
+        return new City(rs.getLong("city_from_id"),
+                        rs.getString("city_from_name"));
+    }
+
+    @SneakyThrows
+    public City mapToRow(ResultSet rs) {
+        return new City(rs.getLong("city_to_id"),
+                        rs.getString("city_to_id"));
     }
 
     @SneakyThrows

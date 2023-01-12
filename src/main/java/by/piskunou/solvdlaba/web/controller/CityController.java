@@ -4,9 +4,9 @@ import by.piskunou.solvdlaba.domain.City;
 import by.piskunou.solvdlaba.service.CityService;
 import by.piskunou.solvdlaba.web.dto.CityDTO;
 import by.piskunou.solvdlaba.web.mapper.CityMapper;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,12 +17,7 @@ import java.util.List;
 public class CityController {
 
     private final CityService cityService;
-
     private final CityMapper cityMapper;
-
-    private static final String ID = "/{id}";
-
-    private static final String NAME = "/{name}";
 
     @GetMapping
     public List<CityDTO> findAll() {
@@ -32,30 +27,23 @@ public class CityController {
                           .toList();
     }
 
-    @GetMapping (ID + "/airports")
+    @GetMapping ("/{id}/airports")
     public CityDTO findCountryCities(@PathVariable long id) {
         City city = cityService.findCityAirports(id);
 
         return cityMapper.toDTO(city);
     }
 
-    @GetMapping(ID)
+    @GetMapping("/{id}")
     public CityDTO findById(@PathVariable long id) {
         City city = cityService.findById(id);
 
         return cityMapper.toDTO(city);
     }
 
-//    @GetMapping (NAME)
-//    public CityDTO findByName(@PathVariable String name) {
-//        City city = cityService.findByName(name);
-//
-//        return cityMapper.toDTO(city);
-//    }
-
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.OK)
-    public CityDTO create(@RequestBody @Validated CityDTO cityDTO, @RequestParam("country_id") long countryId) {
+    public CityDTO create(@RequestBody @Valid CityDTO cityDTO, @RequestParam("country_id") long countryId) {
         City city = cityMapper.toEntity(cityDTO);
 
         city = cityService.create(city, countryId);
@@ -63,7 +51,7 @@ public class CityController {
         return cityMapper.toDTO(city);
     }
 
-    @PatchMapping(ID)
+    @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public CityDTO updateNameById(@PathVariable long id, @RequestParam String name) {
         City city = cityService.updateNameById(id, name);
@@ -71,15 +59,10 @@ public class CityController {
         return cityMapper.toDTO(city);
     }
 
-    @DeleteMapping(ID)
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void removeById(@PathVariable long id) {
         cityService.removeById(id);
     }
 
-//    @DeleteMapping(NAME)
-//    @ResponseStatus(HttpStatus.OK)
-//    public void removeByName(@PathVariable String name) {
-//        cityService.removeByName(name);
-//    }
 }

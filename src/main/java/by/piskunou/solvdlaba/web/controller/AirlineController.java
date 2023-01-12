@@ -4,9 +4,9 @@ import by.piskunou.solvdlaba.domain.Airline;
 import by.piskunou.solvdlaba.service.AirlineService;
 import by.piskunou.solvdlaba.web.dto.AirlineDTO;
 import by.piskunou.solvdlaba.web.mapper.AirlineMapper;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,10 +17,7 @@ import java.util.List;
 public class AirlineController {
 
     private final AirlineService airlineService;
-
     private final AirlineMapper airlineMapper;
-
-    private static final String ID = "/{id}";
 
     @GetMapping
     public List<AirlineDTO> findAll() {
@@ -30,7 +27,7 @@ public class AirlineController {
                              .toList();
     }
 
-    @GetMapping(ID)
+    @GetMapping("/{id}")
     public AirlineDTO findById(@PathVariable long id) {
         Airline airline = airlineService.findById(id);
 
@@ -39,7 +36,7 @@ public class AirlineController {
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.OK)
-    public AirlineDTO create(@RequestBody @Validated AirlineDTO airlineDTO) {
+    public AirlineDTO create(@RequestBody @Valid AirlineDTO airlineDTO) {
         Airline airline = airlineMapper.toEntity(airlineDTO);
 
         airline = airlineService.create(airline);
@@ -47,7 +44,7 @@ public class AirlineController {
         return airlineMapper.toDTO(airline);
     }
 
-    @PatchMapping(ID)
+    @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public AirlineDTO updateNameById(@PathVariable long id, @RequestParam String name) {
         Airline airline = airlineService.updateNameById(id, name);
@@ -55,9 +52,10 @@ public class AirlineController {
         return airlineMapper.toDTO(airline);
     }
 
-    @DeleteMapping(ID)
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void removeById(@PathVariable long id) {
         airlineService.removeById(id);
     }
+
 }

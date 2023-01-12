@@ -1,10 +1,10 @@
 package by.piskunou.solvdlaba.service.impl;
 
 import by.piskunou.solvdlaba.domain.City;
-import by.piskunou.solvdlaba.domain.exception.ResourceNotCreateException;
+import by.piskunou.solvdlaba.domain.exception.ResourceNotCreatedException;
 import by.piskunou.solvdlaba.domain.exception.ResourceNotFoundException;
 import by.piskunou.solvdlaba.domain.exception.ResourceNotUpdatedException;
-import by.piskunou.solvdlaba.repository.CityRepository;
+import by.piskunou.solvdlaba.persistent.impl.CityRepositoryImpl;
 import by.piskunou.solvdlaba.service.CityService;
 import by.piskunou.solvdlaba.service.CountryService;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CityServiceImpl implements CityService {
 
-    private final CityRepository cityRepository;
+    private final CityRepositoryImpl cityRepository;
     private final CountryService countryService;
 
     @Override
@@ -30,24 +30,25 @@ public class CityServiceImpl implements CityService {
     @Override
     @Transactional(readOnly = true)
     public City findCityAirports(long id) {
-        Optional<City> city = cityRepository.findById(id);
-        if(city.isEmpty()) {
+        if(!isExists(id)) {
             throw new ResourceNotFoundException("There's no city with such id");
         }
 
-        city = cityRepository.findCityAirports(id);
-        return city.get();
+        return cityRepository.findCityAirports(id)
+                             .orElseThrow(() -> new ResourceNotCreatedException("Server error"));
+    }
+
+    @Override
+    public boolean isExists(long id) {
+        return cityRepository.findById(id)
+                             .isPresent();
     }
 
     @Override
     @Transactional(readOnly = true)
     public City findById(long id) {
-        Optional<City> city = cityRepository.findById(id);
-        if(city.isEmpty()) {
-            throw new ResourceNotFoundException("There's no city with such id");
-        }
-
-        return city.get();
+        return cityRepository.findById(id)
+                             .orElseThrow(() -> new ResourceNotFoundException("There's no city with such id"));
     }
 
     @Override
@@ -64,30 +65,41 @@ public class CityServiceImpl implements CityService {
     @Override
     @Transactional
     public City create(City city, long countryId) {
-        countryService.findById(countryId);
-
-        Optional<City> cityOptional = cityRepository.findByName(city.getName());
-        if(cityOptional.isPresent()) {
-            throw new ResourceNotCreateException("City with such name has already exists");
+        if(countryService.isExists(countryId)) {
+            throw new ResourceNotFoundException("There's no country with such id");
         }
 
-        cityOptional = cityRepository.create(city, countryId);
+        if(isExists(city.getName())) {
+            throw new ResourceNotCreatedException("City with such name has already exists");
+        }
 
-        return cityOptional.get();
+        Long id = cityRepository.create(city, countryId)
+                                .orElseThrow(() -> new ResourceNotUpdatedException("Server error"));
+        city.setId(id);
+
+        return city;
     }
+
+    @Override
+    public boolean isExists(String name) {
+        return cityRepository.findByName(name)
+                             .isPresent();
+    }
+
 
     @Override
     @Transactional
     public City updateNameById(long id, String name) {
-        findById(id);
-        Optional<City> city = cityRepository.findByName(name);
-        if(city.isPresent()) {
+        if(!isExists(id)) {
+            throw new ResourceNotFoundException("There's no city with such id");
+        }
+
+        if(isExists(name)) {
             throw new ResourceNotUpdatedException("City with such name has already exists");
         }
 
-        city = cityRepository.updateNameById(id, name);
-
-        return city.orElseThrow(() -> new ResourceNotUpdatedException("Server error"));
+        return cityRepository.updateNameById(id, name)
+                             .orElseThrow(() -> new ResourceNotUpdatedException("Server error"));
     }
 
     @Override
@@ -96,9 +108,4 @@ public class CityServiceImpl implements CityService {
         cityRepository.removeById(id);
     }
 
-    @Override
-    @Transactional
-    public void removeByName(String name) {
-        cityRepository.removeByName(name);
-    }
 }

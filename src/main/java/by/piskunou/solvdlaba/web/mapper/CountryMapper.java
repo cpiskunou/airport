@@ -10,4 +10,5 @@ public interface CountryMapper {
     CountryDTO toDTO(Country entity);
 
     Country toEntity(CountryDTO dto);
+
 }

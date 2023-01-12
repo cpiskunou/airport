@@ -2,7 +2,7 @@ package by.piskunou.solvdlaba.web.dto;
 
 import by.piskunou.solvdlaba.domain.Flight;
 import by.piskunou.solvdlaba.domain.Passenger;
-import by.piskunou.solvdlaba.domain.enums.TicketType;
+import by.piskunou.solvdlaba.domain.Ticket;
 import by.piskunou.solvdlaba.web.groups.onCreate;
 import by.piskunou.solvdlaba.web.groups.onUpdate;
 import jakarta.validation.constraints.NotBlank;
@@ -18,6 +18,7 @@ import java.math.BigDecimal;
 @Setter
 @NoArgsConstructor
 public class TicketDTO {
+
     @Null(groups = onCreate.class)
     @NotNull(groups = onUpdate.class)
     private Long id;
@@ -28,12 +29,9 @@ public class TicketDTO {
     @NotNull(groups = onCreate.class)
     private Flight flight;
 
-    @NotNull(groups = onCreate.class)
     private BigDecimal price;
 
     @NotBlank(groups = onCreate.class)
-    private String seatNumber;
+    private SeatDTO seat;
 
-    @NotBlank(groups = onCreate.class)
-    private TicketType ticketType;
 }

@@ -12,13 +12,14 @@ public interface UserService {
 
     User findUserTickets(long id);
 
-    User findByUsername(String username);
-
-    User findByUsernameAndNotById(long id, String username);
-
     List<User> findAll();
 
     User updateUsernameById(long id, String username);
 
     void removeById(int id);
+
+    boolean isExists(String username);
+
+    boolean isExists(long id);
+
 }

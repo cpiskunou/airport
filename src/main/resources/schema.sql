@@ -43,6 +43,7 @@ create table if not exists flight(
     fk_airplane_id bigint not null references airplane(id) on delete restrict on update no action,
     departure_time timestamp not null,
     arrival_time timestamp not null,
+    price decimal(8, 2) not null,
     free_seats jsonb
 );
 
@@ -68,6 +69,5 @@ create table if not exists ticket(
     fk_flight_id bigint not null references flight(id) on delete cascade on update no action,
     fk_passenger_id bigint not null references passenger(id) on delete cascade on update no action,
     price decimal(8, 2) not null,
-    seat_no varchar(5) not null,
-    "type" varchar(10) not null
+    seat_no varchar(5) not null
 );

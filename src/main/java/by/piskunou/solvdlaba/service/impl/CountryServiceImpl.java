@@ -1,23 +1,22 @@
 package by.piskunou.solvdlaba.service.impl;
 
 import by.piskunou.solvdlaba.domain.Country;
-import by.piskunou.solvdlaba.domain.exception.ResourceNotCreateException;
+import by.piskunou.solvdlaba.domain.exception.ResourceNotCreatedException;
 import by.piskunou.solvdlaba.domain.exception.ResourceNotFoundException;
 import by.piskunou.solvdlaba.domain.exception.ResourceNotUpdatedException;
-import by.piskunou.solvdlaba.repository.CountryRepository;
+import by.piskunou.solvdlaba.persistent.impl.CountryRepositoryImpl;
 import by.piskunou.solvdlaba.service.CountryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class CountryServiceImpl implements CountryService {
 
-    private final CountryRepository countryRepository;
+    private final CountryRepositoryImpl countryRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -28,77 +27,79 @@ public class CountryServiceImpl implements CountryService {
     @Override
     @Transactional(readOnly = true)
     public Country findCountryCities(long id) {
-        Optional<Country> country = countryRepository.findById(id);
-        if(country.isEmpty()) {
+        if(!isExists(id)) {
             throw new ResourceNotFoundException("There's no country with such id");
         }
 
-        country = countryRepository.findCountryCities(id);
+        return countryRepository.findCountryCities(id)
+                                .orElseThrow(() -> new ResourceNotFoundException("Server error"));
+    }
 
-        return country.orElseThrow(() -> new ResourceNotFoundException("Server error"));
+    @Override
+    public boolean isExists(long id) {
+        return countryRepository.findById(id)
+                                .isPresent();
     }
 
     @Override
     @Transactional(readOnly = true)
     public Country findCountryAirports(long id) {
-        Optional<Country> country = countryRepository.findById(id);
-        if(country.isEmpty()) {
+        if(!isExists(id)) {
             throw new ResourceNotFoundException("There's no country with such id");
         }
 
-        country = countryRepository.findCountryAirports(id);
-
-        return country.orElseThrow(() -> new ResourceNotFoundException("Server error"));
+        return countryRepository.findCountryAirports(id)
+                                .orElseThrow(() -> new ResourceNotFoundException("Server error"));
     }
 
 
     @Override
     @Transactional(readOnly = true)
     public Country findById(long id) {
-        Optional<Country> country = countryRepository.findById(id);
-        if(country.isEmpty()) {
-            throw new ResourceNotFoundException("There's no country with such id");
-        }
-
-        return country.get();
+        return countryRepository.findById(id)
+                                .orElseThrow(() -> new ResourceNotFoundException("There's no country with such id"));
     }
 
     @Override
     @Transactional(readOnly = true)
     public Country findByName(String name) {
-        Optional<Country> country = countryRepository.findByName(name);
-        if(country.isEmpty()) {
-            throw new ResourceNotFoundException("There's no country with such name");
-        }
-
-        return country.get();
+        return countryRepository.findByName(name)
+                                .orElseThrow(() -> new ResourceNotFoundException("There's no country with such name"));
     }
 
     @Override
     @Transactional
     public Country create(Country country) {
-        Optional<Country> countryOptional = countryRepository.findByName(country.getName());
-        if(countryOptional.isPresent()) {
-            throw new ResourceNotCreateException("Country with such name has already exists");
+        if(isExists(country.getName())) {
+            throw new ResourceNotCreatedException("Country with such name has already exists");
         }
 
-        countryOptional = countryRepository.create(country);
+        Long id = countryRepository.create(country)
+                                   .orElseThrow(() -> new ResourceNotFoundException("Server error"));
+        country.setId(id);
 
-        return countryOptional.get();
+        return country;
+    }
+
+    @Override
+    public boolean isExists(String name) {
+        return countryRepository.findByName(name)
+                                .isPresent();
     }
 
     @Override
     @Transactional
     public Country updateNameById(long id, String name) {
-        findById(id);
-        Optional<Country> country = countryRepository.findByName(name);
-        if(country.isPresent()) {
+        if(!isExists(id)){
+            throw new ResourceNotFoundException("There's no country with such id");
+        }
+
+        if(isExists(name)) {
             throw new ResourceNotUpdatedException("Country with such name has already exists");
         }
 
-        country = countryRepository.updateNameById(id, name);
-
-        return country.orElseThrow(() -> new ResourceNotUpdatedException("SQLException: Didn't update a country"));
+        return countryRepository.updateNameById(id, name)
+                                .orElseThrow(() -> new ResourceNotUpdatedException("Server error"));
     }
 
     @Override
@@ -107,9 +108,4 @@ public class CountryServiceImpl implements CountryService {
         countryRepository.removeById(id);
     }
 
-    @Override
-    @Transactional
-    public void removeByName(String name) {
-        countryRepository.removeByName(name);
-    }
 }

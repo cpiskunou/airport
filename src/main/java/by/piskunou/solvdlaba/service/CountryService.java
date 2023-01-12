@@ -1,11 +1,11 @@
 package by.piskunou.solvdlaba.service;
 
-import by.piskunou.solvdlaba.domain.City;
 import by.piskunou.solvdlaba.domain.Country;
 
 import java.util.List;
 
 public interface CountryService {
+
     List<Country> findAll();
 
     Country findCountryCities(long id);
@@ -22,5 +22,8 @@ public interface CountryService {
 
     void removeById(long id);
 
-    void removeByName(String name);
+    boolean isExists(long countryId);
+
+    boolean isExists(String name);
+
 }

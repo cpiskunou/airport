@@ -10,4 +10,5 @@ public interface AirlineMapper {
     AirlineDTO toDTO(Airline entity);
 
     Airline toEntity(AirlineDTO dto);
+
 }

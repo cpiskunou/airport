@@ -1,4 +1,4 @@
-package by.piskunou.solvdlaba.repository.mapper;
+package by.piskunou.solvdlaba.persistent.impl.mapper;
 
 import by.piskunou.solvdlaba.domain.Airline;
 import lombok.SneakyThrows;
@@ -6,7 +6,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 @Component
 public class AirlineMapper implements RowMapper<Airline> {

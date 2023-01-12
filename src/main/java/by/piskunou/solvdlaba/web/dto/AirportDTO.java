@@ -15,10 +15,12 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AirportDTO {
+
     @Null(groups = onCreate.class)
     @NotNull(groups = onUpdate.class)
     private Long id;
 
     @NotBlank(groups = {onUpdate.class, onCreate.class})
     private String name;
+
 }

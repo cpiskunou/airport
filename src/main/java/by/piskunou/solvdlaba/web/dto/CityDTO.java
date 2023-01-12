@@ -15,6 +15,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class CityDTO {
+
     @Null(groups = onCreate.class)
     @NotNull(groups = onUpdate.class)
     private Long id;
@@ -24,4 +25,5 @@ public class CityDTO {
 
     @Null(groups = onCreate.class)
     private List<AirportDTO> airports;
+
 }

@@ -3,7 +3,7 @@ package by.piskunou.solvdlaba.service.impl;
 import by.piskunou.solvdlaba.domain.exception.ResourceNotFoundException;
 import by.piskunou.solvdlaba.domain.exception.ResourceNotUpdatedException;
 import by.piskunou.solvdlaba.domain.exception.UserNotRegisteredException;
-import by.piskunou.solvdlaba.repository.UserRepository;
+import by.piskunou.solvdlaba.persistent.impl.UserRepositoryImpl;
 import by.piskunou.solvdlaba.domain.User;
 import by.piskunou.solvdlaba.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -11,69 +11,54 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
+    private final UserRepositoryImpl userRepository;
 
     @Override
     @Transactional
     public User register(User user) {
-        Optional<User> userOptional = userRepository.findByUsername(user.getUsername());
-        if(userOptional.isPresent()) {
+        if (isExists(user.getUsername())) {
             throw new UserNotRegisteredException("Username is taken");
         }
-        userOptional = userRepository.register(user);
 
-        return userOptional.get();
+        Long id = userRepository.register(user)
+                .orElseThrow(() -> new ResourceNotFoundException("Server error"));
+        user.setId(id);
+
+        return user;
+    }
+
+    @Override
+    public boolean isExists(String username) {
+        return userRepository.findByUsername(username)
+                             .isPresent();
     }
 
     @Override
     @Transactional(readOnly = true)
     public User findById(long id) {
-        Optional<User> user = userRepository.findById(id);
-        if(user.isEmpty()) {
-            throw new ResourceNotFoundException("There's no user with such id");
-        }
-
-        return user.get();
+            return userRepository.findById(id)
+                                 .orElseThrow(() -> new ResourceNotFoundException("There's no user with such id"));
     }
 
     @Override
     public User findUserTickets(long id) {
-        Optional<User> user = userRepository.findById(id);
-        if(user.isEmpty()) {
+        if(!isExists(id)) {
             throw new ResourceNotFoundException("There's no user with such id");
         }
 
-        user = userRepository.findUserTickets(id);
-
-        return user.orElseThrow(() -> new ResourceNotFoundException("Server error"));
+        return userRepository.findUserTickets(id)
+                             .orElseThrow(() -> new ResourceNotFoundException("Server error"));
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public User findByUsername(String username) {
-        Optional<User> user = userRepository.findByUsername(username);
-        if(user.isEmpty()) {
-            throw new ResourceNotFoundException("There's no user with such id");
-        }
-
-        return user.get();
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public User findByUsernameAndNotById(long id, String username) {
-        Optional<User> user = userRepository.findByUsernameAndByIdNot(id, username);
-        if(user.isEmpty()) {
-            throw new ResourceNotFoundException("There's no user with such id");
-        }
-
-        return user.get();
+    public boolean isExists(long id) {
+        return userRepository.findById(id)
+                             .isPresent();
     }
 
     @Override
@@ -85,15 +70,16 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User updateUsernameById(long id, String username) {
-        findById(id);
-        Optional<User> user = userRepository.findByUsername(username);
-        if(user.isPresent()) {
+        if(!isExists(id)) {
+            throw new ResourceNotFoundException("There's no user with such id");
+        }
+
+        if(isExists(username)) {
             throw new ResourceNotUpdatedException("Username is taken");
         }
 
-        user = userRepository.updateUsernameById(id, username);
-
-        return user.get();
+        return userRepository.updateUsernameById(id, username)
+                             .orElseThrow(() -> new ResourceNotFoundException("Server error"));
     }
 
     @Override
@@ -101,4 +87,5 @@ public class UserServiceImpl implements UserService {
     public void removeById(int id) {
         userRepository.removeById(id);
     }
+
 }

@@ -1,12 +1,17 @@
 package by.piskunou.solvdlaba.web.dto;
 
 import lombok.AllArgsConstructor;
-import org.springframework.validation.FieldError;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @AllArgsConstructor
 public class MyErrorResponse {
 
-    private FieldError fieldError;
-
+    private String fieldError;
     private String message;
+
 }

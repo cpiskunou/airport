@@ -20,5 +20,8 @@ public interface CityService {
 
     void removeById(long id);
 
-    void removeByName(String name);
+    boolean isExists(long id);
+
+    boolean isExists(String name);
+
 }

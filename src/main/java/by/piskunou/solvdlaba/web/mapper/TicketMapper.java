@@ -10,4 +10,5 @@ public interface TicketMapper {
     TicketDTO toDTO(Ticket entity);
 
     Ticket toEntity(TicketDTO dto);
+
 }

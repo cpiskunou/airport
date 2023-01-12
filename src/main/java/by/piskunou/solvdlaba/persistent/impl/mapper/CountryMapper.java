@@ -1,4 +1,4 @@
-package by.piskunou.solvdlaba.repository.mapper;
+package by.piskunou.solvdlaba.persistent.impl.mapper;
 
 import by.piskunou.solvdlaba.domain.City;
 import by.piskunou.solvdlaba.domain.Country;

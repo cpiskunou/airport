@@ -10,4 +10,5 @@ public interface FlightMapper {
     FlightDTO toDTO(Flight entity);
 
     Flight toEntity(FlightDTO dto);
+
 }

@@ -4,9 +4,9 @@ import by.piskunou.solvdlaba.domain.User;
 import by.piskunou.solvdlaba.service.UserService;
 import by.piskunou.solvdlaba.web.mapper.UserMapper;
 import by.piskunou.solvdlaba.web.dto.UserDTO;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,10 +17,7 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-
     private final UserMapper mapper;
-
-    private static final String ID = "/{id}";
 
     @GetMapping
     public List<UserDTO> findAll() {
@@ -30,14 +27,14 @@ public class UserController {
                           .toList();
     }
 
-    @GetMapping(ID)
+    @GetMapping("/{id}")
     public UserDTO findById(@PathVariable long id) {
         User user = userService.findById(id);
 
         return mapper.toDTO(user);
     }
 
-    @GetMapping(ID + "/tickets")
+    @GetMapping("/{id}/tickets")
     public UserDTO findUserTickets(@PathVariable long id) {
         User user = userService.findUserTickets(id);
 
@@ -47,7 +44,7 @@ public class UserController {
 
     @PostMapping("/registration")
     @ResponseStatus(HttpStatus.OK)
-    public UserDTO register(@RequestBody @Validated UserDTO userDTO) {
+    public UserDTO register(@RequestBody @Valid UserDTO userDTO) {
         User user = mapper.toEntity(userDTO);
 
         user = userService.register(user);
@@ -63,9 +60,10 @@ public class UserController {
         return mapper.toDTO(user);
     }
 
-    @DeleteMapping(ID)
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void remove(@PathVariable int id) {
         userService.removeById(id);
     }
+
 }

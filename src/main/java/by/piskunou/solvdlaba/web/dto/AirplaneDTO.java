@@ -15,6 +15,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AirplaneDTO {
+
     @Null(groups = onCreate.class)
     @NotNull(groups = onUpdate.class)
     private Long id;
@@ -23,7 +24,7 @@ public class AirplaneDTO {
     private String model;
 
     @NotNull(groups = {onUpdate.class, onCreate.class})
-    private Byte rowSeatNo;
+    private Byte seatsInRow;
 
     @NotNull(groups = {onUpdate.class, onCreate.class})
     private Short rowNo;

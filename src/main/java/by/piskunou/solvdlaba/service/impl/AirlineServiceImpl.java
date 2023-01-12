@@ -1,22 +1,22 @@
 package by.piskunou.solvdlaba.service.impl;
 
 import by.piskunou.solvdlaba.domain.Airline;
-import by.piskunou.solvdlaba.domain.exception.ResourceNotCreateException;
+import by.piskunou.solvdlaba.domain.exception.ResourceNotCreatedException;
 import by.piskunou.solvdlaba.domain.exception.ResourceNotFoundException;
 import by.piskunou.solvdlaba.domain.exception.ResourceNotUpdatedException;
-import by.piskunou.solvdlaba.repository.AirlineRepository;
+import by.piskunou.solvdlaba.persistent.impl.AirlineRepositoryImpl;
 import by.piskunou.solvdlaba.service.AirlineService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class AirlineServiceImpl implements AirlineService {
-    private final AirlineRepository airlineRepository;
+
+    private final AirlineRepositoryImpl airlineRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -27,39 +27,49 @@ public class AirlineServiceImpl implements AirlineService {
     @Override
     @Transactional(readOnly = true)
     public Airline findById(long id) {
-        Optional<Airline> airline = airlineRepository.findById(id);
-        if(airline.isEmpty()) {
-            throw new ResourceNotFoundException("There's no airline with such id");
-        }
-
-        return airline.get();
+        return airlineRepository.findById(id)
+                                .orElseThrow(() -> new ResourceNotFoundException("There's no airline with such id"));
     }
 
     @Override
     @Transactional
     public Airline create(Airline airline) {
-        Optional<Airline> airlineOptional = airlineRepository.findByName(airline.getName());
-        if(airlineOptional.isPresent()) {
-            throw new ResourceNotCreateException("Airline with such name has already exists");
+        if(isExists(airline.getName())) {
+            throw new ResourceNotCreatedException("Airline with such name has already exists");
         }
 
-        airlineOptional = airlineRepository.create(airline);
+        Long id = airlineRepository.create(airline)
+                                   .orElseThrow(() -> new ResourceNotCreatedException("Server error"));
+        airline.setId(id);
 
-        return airlineOptional.orElseThrow(() -> new ResourceNotCreateException("Server error"));
+        return airline;
+    }
+
+    @Override
+    public boolean isExists(String name) {
+        return airlineRepository.findByName(name)
+                                .isPresent();
     }
 
     @Override
     @Transactional
     public Airline updateNameById(long id, String name) {
-        findById(id);
-        Optional<Airline> airline = airlineRepository.findByName(name);
-        if(airline.isPresent()) {
+        if(!isExists(id)) {
+            throw new ResourceNotCreatedException("Server error");
+        }
+
+        if(isExists(name)) {
             throw new ResourceNotUpdatedException("Airline with such name has already exists");
         }
 
-        airline = airlineRepository.updateNameById(id, name);
+        return airlineRepository.updateNameById(id, name)
+                                .orElseThrow(() -> new ResourceNotUpdatedException("Server error"));
+    }
 
-        return airline.orElseThrow(() -> new ResourceNotUpdatedException("Server error"));
+    @Override
+    public boolean isExists(long id) {
+        return airlineRepository.findById(id)
+                                .isPresent();
     }
 
     @Override
@@ -67,4 +77,5 @@ public class AirlineServiceImpl implements AirlineService {
     public void removeById(long id) {
         airlineRepository.removeById(id);
     }
+
 }

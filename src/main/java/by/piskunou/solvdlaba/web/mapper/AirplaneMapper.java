@@ -10,4 +10,5 @@ public interface AirplaneMapper {
     AirplaneDTO toDTO(Airplane entity);
 
     Airplane toEntity(AirplaneDTO dto);
+
 }

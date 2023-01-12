@@ -1,7 +1,9 @@
 package by.piskunou.solvdlaba.service;
 
 import by.piskunou.solvdlaba.domain.Flight;
-import by.piskunou.solvdlaba.web.dto.FlightRequest;
+import by.piskunou.solvdlaba.domain.FlightRequest;
+import by.piskunou.solvdlaba.domain.FlightResponse;
+import by.piskunou.solvdlaba.domain.Seat;
 
 import java.util.List;
 
@@ -11,5 +13,8 @@ public interface FlightService {
 
     Flight create(Flight flight);
 
-    List<Flight> search(FlightRequest flightRequest);
+    List<FlightResponse> search(FlightRequest flightRequest);
+
+    List<Seat> freeSeats(long id);
+
 }

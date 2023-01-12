@@ -1,3 +1,5 @@
 package by.piskunou.solvdlaba.web.groups;
 
-public interface onUpdate {}
+public interface onUpdate {
+
+}

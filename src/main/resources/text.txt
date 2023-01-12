@@ -13,3 +13,15 @@ do begin end
 @Transactional на кожны мэтад
 
 create update штосьці вяртаць
+
+З вялікай літары
+водступы
+выдаліць тэчку enums
+глабальны фармат даты
+поўны імя
+postgres trigger
+where id in(value, value2...)
+repository вяртае void
+checkExists
+AdviceController дадаць усе
+currentSchema
