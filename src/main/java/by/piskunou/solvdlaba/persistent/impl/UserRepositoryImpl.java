@@ -24,7 +24,7 @@ public class UserRepositoryImpl implements UserRepository {
     private final UserMapper userMapper;
 
     @Override
-    public Optional<Long> register(User user) {
+    public void register(User user) {
         try {
             Connection conn = config.getConnection();
 
@@ -40,13 +40,12 @@ public class UserRepositoryImpl implements UserRepository {
 
                     Long id = resultSet.getLong("id");
 
-                    return Optional.of(id);
+                    user.setId(id);
                 }
             }
         } catch (SQLException e) {
             log.error("SQLException: Didn't register");
         }
-        return Optional.empty();
     }
 
     @Override
@@ -93,31 +92,6 @@ public class UserRepositoryImpl implements UserRepository {
             }
         } catch (SQLException e) {
             log.warn("SQLException: Didn't find by username");
-        }
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<User> findByUsernameAndByIdNot(long id, String username) {
-        try {
-            Connection conn = config.getConnection();
-
-            try(PreparedStatement preparedStatement =
-                    conn.prepareStatement("select id, username from \"user\" where username = ? and id != ?")) {
-
-                preparedStatement.setString(1, username);
-                preparedStatement.setLong(2, id);
-
-                try(ResultSet resultSet = preparedStatement.executeQuery()) {
-                    resultSet.next();
-
-                    User user = userMapper.mapRow(resultSet, 2);
-
-                    return Optional.of(user);
-                }
-            }
-        } catch (SQLException e) {
-            log.warn("SQLException: Didn't find by username and not by id");
         }
         return Optional.empty();
     }
@@ -199,30 +173,20 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Optional<User> updateUsernameById(long id, String username) {
+    public void updateUsernameById(long id, String username) {
         try {
             Connection conn = config.getConnection();
 
             try(PreparedStatement preparedStatement =
-                    conn.prepareStatement("update \"user\" set username = ? where id = ?",
-                                            Statement.RETURN_GENERATED_KEYS)) {
+                    conn.prepareStatement("update \"user\" set username = ? where id = ?")) {
 
                 preparedStatement.setString(1, username);
                 preparedStatement.setLong(2, id);
 
                 preparedStatement.executeUpdate();
-
-                try(ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
-                    resultSet.next();
-
-                    User user = userMapper.mapRow(resultSet, 2);
-
-                    return Optional.of(user);
-                }
             }
         } catch (SQLException e) {
             log.warn("SQLException: Didn't update a user");
         }
-        return Optional.empty();
     }
 }

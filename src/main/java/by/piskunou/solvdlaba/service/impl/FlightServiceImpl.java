@@ -1,7 +1,6 @@
 package by.piskunou.solvdlaba.service.impl;
 
 import by.piskunou.solvdlaba.domain.*;
-import by.piskunou.solvdlaba.domain.exception.ResourceNotCreatedException;
 import by.piskunou.solvdlaba.domain.exception.ResourceNotFoundException;
 import by.piskunou.solvdlaba.persistent.FlightRepository;
 import by.piskunou.solvdlaba.service.AirplaneService;
@@ -41,10 +40,7 @@ public class FlightServiceImpl implements FlightService {
         List<Seat> seats = createSeats(airplane);
         flight.setSeats(seats);
 
-        Long id = flightRepository.create(flight)
-                                  .orElseThrow(() -> new ResourceNotCreatedException("Server error"));
-
-        flight.setId(id);
+        flightRepository.create(flight);
 
         return flight;
     }

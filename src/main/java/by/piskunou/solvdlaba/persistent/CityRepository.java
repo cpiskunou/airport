@@ -15,12 +15,10 @@ public interface CityRepository {
 
     Optional<City> findByName(String name);
 
-    Optional<Long> create(City city, long countryId);
+    void create(City city, long countryId);
 
-    Optional<City> updateNameById(long id, String name);
+    void updateNameById(long id, String name);
 
     void removeById(long id);
-
-    void removeByName(String name);
 
 }

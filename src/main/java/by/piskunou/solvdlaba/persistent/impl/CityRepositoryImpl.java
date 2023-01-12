@@ -136,7 +136,7 @@ public class CityRepositoryImpl implements CityRepository {
     }
 
     @Override
-    public Optional<Long> create(City city, long countryId) {
+    public void create(City city, long countryId) {
         try {
             Connection conn = config.getConnection();
 
@@ -153,17 +153,16 @@ public class CityRepositoryImpl implements CityRepository {
 
                     Long id = resultSet.getLong("id");
 
-                    return Optional.of(id);
+                    city.setId(id);
                 }
             }
         } catch (SQLException e) {
             log.error("SQLException: Didn't create a city");
         }
-        return Optional.empty();
     }
 
     @Override
-    public Optional<City> updateNameById(long id, String name) {
+    public void updateNameById(long id, String name) {
         try {
             Connection conn = config.getConnection();
 
@@ -175,20 +174,10 @@ public class CityRepositoryImpl implements CityRepository {
                 preparedStatement.setLong(2, id);
 
                 preparedStatement.executeUpdate();
-
-                try(ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
-                    resultSet.next();
-
-                    City city = new City(resultSet.getLong("id"),
-                            resultSet.getString("name"));
-
-                    return Optional.of(city);
-                }
             }
         } catch (SQLException e) {
             log.warn("SQLException: Didn't update a city");
         }
-        return Optional.empty();
     }
 
     @Override
@@ -205,23 +194,6 @@ public class CityRepositoryImpl implements CityRepository {
             }
         } catch (SQLException e) {
             log.error("SQLException: Didn't remove a city by id");
-        }
-    }
-
-    @Override
-    public void removeByName(String name) {
-        try {
-            Connection conn = config.getConnection();
-
-            try(PreparedStatement preparedStatement =
-                    conn.prepareStatement("delete from city where name = ?")) {
-
-                preparedStatement.setString(1, name);
-
-                preparedStatement.executeUpdate();
-            }
-        } catch (SQLException e) {
-            log.error("SQLException: Didn't remove a city by name");
         }
     }
 }

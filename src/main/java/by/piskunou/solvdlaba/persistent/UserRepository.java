@@ -7,13 +7,11 @@ import java.util.Optional;
 
 public interface UserRepository {
 
-    Optional<Long> register(User user);
+    void register(User user);
 
     Optional<User> findById(long id);
 
     Optional<User> findByUsername(String username);
-
-    Optional<User> findByUsernameAndByIdNot(long id, String username);
 
     List<User> findAll();
 
@@ -21,6 +19,6 @@ public interface UserRepository {
 
     void removeById(long id);
 
-    Optional<User> updateUsernameById(long id, String username);
+    void updateUsernameById(long id, String username);
 
 }

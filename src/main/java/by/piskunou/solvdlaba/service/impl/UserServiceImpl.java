@@ -25,9 +25,7 @@ public class UserServiceImpl implements UserService {
             throw new UserNotRegisteredException("Username is taken");
         }
 
-        Long id = userRepository.register(user)
-                .orElseThrow(() -> new ResourceNotFoundException("Server error"));
-        user.setId(id);
+        userRepository.register(user);
 
         return user;
     }
@@ -78,8 +76,7 @@ public class UserServiceImpl implements UserService {
             throw new ResourceNotUpdatedException("Username is taken");
         }
 
-        return userRepository.updateUsernameById(id, username)
-                             .orElseThrow(() -> new ResourceNotFoundException("Server error"));
+        return new User(id, username);
     }
 
     @Override

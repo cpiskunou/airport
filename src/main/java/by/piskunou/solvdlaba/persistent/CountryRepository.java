@@ -17,12 +17,10 @@ public interface CountryRepository {
 
     Optional<Country> findCountryAirports(long id);
 
-    Optional<Long> create(Country country);
+    void create(Country country);
 
-    Optional<Country> updateNameById(long id, String name);
+    void updateNameById(long id, String name);
 
     void removeById(long id);
-
-    void removeByName(String name);
 
 }

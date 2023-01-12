@@ -20,7 +20,7 @@ public class AirplaneRepositoryImpl implements AirplaneRepository {
     private final AirplaneMapper mapper;
 
     @Override
-    public Optional<Long> create(Airplane airplane) {
+    public void create(Airplane airplane) {
         try {
             Connection conn = config.getConnection();
 
@@ -38,13 +38,12 @@ public class AirplaneRepositoryImpl implements AirplaneRepository {
 
                     Long id = resultSet.getLong("id");
 
-                    return Optional.of(id);
+                    airplane.setId(id);
                 }
             }
         } catch (SQLException e) {
             log.error("SQLException: Didn't add");
         }
-        return Optional.empty();
     }
 
     @Override
@@ -150,23 +149,6 @@ public class AirplaneRepositoryImpl implements AirplaneRepository {
             }
         } catch (SQLException e) {
             log.error("SQLException: Didn't remove by id");
-        }
-    }
-
-    @Override
-    public void removeByModel(String model) {
-        try {
-            Connection conn = config.getConnection();
-
-            try(PreparedStatement preparedStatement =
-                    conn.prepareStatement("delete from airplane where model = ?")) {
-
-                preparedStatement.setString(1, model);
-
-                preparedStatement.executeUpdate();
-            }
-        } catch (SQLException e) {
-            log.error("SQLException: Didn't remove by model");
         }
     }
 }

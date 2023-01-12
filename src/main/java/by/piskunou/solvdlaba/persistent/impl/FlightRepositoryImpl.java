@@ -51,7 +51,7 @@ public class FlightRepositoryImpl implements FlightRepository {
     }
 
     @Override
-    public Optional<Long> create(Flight flight) {
+    public void create(Flight flight) {
         try {
             Connection conn = config.getConnection();
 
@@ -77,13 +77,12 @@ public class FlightRepositoryImpl implements FlightRepository {
 
                     Long id = resultSet.getLong("id");
 
-                    return Optional.of(id);
+                    flight.setId(id);
                 }
             }
         } catch (SQLException e) {
             log.warn("SQLException: Didn't create a flight");
         }
-        return Optional.empty();
     }
 
     @Override

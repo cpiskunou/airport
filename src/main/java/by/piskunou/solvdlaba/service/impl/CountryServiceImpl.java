@@ -74,9 +74,7 @@ public class CountryServiceImpl implements CountryService {
             throw new ResourceNotCreatedException("Country with such name has already exists");
         }
 
-        Long id = countryRepository.create(country)
-                                   .orElseThrow(() -> new ResourceNotFoundException("Server error"));
-        country.setId(id);
+        countryRepository.create(country);
 
         return country;
     }
@@ -98,8 +96,7 @@ public class CountryServiceImpl implements CountryService {
             throw new ResourceNotUpdatedException("Country with such name has already exists");
         }
 
-        return countryRepository.updateNameById(id, name)
-                                .orElseThrow(() -> new ResourceNotUpdatedException("Server error"));
+        return new Country(id, name);
     }
 
     @Override

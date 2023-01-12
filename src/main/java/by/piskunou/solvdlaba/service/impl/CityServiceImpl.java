@@ -73,9 +73,7 @@ public class CityServiceImpl implements CityService {
             throw new ResourceNotCreatedException("City with such name has already exists");
         }
 
-        Long id = cityRepository.create(city, countryId)
-                                .orElseThrow(() -> new ResourceNotUpdatedException("Server error"));
-        city.setId(id);
+        cityRepository.create(city, countryId);
 
         return city;
     }
@@ -98,8 +96,7 @@ public class CityServiceImpl implements CityService {
             throw new ResourceNotUpdatedException("City with such name has already exists");
         }
 
-        return cityRepository.updateNameById(id, name)
-                             .orElseThrow(() -> new ResourceNotUpdatedException("Server error"));
+        return new City(id, name);
     }
 
     @Override

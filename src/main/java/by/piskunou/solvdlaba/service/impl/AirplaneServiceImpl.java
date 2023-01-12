@@ -25,9 +25,7 @@ public class AirplaneServiceImpl implements AirplaneService {
             throw new ResourceNotCreatedException("Such model of airplane already exists");
         }
 
-        Long id  = airplaneRepository.create(airplane)
-                                     .orElseThrow(() -> new ResourceNotCreatedException("Airplane wasn't created"));
-        airplane.setId(id);
+        airplaneRepository.create(airplane);
 
         return airplane;
     }

@@ -13,9 +13,9 @@ public interface AirlineRepository {
 
     Optional<Airline> findByName(String name);
 
-    Optional<Long> create(Airline airline);
+    void create(Airline airline);
 
-    Optional<Airline> updateNameById(long id, String name);
+    void updateNameById(long id, String name);
 
     void removeById(long id);
 

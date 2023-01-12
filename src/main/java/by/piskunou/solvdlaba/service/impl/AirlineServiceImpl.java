@@ -38,9 +38,7 @@ public class AirlineServiceImpl implements AirlineService {
             throw new ResourceNotCreatedException("Airline with such name has already exists");
         }
 
-        Long id = airlineRepository.create(airline)
-                                   .orElseThrow(() -> new ResourceNotCreatedException("Server error"));
-        airline.setId(id);
+        airlineRepository.create(airline);
 
         return airline;
     }
@@ -62,8 +60,7 @@ public class AirlineServiceImpl implements AirlineService {
             throw new ResourceNotUpdatedException("Airline with such name has already exists");
         }
 
-        return airlineRepository.updateNameById(id, name)
-                                .orElseThrow(() -> new ResourceNotUpdatedException("Server error"));
+        return new Airline(id, name);
     }
 
     @Override

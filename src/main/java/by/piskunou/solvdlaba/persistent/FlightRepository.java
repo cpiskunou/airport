@@ -77,7 +77,7 @@ public interface FlightRepository {
 
     Optional<Flight> findById(long id);
 
-    Optional<Long> create(Flight flight);
+    void create(Flight flight);
 
     List<Flight> search(Long[] fromAirports, Long[] toAirports, int passengerAmount,
                         LocalDateTime start, LocalDateTime end);

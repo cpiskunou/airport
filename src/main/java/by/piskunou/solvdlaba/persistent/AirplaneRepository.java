@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface AirplaneRepository {
 
-    Optional<Long> create(Airplane airplane);
+    void create(Airplane airplane);
 
     Optional<Airplane> findById(long id);
 
@@ -16,7 +16,5 @@ public interface AirplaneRepository {
     List<Airplane> findAll();
 
     void removeById(long id);
-
-    void removeByModel(String model);
 
 }

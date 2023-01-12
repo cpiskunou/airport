@@ -106,7 +106,7 @@ public class AirlineRepositoryImpl implements AirlineRepository {
     }
 
     @Override
-    public Optional<Long> create(Airline airline) {
+    public void create(Airline airline) {
         try {
             Connection conn = config.getConnection();
 
@@ -122,42 +122,30 @@ public class AirlineRepositoryImpl implements AirlineRepository {
 
                     Long id = resultSet.getLong("id");
 
-                    return Optional.of(id);
+                    airline.setId(id);
                 }
             }
         } catch (SQLException e) {
             log.warn("SQLException: An airline wasn't created");
         }
-        return Optional.empty();
     }
 
     @Override
-    public Optional<Airline> updateNameById(long id, String name) {
+    public void updateNameById(long id, String name) {
         try {
             Connection conn = config.getConnection();
 
             try(PreparedStatement preparedStatement =
-                    conn.prepareStatement("update airline set name = ? where id = ?",
-                            Statement.RETURN_GENERATED_KEYS)) {
+                    conn.prepareStatement("update airline set name = ? where id = ?")) {
 
                 preparedStatement.setString(1, name);
                 preparedStatement.setLong(2, id);
 
                 preparedStatement.executeUpdate();
-
-                try(ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
-                    resultSet.next();
-
-                    Airline airline = new Airline(resultSet.getLong("id"),
-                            resultSet.getString("name"));
-
-                    return Optional.of(airline);
-                }
             }
         } catch (SQLException e) {
             log.warn("SQLException: An airline wasn't updated");
         }
-        return Optional.empty();
     }
 
     @Override

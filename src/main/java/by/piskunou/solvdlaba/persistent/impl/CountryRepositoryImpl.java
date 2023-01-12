@@ -170,7 +170,7 @@ public class CountryRepositoryImpl implements CountryRepository {
     }
 
     @Override
-    public Optional<Long> create(Country country) {
+    public void create(Country country) {
         try {
             Connection conn = config.getConnection();
 
@@ -186,42 +186,30 @@ public class CountryRepositoryImpl implements CountryRepository {
 
                     Long id = resultSet.getLong("id");
 
-                    return Optional.of(id);
+                    country.setId(id);
                 }
             }
         } catch (SQLException e) {
             log.error("SQLException: Didn't create a country");
         }
-        return Optional.empty();
     }
 
     @Override
-    public Optional<Country> updateNameById(long id, String name) {
+    public void updateNameById(long id, String name) {
         try {
             Connection conn = config.getConnection();
 
             try(PreparedStatement preparedStatement =
-                    conn.prepareStatement("update country set name = ? where id = ?",
-                            Statement.RETURN_GENERATED_KEYS)) {
+                    conn.prepareStatement("update country set name = ? where id = ?")) {
 
                 preparedStatement.setString(1, name);
                 preparedStatement.setLong(2, id);
 
                 preparedStatement.executeUpdate();
-
-                try(ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
-                    resultSet.next();
-
-                    Country country = new Country(resultSet.getLong("id"),
-                            resultSet.getString("name"));
-
-                    return Optional.of(country);
-                }
             }
         } catch (SQLException e) {
             log.warn("SQLException: Didn't update a country");
         }
-        return Optional.empty();
     }
 
     @Override
@@ -238,23 +226,6 @@ public class CountryRepositoryImpl implements CountryRepository {
             }
         } catch (SQLException e) {
             log.error("SQLException: Didn't remove a country by id");
-        }
-    }
-
-    @Override
-    public void removeByName(String name) {
-        try {
-            Connection conn = config.getConnection();
-
-            try(PreparedStatement preparedStatement =
-                    conn.prepareStatement("delete from country where \"name\" = ?")) {
-
-                preparedStatement.setString(1, name);
-
-                preparedStatement.executeUpdate();
-            }
-        } catch (SQLException e) {
-            log.error("SQLException: Didn't remove a country by name");
         }
     }
 }
