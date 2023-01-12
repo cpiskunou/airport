@@ -42,7 +42,7 @@ public class CityController {
     }
 
     @PostMapping("/create")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     public CityDTO create(@RequestBody @Valid CityDTO cityDTO, @RequestParam("country_id") long countryId) {
         City city = cityMapper.toEntity(cityDTO);
 
@@ -52,7 +52,6 @@ public class CityController {
     }
 
     @PatchMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
     public CityDTO updateNameById(@PathVariable long id, @RequestParam String name) {
         City city = cityService.updateNameById(id, name);
 
@@ -60,7 +59,7 @@ public class CityController {
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeById(@PathVariable long id) {
         cityService.removeById(id);
     }

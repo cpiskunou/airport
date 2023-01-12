@@ -21,10 +21,7 @@ public class CountryController {
 
     @GetMapping
     public List<CountryDTO> findAll() {
-        return countryService.findAll()
-                            .stream()
-                            .map(mapper::toDTO)
-                            .toList();
+        return mapper.toDTOList(countryService.findAll());
     }
 
     @GetMapping ("/{id}/cities")
@@ -49,7 +46,7 @@ public class CountryController {
     }
 
     @PostMapping("/create")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     public CountryDTO create(@RequestBody @Valid CountryDTO countryDTO) {
         Country country = mapper.toEntity(countryDTO);
 
@@ -59,7 +56,6 @@ public class CountryController {
     }
 
     @PatchMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
     public CountryDTO updateNameById(@PathVariable long id, @RequestParam String name) {
         Country country = countryService.updateNameById(id, name);
 
@@ -67,7 +63,7 @@ public class CountryController {
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeById(@PathVariable long id) {
         countryService.removeById(id);
     }

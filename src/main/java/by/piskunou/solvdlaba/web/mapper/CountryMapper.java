@@ -4,6 +4,8 @@ import by.piskunou.solvdlaba.domain.Country;
 import by.piskunou.solvdlaba.web.dto.CountryDTO;
 import org.mapstruct.Mapper;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface CountryMapper {
 
@@ -11,4 +13,5 @@ public interface CountryMapper {
 
     Country toEntity(CountryDTO dto);
 
+    List<CountryDTO> toDTOList(List<Country> countries);
 }

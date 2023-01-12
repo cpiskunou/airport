@@ -35,7 +35,7 @@ public class AirlineController {
     }
 
     @PostMapping("/create")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     public AirlineDTO create(@RequestBody @Valid AirlineDTO airlineDTO) {
         Airline airline = airlineMapper.toEntity(airlineDTO);
 
@@ -45,7 +45,6 @@ public class AirlineController {
     }
 
     @PatchMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
     public AirlineDTO updateNameById(@PathVariable long id, @RequestParam String name) {
         Airline airline = airlineService.updateNameById(id, name);
 
@@ -53,7 +52,7 @@ public class AirlineController {
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeById(@PathVariable long id) {
         airlineService.removeById(id);
     }

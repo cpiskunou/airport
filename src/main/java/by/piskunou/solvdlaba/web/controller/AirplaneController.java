@@ -25,7 +25,7 @@ public class AirplaneController {
     }
 
     @PostMapping("/create")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     public AirplaneDTO create(@RequestBody @Valid AirplaneDTO airplaneDTO) {
         Airplane airplane = mapper.toEntity(airplaneDTO);
 
@@ -35,7 +35,7 @@ public class AirplaneController {
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeById(@PathVariable int id) {
         airplaneService.removeById(id);
     }

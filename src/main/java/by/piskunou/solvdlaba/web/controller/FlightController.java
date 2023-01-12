@@ -58,8 +58,7 @@ public class FlightController {
     }
 
     @PostMapping("/create")
-    @ResponseStatus(HttpStatus.OK)
-    @Validated
+    @ResponseStatus(HttpStatus.CREATED)
     public FlightDTO create(@RequestBody @Valid FlightDTO flightDTO) {
         Flight flight = flightMapper.toEntity(flightDTO);
 

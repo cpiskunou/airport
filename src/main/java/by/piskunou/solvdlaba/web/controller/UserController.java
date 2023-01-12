@@ -43,7 +43,7 @@ public class UserController {
 
 
     @PostMapping("/registration")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     public UserDTO register(@RequestBody @Valid UserDTO userDTO) {
         User user = mapper.toEntity(userDTO);
 
@@ -53,7 +53,6 @@ public class UserController {
     }
 
     @PatchMapping("{id}")
-    @ResponseStatus(HttpStatus.OK)
     public UserDTO updateUsernameById(@PathVariable long id, @RequestParam String username) {
         User user = userService.updateUsernameById(id, username);
 
@@ -61,7 +60,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remove(@PathVariable int id) {
         userService.removeById(id);
     }

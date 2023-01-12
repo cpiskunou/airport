@@ -18,27 +18,16 @@ import java.util.List;
 @RestControllerAdvice
 public class AdviceController {
 
-    @ExceptionHandler(UserNotRegisteredException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleResourceNotFoundException(UserNotRegisteredException e) {
-        return e.getMessage();
-    }
-
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public String handleResourceNotFoundException(ResourceNotFoundException e) {
         return e.getMessage();
     }
 
-    @ExceptionHandler(ResourceNotUpdatedException.class)
+    @ExceptionHandler({ResourceNotUpdatedException.class, ResourceNotCreatedException.class,
+                       UserNotRegisteredException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleResourceNotUpdatedException(ResourceNotUpdatedException e) {
-        return e.getMessage();
-    }
-
-    @ExceptionHandler(ResourceNotCreatedException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleResourceNotCreatedException(ResourceNotCreatedException e) {
         return e.getMessage();
     }
 
