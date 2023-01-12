@@ -15,10 +15,7 @@ public class DataSourceConfig {
     private final DataSource dataSource;
 
     public Connection getConnection() throws SQLException {
-        Connection conn = DataSourceUtils.getConnection(dataSource);
-        conn.setSchema("piskunou");
-
-        return conn;
+        return DataSourceUtils.getConnection(dataSource);
     }
 
 }
