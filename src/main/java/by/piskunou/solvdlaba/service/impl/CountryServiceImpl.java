@@ -1,9 +1,9 @@
 package by.piskunou.solvdlaba.service.impl;
 
 import by.piskunou.solvdlaba.domain.Country;
-import by.piskunou.solvdlaba.domain.exception.ResourceNotCreatedException;
+import by.piskunou.solvdlaba.domain.exception.ResourseAlreadyExistsException;
 import by.piskunou.solvdlaba.domain.exception.ResourceNotFoundException;
-import by.piskunou.solvdlaba.domain.exception.ResourceNotUpdatedException;
+import by.piskunou.solvdlaba.domain.exception.ResourseNotExistsException;
 import by.piskunou.solvdlaba.persistent.impl.CountryRepositoryImpl;
 import by.piskunou.solvdlaba.service.CountryService;
 import lombok.RequiredArgsConstructor;
@@ -71,7 +71,7 @@ public class CountryServiceImpl implements CountryService {
     @Transactional
     public Country create(Country country) {
         if(isExists(country.getName())) {
-            throw new ResourceNotCreatedException("Country with such name has already exists");
+            throw new ResourseAlreadyExistsException("Country with such name has already exists");
         }
 
         countryRepository.create(country);
@@ -93,7 +93,7 @@ public class CountryServiceImpl implements CountryService {
         }
 
         if(isExists(name)) {
-            throw new ResourceNotUpdatedException("Country with such name has already exists");
+            throw new ResourseNotExistsException("Country with such name has already exists");
         }
 
         return new Country(id, name);

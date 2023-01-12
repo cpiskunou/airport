@@ -214,5 +214,6 @@ application.yaml
 ### My ###
 draft.sql
 testData.sql
+text.txt
 
 # End of https://www.toptal.com/developers/gitignore/api/git,maven,intellij,macos,java

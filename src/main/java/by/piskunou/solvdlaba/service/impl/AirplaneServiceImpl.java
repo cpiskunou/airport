@@ -1,7 +1,7 @@
 package by.piskunou.solvdlaba.service.impl;
 
 import by.piskunou.solvdlaba.domain.Airplane;
-import by.piskunou.solvdlaba.domain.exception.ResourceNotCreatedException;
+import by.piskunou.solvdlaba.domain.exception.ResourseAlreadyExistsException;
 import by.piskunou.solvdlaba.domain.exception.ResourceNotFoundException;
 import by.piskunou.solvdlaba.persistent.impl.AirplaneRepositoryImpl;
 import by.piskunou.solvdlaba.service.AirplaneService;
@@ -22,7 +22,7 @@ public class AirplaneServiceImpl implements AirplaneService {
     @Transactional
     public Airplane create(Airplane airplane) {
         if(isExists(airplane.getModel())) {
-            throw new ResourceNotCreatedException("Such model of airplane already exists");
+            throw new ResourseAlreadyExistsException("Such model of airplane already exists");
         }
 
         airplaneRepository.create(airplane);

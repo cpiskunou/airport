@@ -1,8 +1,8 @@
 package by.piskunou.solvdlaba.web.controller;
 
-import by.piskunou.solvdlaba.domain.exception.ResourceNotCreatedException;
+import by.piskunou.solvdlaba.domain.exception.ResourseAlreadyExistsException;
 import by.piskunou.solvdlaba.domain.exception.ResourceNotFoundException;
-import by.piskunou.solvdlaba.domain.exception.ResourceNotUpdatedException;
+import by.piskunou.solvdlaba.domain.exception.ResourseNotExistsException;
 import by.piskunou.solvdlaba.domain.exception.UserNotRegisteredException;
 import by.piskunou.solvdlaba.web.dto.MyErrorResponse;
 import org.springframework.http.HttpStatus;
@@ -24,10 +24,10 @@ public class AdviceController {
         return e.getMessage();
     }
 
-    @ExceptionHandler({ResourceNotUpdatedException.class, ResourceNotCreatedException.class,
+    @ExceptionHandler({ResourseNotExistsException.class, ResourseAlreadyExistsException.class,
                        UserNotRegisteredException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleResourceNotUpdatedException(ResourceNotUpdatedException e) {
+    public String handleResourceNotUpdatedException(ResourseNotExistsException e) {
         return e.getMessage();
     }
 

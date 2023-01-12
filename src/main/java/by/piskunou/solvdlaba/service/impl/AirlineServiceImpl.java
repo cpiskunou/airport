@@ -1,9 +1,9 @@
 package by.piskunou.solvdlaba.service.impl;
 
 import by.piskunou.solvdlaba.domain.Airline;
-import by.piskunou.solvdlaba.domain.exception.ResourceNotCreatedException;
+import by.piskunou.solvdlaba.domain.exception.ResourseAlreadyExistsException;
 import by.piskunou.solvdlaba.domain.exception.ResourceNotFoundException;
-import by.piskunou.solvdlaba.domain.exception.ResourceNotUpdatedException;
+import by.piskunou.solvdlaba.domain.exception.ResourseNotExistsException;
 import by.piskunou.solvdlaba.persistent.impl.AirlineRepositoryImpl;
 import by.piskunou.solvdlaba.service.AirlineService;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +35,7 @@ public class AirlineServiceImpl implements AirlineService {
     @Transactional
     public Airline create(Airline airline) {
         if(isExists(airline.getName())) {
-            throw new ResourceNotCreatedException("Airline with such name has already exists");
+            throw new ResourseAlreadyExistsException("Airline with such name has already exists");
         }
 
         airlineRepository.create(airline);
@@ -53,11 +53,11 @@ public class AirlineServiceImpl implements AirlineService {
     @Transactional
     public Airline updateNameById(long id, String name) {
         if(!isExists(id)) {
-            throw new ResourceNotCreatedException("Server error");
+            throw new ResourseAlreadyExistsException("Server error");
         }
 
         if(isExists(name)) {
-            throw new ResourceNotUpdatedException("Airline with such name has already exists");
+            throw new ResourseNotExistsException("Airline with such name has already exists");
         }
 
         return new Airline(id, name);

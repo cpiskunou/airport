@@ -1,9 +1,9 @@
 package by.piskunou.solvdlaba.service.impl;
 
 import by.piskunou.solvdlaba.domain.City;
-import by.piskunou.solvdlaba.domain.exception.ResourceNotCreatedException;
+import by.piskunou.solvdlaba.domain.exception.ResourseAlreadyExistsException;
 import by.piskunou.solvdlaba.domain.exception.ResourceNotFoundException;
-import by.piskunou.solvdlaba.domain.exception.ResourceNotUpdatedException;
+import by.piskunou.solvdlaba.domain.exception.ResourseNotExistsException;
 import by.piskunou.solvdlaba.persistent.impl.CityRepositoryImpl;
 import by.piskunou.solvdlaba.service.CityService;
 import by.piskunou.solvdlaba.service.CountryService;
@@ -35,7 +35,7 @@ public class CityServiceImpl implements CityService {
         }
 
         return cityRepository.findCityAirports(id)
-                             .orElseThrow(() -> new ResourceNotCreatedException("Server error"));
+                             .orElseThrow(() -> new ResourseAlreadyExistsException("Server error"));
     }
 
     @Override
@@ -70,7 +70,7 @@ public class CityServiceImpl implements CityService {
         }
 
         if(isExists(city.getName())) {
-            throw new ResourceNotCreatedException("City with such name has already exists");
+            throw new ResourseAlreadyExistsException("City with such name has already exists");
         }
 
         cityRepository.create(city, countryId);
@@ -93,7 +93,7 @@ public class CityServiceImpl implements CityService {
         }
 
         if(isExists(name)) {
-            throw new ResourceNotUpdatedException("City with such name has already exists");
+            throw new ResourseNotExistsException("City with such name has already exists");
         }
 
         return new City(id, name);

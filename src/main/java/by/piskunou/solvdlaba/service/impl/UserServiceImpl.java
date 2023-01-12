@@ -1,7 +1,7 @@
 package by.piskunou.solvdlaba.service.impl;
 
 import by.piskunou.solvdlaba.domain.exception.ResourceNotFoundException;
-import by.piskunou.solvdlaba.domain.exception.ResourceNotUpdatedException;
+import by.piskunou.solvdlaba.domain.exception.ResourseNotExistsException;
 import by.piskunou.solvdlaba.domain.exception.UserNotRegisteredException;
 import by.piskunou.solvdlaba.persistent.impl.UserRepositoryImpl;
 import by.piskunou.solvdlaba.domain.User;
@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService {
         }
 
         if(isExists(username)) {
-            throw new ResourceNotUpdatedException("Username is taken");
+            throw new ResourseNotExistsException("Username is taken");
         }
 
         return new User(id, username);

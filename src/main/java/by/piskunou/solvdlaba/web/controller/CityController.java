@@ -51,7 +51,7 @@ public class CityController {
         return cityMapper.toDTO(city);
     }
 
-    @PatchMapping("/{id}")
+    @PutMapping("/{id}")
     public CityDTO updateNameById(@PathVariable long id, @RequestParam String name) {
         City city = cityService.updateNameById(id, name);
 

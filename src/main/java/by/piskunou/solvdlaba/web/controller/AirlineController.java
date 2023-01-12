@@ -44,7 +44,7 @@ public class AirlineController {
         return airlineMapper.toDTO(airline);
     }
 
-    @PatchMapping("/{id}")
+    @PutMapping ("/{id}")
     public AirlineDTO updateNameById(@PathVariable long id, @RequestParam String name) {
         Airline airline = airlineService.updateNameById(id, name);
 

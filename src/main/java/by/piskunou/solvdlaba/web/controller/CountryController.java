@@ -55,7 +55,7 @@ public class CountryController {
         return mapper.toDTO(country);
     }
 
-    @PatchMapping("/{id}")
+    @PutMapping("/{id}")
     public CountryDTO updateNameById(@PathVariable long id, @RequestParam String name) {
         Country country = countryService.updateNameById(id, name);
 

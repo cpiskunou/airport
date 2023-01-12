@@ -52,7 +52,7 @@ public class UserController {
         return mapper.toDTO(user);
     }
 
-    @PatchMapping("{id}")
+    @PutMapping("{id}")
     public UserDTO updateUsernameById(@PathVariable long id, @RequestParam String username) {
         User user = userService.updateUsernameById(id, username);
 
