@@ -44,7 +44,7 @@ create table if not exists flight(
     departure_time timestamp not null,
     arrival_time timestamp not null,
     price decimal(8, 2) not null,
-    free_seats jsonb
+    free_seats jsonb not null
 );
 
 create table if not exists passenger(
@@ -54,12 +54,12 @@ create table if not exists passenger(
     surname varchar(50) not null,
     date_of_birth date not null,
     age varchar(10) not null,
-    sex varchar(6) not null
+    gender varchar(6) not null
 );
 
 create table if not exists passport(
     fk_passenger_id bigint primary key references passenger(id) on delete cascade on update no action,
-    number varchar(20) not null unique,
+    "number" varchar(20) not null unique,
     identification_no varchar(20) not null unique
 );
 
@@ -68,6 +68,5 @@ create table if not exists ticket(
     fk_owner_id bigint references user(id) on delete set null on update no action,
     fk_flight_id bigint not null references flight(id) on delete cascade on update no action,
     fk_passenger_id bigint not null references passenger(id) on delete cascade on update no action,
-    price decimal(8, 2) not null,
     seat_no varchar(5) not null
 );

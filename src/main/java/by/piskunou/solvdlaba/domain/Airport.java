@@ -17,4 +17,5 @@ public class Airport {
     public Airport(Long id) {
         this.id = id;
     }
+
 }

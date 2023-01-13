@@ -98,6 +98,17 @@ public class FlightServiceImpl implements FlightService {
         return flightRepository.freeSeats(id);
     }
 
+    @Override
+    public void bookSeat(String number) {
+        flightRepository.bookSeat(number);
+    }
+
+    @Override
+    public boolean isExists(long id) {
+        return flightRepository.findById(id)
+                               .isPresent();
+    }
+
     private List<FlightResponse> buildFlightResponse(List<Flight> toFlights, List<BigDecimal> toPrices,
                                                      List<Flight> backFlights, List<BigDecimal> backPrices) {
         List<FlightResponse> responses = new ArrayList<>();
@@ -148,4 +159,5 @@ public class FlightServiceImpl implements FlightService {
 
         return prices;
     }
+
 }

@@ -76,7 +76,7 @@ public class AirplaneRepositoryImpl implements AirplaneRepository {
 
             try(ResultSet resultSet = preparedStatement.executeQuery()) {
                 if(resultSet.next()) {
-                    Airplane airplane = mapper.mapRow(resultSet, 4);
+                    Airplane airplane = mapper.mapRow(resultSet);
 
                     return Optional.of(airplane);
                 }
@@ -95,7 +95,7 @@ public class AirplaneRepositoryImpl implements AirplaneRepository {
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if(resultSet.next()) {
-                    Airplane airplane = mapper.mapRow(resultSet, 4);
+                    Airplane airplane = mapper.mapRow(resultSet);
 
                     return Optional.of(airplane);
                 }
@@ -115,7 +115,7 @@ public class AirplaneRepositoryImpl implements AirplaneRepository {
             List<Airplane> airplanes = new LinkedList<>();
 
             while (resultSet.next()) {
-                Airplane airplane = mapper.mapRow(resultSet, 4);
+                Airplane airplane = mapper.mapRow(resultSet);
                 airplanes.add(airplane);
             }
 

@@ -50,7 +50,7 @@ public class AirlineRepositoryImpl implements AirlineRepository {
             List<Airline> airlines = new LinkedList<>();
 
             while (resultSet.next()) {
-                Airline airline = airlineMapper.mapRow(resultSet, 2);
+                Airline airline = airlineMapper.mapRow(resultSet);
                 airlines.add(airline);
             }
 
@@ -68,7 +68,7 @@ public class AirlineRepositoryImpl implements AirlineRepository {
 
             try(ResultSet resultSet = preparedStatement.executeQuery()) {
                 if(resultSet.next()) {
-                    Airline airline = airlineMapper.mapRow(resultSet, 2);
+                    Airline airline = airlineMapper.mapRow(resultSet);
 
                     return Optional.of(airline);
                 }
@@ -87,7 +87,7 @@ public class AirlineRepositoryImpl implements AirlineRepository {
 
             try(ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    Airline airline = airlineMapper.mapRow(resultSet, 2);
+                    Airline airline = airlineMapper.mapRow(resultSet);
 
                     return Optional.of(airline);
                 }

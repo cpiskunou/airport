@@ -30,4 +30,5 @@ public class AirplaneDTO {
 
     @NotNull(groups = {onUpdate.class, onCreate.class}, message = "Amount of rows should be not null")
     private Short rowNo;
+
 }

@@ -10,4 +10,5 @@ public interface AirportMapper {
     AirportDTO toDTO(Airport entity);
 
     Airport toEntity(AirportDTO dto);
+
 }

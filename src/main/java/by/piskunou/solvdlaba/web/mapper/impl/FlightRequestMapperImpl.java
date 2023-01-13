@@ -12,6 +12,7 @@ import java.util.List;
 
 @Component
 public class FlightRequestMapperImpl implements FlightRequestMapper {
+
     @Override
     public FlightRequest toEntity(FlightRequestDTO dto) {
         if(dto == null) {
@@ -56,4 +57,5 @@ public class FlightRequestMapperImpl implements FlightRequestMapper {
         }
         return passengers;
     }
+
 }

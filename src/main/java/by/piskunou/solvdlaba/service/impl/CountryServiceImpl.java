@@ -3,6 +3,7 @@ package by.piskunou.solvdlaba.service.impl;
 import by.piskunou.solvdlaba.domain.Country;
 import by.piskunou.solvdlaba.domain.exception.ResourceAlreadyExistsException;
 import by.piskunou.solvdlaba.domain.exception.ResourceNotExistsException;
+import by.piskunou.solvdlaba.persistent.CountryRepository;
 import by.piskunou.solvdlaba.persistent.impl.CountryRepositoryImpl;
 import by.piskunou.solvdlaba.service.CountryService;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CountryServiceImpl implements CountryService {
 
-    private final CountryRepositoryImpl countryRepository;
+    private final CountryRepository countryRepository;
 
     @Override
     @Transactional(readOnly = true)

@@ -35,7 +35,7 @@ public class CountryRepositoryImpl implements CountryRepository {
                country.name as country_name,
                city.id as city_id,
                city.name as city_name
-        from country join city on country.id = city.fk_country_id 
+        from country inner join city on country.id = city.fk_country_id 
         where country.id = ?""";
 
     private static final String FIND_AIRPORTS_BY_ID = """
@@ -45,8 +45,8 @@ public class CountryRepositoryImpl implements CountryRepository {
                city.name as city_name,
                airport.id as airport_id,
                airport.name as airport_name
-        from country join city on country.id = city.fk_country_id
-                     join airport on city.id = airport.fk_city_id
+        from country inner join city on country.id = city.fk_country_id
+                     inner join airport on city.id = airport.fk_city_id
         where country.id = ?""";
 
     private static final String FIND_ALL = """
@@ -69,7 +69,7 @@ public class CountryRepositoryImpl implements CountryRepository {
             List<Country> countries = new LinkedList<>();
 
             while (resultSet.next()) {
-                Country country = countryMapper.mapRow(resultSet, 1);
+                Country country = countryMapper.mapRow(resultSet);
                 countries.add(country);
             }
 
@@ -87,7 +87,7 @@ public class CountryRepositoryImpl implements CountryRepository {
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    Country country = countryMapper.mapRow(resultSet, 1);
+                    Country country = countryMapper.mapRow(resultSet);
 
                     return Optional.of(country);
                 }
@@ -106,7 +106,7 @@ public class CountryRepositoryImpl implements CountryRepository {
 
             try(ResultSet resultSet = preparedStatement.executeQuery()) {
                 if(resultSet.next()) {
-                    Country country = countryMapper.mapRow(resultSet, 2);
+                    Country country = countryMapper.mapRow(resultSet);
 
                     return Optional.of(country);
                 }

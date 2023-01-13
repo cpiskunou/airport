@@ -14,4 +14,5 @@ public interface AirlineMapper {
     Airline toEntity(AirlineDTO dto);
 
     List<AirlineDTO> toDTO(List<Airline> entities);
+
 }

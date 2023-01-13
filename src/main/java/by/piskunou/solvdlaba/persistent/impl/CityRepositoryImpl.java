@@ -35,7 +35,7 @@ public class CityRepositoryImpl implements CityRepository {
                    city.name as city_name,
                    airport.id as airport_id,
                    airport.name as airport_name
-            from city join airport on city.id = airport.fk_city_id 
+            from city inner join airport on city.id = airport.fk_city_id 
             where city.id = ?""";
 
     private static final String FIND_ALL = """
@@ -58,7 +58,7 @@ public class CityRepositoryImpl implements CityRepository {
             List<City> cities = new LinkedList<>();
 
             while (resultSet.next()) {
-                City city = cityMapper.mapRow(resultSet, 2);
+                City city = cityMapper.mapRow(resultSet);
                 cities.add(city);
             }
             return cities;
@@ -75,7 +75,7 @@ public class CityRepositoryImpl implements CityRepository {
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    City city = cityMapper.mapRow(resultSet, 2);
+                    City city = cityMapper.mapRow(resultSet);
 
                     return Optional.of(city);
                 }
@@ -116,7 +116,7 @@ public class CityRepositoryImpl implements CityRepository {
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if(resultSet.next()) {
-                    City city = cityMapper.mapRow(resultSet, 2);
+                    City city = cityMapper.mapRow(resultSet);
 
                     return Optional.of(city);
                 }

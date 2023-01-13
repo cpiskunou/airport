@@ -18,4 +18,6 @@ public interface FlightRepository {
 
     List<Seat> freeSeats(long id);
 
+    void bookSeat(String number);
+
 }

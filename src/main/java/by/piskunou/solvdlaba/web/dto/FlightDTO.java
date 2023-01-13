@@ -28,15 +28,18 @@ public class FlightDTO {
     private AirportDTO from;
 
     @NotNull(groups = onCreate.class, message = "Airport to should be not null")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private AirportDTO to;
 
     @NotNull(groups = onCreate.class, message = "Airplane should be not null")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private AirplaneDTO airplane;
 
     @NotNull(groups = onCreate.class, message = "Airline should be not null")
     private AirlineDTO airline;
 
     @NotNull(groups = onCreate.class, message = "Price should be not null")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private BigDecimal price;
 
     @NotNull(groups = onCreate.class, message = "Departure time should be not null")

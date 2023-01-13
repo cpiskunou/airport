@@ -12,7 +12,7 @@ import lombok.Setter;
 public class Seat {
 
     private String number;
-    private Boolean free = Boolean.FALSE;
+    private Boolean free = Boolean.TRUE;
 
     public Seat(String number) {
         this.number = number;

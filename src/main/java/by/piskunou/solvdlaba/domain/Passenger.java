@@ -31,4 +31,9 @@ public class Passenger {
         this.age = age;
     }
 
+    public Passenger(Long id, String firstname, String surname) {
+        this.id = id;
+        this.firstname = firstname;
+        this.surname = surname;
+    }
 }

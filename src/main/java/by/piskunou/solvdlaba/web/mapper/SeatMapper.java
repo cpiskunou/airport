@@ -14,4 +14,5 @@ public interface SeatMapper {
     Seat toEntity(SeatDTO dto);
 
     List<SeatDTO> toDTO(List<Seat> entities);
+
 }

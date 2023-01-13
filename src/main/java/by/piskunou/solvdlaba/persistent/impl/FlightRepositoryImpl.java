@@ -85,6 +85,8 @@ public class FlightRepositoryImpl implements FlightRepository {
                   flight.departure_time between ? and ?;              
             """;
 
+    private static final String BOOK_SEAT = "";
+
     private static final String FREE_SEATS = """
             select jsonb_path_query_array(flight.free_seats, '$[*] ? (@.free == false)') as free_seats
             from flight where flight.id = ?;
@@ -190,4 +192,17 @@ public class FlightRepositoryImpl implements FlightRepository {
             }
         }
     }
+
+    @Override
+    @SneakyThrows
+    public void bookSeat(String number) {
+        Connection conn = config.getConnection();
+
+        try(PreparedStatement preparedStatement = conn.prepareStatement(BOOK_SEAT)) {
+            preparedStatement.setString(1, number);
+
+            preparedStatement.executeUpdate();
+        }
+    }
+
 }

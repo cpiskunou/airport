@@ -1,24 +1,41 @@
 package by.piskunou.solvdlaba.persistent.impl.mapper;
 
+import by.piskunou.solvdlaba.domain.Ticket;
 import by.piskunou.solvdlaba.domain.User;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
+import java.util.LinkedList;
+import java.util.List;
 
 @Component
-public class UserMapper implements RowMapper<User> {
+@RequiredArgsConstructor
+public class UserMapper {
 
-    @Override
+    private final TicketMapper ticketMapper;
+
     @SneakyThrows
-    public User mapRow(ResultSet rs, int rowNum) {
+    public User mapRow(ResultSet rs) {
         return new User(rs.getLong("user_id"),
                         rs.getString("user_name"));
     }
 
-    //TODO: write ticketMapRow
+    @SneakyThrows
     public User ticketsMapRow(ResultSet rs) {
-        return null;
+        User user = mapRow(rs);
+        List<Ticket> tickets = new LinkedList<>();
+
+        rs.previous();
+        while(rs.next()) {
+            Ticket ticket = ticketMapper.mapRow(rs);
+            tickets.add(ticket);
+        }
+
+        user.setTickets(tickets);
+
+        return user;
     }
+
 }

@@ -32,4 +32,9 @@ public class Flight {
         this.arrivalTime = arrivalTime;
     }
 
+    public Flight(Long id, LocalDateTime departureTime) {
+        this.id = id;
+        this.departureTime = departureTime;
+    }
+
 }

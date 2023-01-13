@@ -3,6 +3,7 @@ package by.piskunou.solvdlaba.service.impl;
 import by.piskunou.solvdlaba.domain.Airplane;
 import by.piskunou.solvdlaba.domain.exception.ResourceAlreadyExistsException;
 import by.piskunou.solvdlaba.domain.exception.ResourceNotExistsException;
+import by.piskunou.solvdlaba.persistent.AirplaneRepository;
 import by.piskunou.solvdlaba.persistent.impl.AirplaneRepositoryImpl;
 import by.piskunou.solvdlaba.service.AirplaneService;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AirplaneServiceImpl implements AirplaneService {
 
-    private final AirplaneRepositoryImpl airplaneRepository;
+    private final AirplaneRepository airplaneRepository;
 
     @Override
     @Transactional

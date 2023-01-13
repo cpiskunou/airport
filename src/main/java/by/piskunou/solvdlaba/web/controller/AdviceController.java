@@ -24,7 +24,7 @@ public class AdviceController {
 
     @ExceptionHandler(ResourceAlreadyExistsException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponseDTO handleResourceNotUpdatedException(ResourceNotExistsException e) {
+    public ErrorResponseDTO handleResourceAlreadyExistsException(ResourceAlreadyExistsException e) {
         return new ErrorResponseDTO(e.getMessage());
     }
 
@@ -37,6 +37,12 @@ public class AdviceController {
                     + fieldError.getField(), fieldError.getDefaultMessage()));
         }
         return errorResponseDTOS;
+    }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
+    public ErrorResponseDTO handleException(Exception e) {
+        return new ErrorResponseDTO("Server unavailable. Please try later");
     }
 
 }

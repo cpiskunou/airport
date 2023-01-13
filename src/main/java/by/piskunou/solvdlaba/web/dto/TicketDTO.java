@@ -19,10 +19,16 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class TicketDTO {
 
+    @NotNull(groups = onUpdate.class, message = "Id should be not null")
     private Long id;
+
+    @NotNull(groups = onUpdate.class, message = "Passenger should be not null")
     private Passenger passenger;
+
+    @NotNull(groups = onUpdate.class, message = "Flight should be not null")
     private Flight flight;
-    private BigDecimal price;
+
+    @NotNull(groups = onUpdate.class, message = "Seat should be not null")
     private SeatDTO seat;
 
 }

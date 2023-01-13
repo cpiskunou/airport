@@ -3,6 +3,7 @@ package by.piskunou.solvdlaba.service.impl;
 import by.piskunou.solvdlaba.domain.City;
 import by.piskunou.solvdlaba.domain.exception.ResourceAlreadyExistsException;
 import by.piskunou.solvdlaba.domain.exception.ResourceNotExistsException;
+import by.piskunou.solvdlaba.persistent.CityRepository;
 import by.piskunou.solvdlaba.persistent.impl.CityRepositoryImpl;
 import by.piskunou.solvdlaba.service.CityService;
 import by.piskunou.solvdlaba.service.CountryService;
@@ -16,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CityServiceImpl implements CityService {
 
-    private final CityRepositoryImpl cityRepository;
+    private final CityRepository cityRepository;
     private final CountryService countryService;
 
     @Override

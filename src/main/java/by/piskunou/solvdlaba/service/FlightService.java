@@ -17,4 +17,8 @@ public interface FlightService {
 
     List<Seat> freeSeats(long id);
 
+    void bookSeat(String number);
+
+    boolean isExists(long id);
+
 }

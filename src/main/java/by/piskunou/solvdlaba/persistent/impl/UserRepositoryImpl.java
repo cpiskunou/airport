@@ -31,8 +31,36 @@ public class UserRepositoryImpl implements UserRepository {
                    username as user_name
             from \"user\" where username = ?""";
 
-    //TODO: write whole join
-    private static final String FIND_TICKETS_BY_ID = "";
+    private static final String FIND_TICKETS_BY_ID = """
+        select user.id as user_id,
+               user.username as user_name,
+        
+               ticket.id as ticket_id,
+               ticket.seat_no as ticket_seat_no,
+        
+               passenger.id as passenger_id,
+               passenger.firstname as passenger_firstname,
+               passenger.surname as passenger_surname,
+        
+               flight.id as flight_id,
+               flight.departure_time as flight_departure_time,
+        
+               airport_from.id as airport_from_id,
+               airport_from.name as airport_from_id,
+        
+               airport_to.id as airport_to_id,
+               airport_to.name as airport_to_id,
+        
+               airline.id as airline_id,
+               airline.name airline_name
+        
+        from user inner join ticket on user.id = ticket.fk_owner_id
+                  inner join passenger on ticket.fk_passenger_id = passenger.id
+                  inner join flight on ticket.fk_flight_id = flight.id
+                  inner join airport airport_from on flight.fk_airport_from_id = airport_from.id
+                  inner join airport airport_to on flight.fk_airport_to_id = airport_to.id
+                  inner join airline on flight.fk_airline_id = airline.id
+        where user.id = ?""";
 
     private static final String FIND_ALL = """
             "select id as user_id,
@@ -74,7 +102,7 @@ public class UserRepositoryImpl implements UserRepository {
 
             try(ResultSet resultSet = preparedStatement.executeQuery()) {
                 if(resultSet.next()) {
-                    User user = userMapper.mapRow(resultSet, 2);
+                    User user = userMapper.mapRow(resultSet);
 
                     return Optional.of(user);
                 }
@@ -93,7 +121,7 @@ public class UserRepositoryImpl implements UserRepository {
 
             try(ResultSet resultSet = preparedStatement.executeQuery()) {
                 if(resultSet.next()) {
-                    User user = userMapper.mapRow(resultSet, 2);
+                    User user = userMapper.mapRow(resultSet);
 
                     return Optional.of(user);
                 }
@@ -113,7 +141,7 @@ public class UserRepositoryImpl implements UserRepository {
             List<User> users = new LinkedList<>();
 
             while (resultSet.next()) {
-                User user = userMapper.mapRow(resultSet, 2);
+                User user = userMapper.mapRow(resultSet);
                 users.add(user);
             }
             return users;

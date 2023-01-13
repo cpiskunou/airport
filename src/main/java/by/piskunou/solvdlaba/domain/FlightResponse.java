@@ -16,4 +16,5 @@ public class FlightResponse {
     public Flight toFlight;
     public Flight backFlight;
     public BigDecimal price;
+
 }
