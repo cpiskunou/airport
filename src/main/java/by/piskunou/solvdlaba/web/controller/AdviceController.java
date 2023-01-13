@@ -31,12 +31,11 @@ public class AdviceController {
     @ExceptionHandler(BindException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public List<ErrorResponseDTO> handleBindException(BindException e) {
-        List<ErrorResponseDTO> errorResponseDTOS = new ArrayList<>();
-        for(FieldError fieldError: e.getFieldErrors()) {
-            errorResponseDTOS.add( new ErrorResponseDTO(fieldError.getObjectName() + "."
-                    + fieldError.getField(), fieldError.getDefaultMessage()));
-        }
-        return errorResponseDTOS;
+        return e.getFieldErrors()
+                .stream()
+                .map(fieldError -> new ErrorResponseDTO(fieldError.getObjectName() + "."
+                                 + fieldError.getField(), fieldError.getDefaultMessage()))
+                .toList();
     }
 
     @ExceptionHandler(Exception.class)
