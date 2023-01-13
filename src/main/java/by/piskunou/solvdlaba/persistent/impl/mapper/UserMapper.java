@@ -13,8 +13,8 @@ public class UserMapper implements RowMapper<User> {
     @Override
     @SneakyThrows
     public User mapRow(ResultSet rs, int rowNum) {
-        return new User(rs.getLong("id"),
-                        rs.getString("username"));
+        return new User(rs.getLong("user_id"),
+                        rs.getString("user_name"));
     }
 
     //TODO: write ticketMapRow

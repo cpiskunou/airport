@@ -21,10 +21,7 @@ public class CityController {
 
     @GetMapping
     public List<CityDTO> findAll() {
-        return cityService.findAll()
-                          .stream()
-                          .map(cityMapper::toDTO)
-                          .toList();
+        return cityMapper.toDTO(cityService.findAll());
     }
 
     @GetMapping ("/{id}/airports")

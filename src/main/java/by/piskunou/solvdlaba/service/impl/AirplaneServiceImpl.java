@@ -2,7 +2,7 @@ package by.piskunou.solvdlaba.service.impl;
 
 import by.piskunou.solvdlaba.domain.Airplane;
 import by.piskunou.solvdlaba.domain.exception.ResourseAlreadyExistsException;
-import by.piskunou.solvdlaba.domain.exception.ResourceNotFoundException;
+import by.piskunou.solvdlaba.domain.exception.ResourseNotExistsException;
 import by.piskunou.solvdlaba.persistent.impl.AirplaneRepositoryImpl;
 import by.piskunou.solvdlaba.service.AirplaneService;
 import lombok.RequiredArgsConstructor;
@@ -31,20 +31,10 @@ public class AirplaneServiceImpl implements AirplaneService {
     }
 
     @Override
-    public boolean isExists(String model) {
-        return airplaneRepository.findByModel(model)
-                                 .isPresent();
-    }
-
-    @Override
     @Transactional(readOnly = true)
     public Airplane findById(long id) {
-        Optional<Airplane> airplane = airplaneRepository.findById(id);
-        if(airplane.isEmpty()) {
-            throw new ResourceNotFoundException("There's no airplane with such id");
-        }
-
-        return airplane.get();
+        return airplaneRepository.findById(id)
+                                 .orElseThrow(() -> new ResourseNotExistsException("There's no airplane with such id"));
     }
 
     @Override
@@ -57,6 +47,12 @@ public class AirplaneServiceImpl implements AirplaneService {
     @Transactional
     public void removeById(long id) {
         airplaneRepository.removeById(id);
+    }
+
+    @Override
+    public boolean isExists(String model) {
+        return airplaneRepository.findByModel(model)
+                .isPresent();
     }
 
 }

@@ -1,8 +1,7 @@
 package by.piskunou.solvdlaba.service.impl;
 
-import by.piskunou.solvdlaba.domain.exception.ResourceNotFoundException;
+import by.piskunou.solvdlaba.domain.exception.ResourseAlreadyExistsException;
 import by.piskunou.solvdlaba.domain.exception.ResourseNotExistsException;
-import by.piskunou.solvdlaba.domain.exception.UserNotRegisteredException;
 import by.piskunou.solvdlaba.persistent.impl.UserRepositoryImpl;
 import by.piskunou.solvdlaba.domain.User;
 import by.piskunou.solvdlaba.service.UserService;
@@ -22,7 +21,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public User register(User user) {
         if (isExists(user.getUsername())) {
-            throw new UserNotRegisteredException("Username is taken");
+            throw new ResourseAlreadyExistsException( "Username is taken");
         }
 
         userRepository.register(user);
@@ -31,32 +30,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean isExists(String username) {
-        return userRepository.findByUsername(username)
-                             .isPresent();
-    }
-
-    @Override
     @Transactional(readOnly = true)
     public User findById(long id) {
             return userRepository.findById(id)
-                                 .orElseThrow(() -> new ResourceNotFoundException("There's no user with such id"));
+                                 .orElseThrow(() -> new ResourseNotExistsException("There's no user with such id"));
     }
 
     @Override
     public User findUserTickets(long id) {
-        if(!isExists(id)) {
-            throw new ResourceNotFoundException("There's no user with such id");
-        }
-
         return userRepository.findUserTickets(id)
-                             .orElseThrow(() -> new ResourceNotFoundException("Server error"));
-    }
-
-    @Override
-    public boolean isExists(long id) {
-        return userRepository.findById(id)
-                             .isPresent();
+                             .orElseThrow(() -> new ResourseNotExistsException("There's no user with such id"));
     }
 
     @Override
@@ -69,7 +52,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public User updateUsernameById(long id, String username) {
         if(!isExists(id)) {
-            throw new ResourceNotFoundException("There's no user with such id");
+            throw new ResourseAlreadyExistsException("There's no user with such id");
         }
 
         if(isExists(username)) {
@@ -83,6 +66,18 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void removeById(int id) {
         userRepository.removeById(id);
+    }
+
+    @Override
+    public boolean isExists(String username) {
+        return userRepository.findByUsername(username)
+                             .isPresent();
+    }
+
+    @Override
+    public boolean isExists(long id) {
+        return userRepository.findById(id)
+                             .isPresent();
     }
 
 }

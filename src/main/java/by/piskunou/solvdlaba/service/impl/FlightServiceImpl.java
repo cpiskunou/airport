@@ -1,7 +1,7 @@
 package by.piskunou.solvdlaba.service.impl;
 
 import by.piskunou.solvdlaba.domain.*;
-import by.piskunou.solvdlaba.domain.exception.ResourceNotFoundException;
+import by.piskunou.solvdlaba.domain.exception.ResourseNotExistsException;
 import by.piskunou.solvdlaba.persistent.FlightRepository;
 import by.piskunou.solvdlaba.service.AirplaneService;
 import by.piskunou.solvdlaba.service.FlightService;
@@ -26,8 +26,7 @@ public class FlightServiceImpl implements FlightService {
     public Flight findById(long id) {
 
        return flightRepository.findById(id)
-                              .orElseThrow(() -> new ResourceNotFoundException("There's no flight with such id"));
-
+                              .orElseThrow(() -> new ResourseNotExistsException("There's no flight with such id"));
     }
 
     @Override

@@ -2,7 +2,6 @@ package by.piskunou.solvdlaba.service.impl;
 
 import by.piskunou.solvdlaba.domain.City;
 import by.piskunou.solvdlaba.domain.exception.ResourseAlreadyExistsException;
-import by.piskunou.solvdlaba.domain.exception.ResourceNotFoundException;
 import by.piskunou.solvdlaba.domain.exception.ResourseNotExistsException;
 import by.piskunou.solvdlaba.persistent.impl.CityRepositoryImpl;
 import by.piskunou.solvdlaba.service.CityService;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -30,43 +28,29 @@ public class CityServiceImpl implements CityService {
     @Override
     @Transactional(readOnly = true)
     public City findCityAirports(long id) {
-        if(!isExists(id)) {
-            throw new ResourceNotFoundException("There's no city with such id");
-        }
-
         return cityRepository.findCityAirports(id)
-                             .orElseThrow(() -> new ResourseAlreadyExistsException("Server error"));
-    }
-
-    @Override
-    public boolean isExists(long id) {
-        return cityRepository.findById(id)
-                             .isPresent();
+                             .orElseThrow(() -> new ResourseNotExistsException("There's no city with such id"));
     }
 
     @Override
     @Transactional(readOnly = true)
     public City findById(long id) {
         return cityRepository.findById(id)
-                             .orElseThrow(() -> new ResourceNotFoundException("There's no city with such id"));
+                             .orElseThrow(() -> new ResourseNotExistsException("There's no city with such id"));
     }
 
     @Override
     @Transactional(readOnly = true)
     public City findByName(String name) {
-        Optional<City> city = cityRepository.findByName(name);
-        if(city.isEmpty()) {
-            throw new ResourceNotFoundException("There's no city with such name");
-        }
-
-        return city.get();
+        return cityRepository.findByName(name)
+                             .orElseThrow(() -> new ResourseNotExistsException("There's no city with such name"));
     }
 
     @Override
     @Transactional
     public City create(City city, long countryId) {
         if(countryService.isExists(countryId)) {
-            throw new ResourceNotFoundException("There's no country with such id");
+            throw new ResourseNotExistsException("There's no country with such id");
         }
 
         if(isExists(city.getName())) {
@@ -79,17 +63,10 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public boolean isExists(String name) {
-        return cityRepository.findByName(name)
-                             .isPresent();
-    }
-
-
-    @Override
     @Transactional
     public City updateNameById(long id, String name) {
         if(!isExists(id)) {
-            throw new ResourceNotFoundException("There's no city with such id");
+            throw new ResourseNotExistsException("There's no city with such id");
         }
 
         if(isExists(name)) {
@@ -103,6 +80,18 @@ public class CityServiceImpl implements CityService {
     @Transactional
     public void removeById(long id) {
         cityRepository.removeById(id);
+    }
+
+    @Override
+    public boolean isExists(long id) {
+        return cityRepository.findById(id)
+                             .isPresent();
+    }
+
+    @Override
+    public boolean isExists(String name) {
+        return cityRepository.findByName(name)
+                             .isPresent();
     }
 
 }

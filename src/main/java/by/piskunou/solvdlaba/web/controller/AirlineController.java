@@ -21,10 +21,7 @@ public class AirlineController {
 
     @GetMapping
     public List<AirlineDTO> findAll() {
-        return airlineService.findAll()
-                             .stream()
-                             .map(airlineMapper::toDTO)
-                             .toList();
+        return airlineMapper.toDTO(airlineService.findAll());
     }
 
     @GetMapping("/{id}")

@@ -7,6 +7,25 @@ import java.util.Optional;
 
 public interface AirlineRepository {
 
+    String FIND_BY_ID = """
+            select id as airline_id,
+                   name as airline_name
+            from airline where id = ?""";
+
+    String FIND_BY_NAME = """
+            select id as airline_id,
+                   name as airline_name
+            from airline where name = ?""";
+
+    String FIND_ALL = """
+            select id as airline_id,
+                   name as airline_name
+            from airline""";
+
+    String CREATE = "insert into airline(name) values(?)";
+    String UPDATE = "update airline set name = ? where id = ?";
+    String DELETE = "delete from airline where id = ?";
+
     List<Airline> findAll();
 
     Optional<Airline> findById(long id);

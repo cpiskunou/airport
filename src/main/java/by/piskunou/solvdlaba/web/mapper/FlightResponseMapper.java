@@ -4,11 +4,13 @@ import by.piskunou.solvdlaba.domain.FlightResponse;
 import by.piskunou.solvdlaba.web.dto.FlightResponseDTO;
 import org.mapstruct.Mapper;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface FlightResponseMapper {
 
     FlightResponseDTO toDTO(FlightResponse entity);
 
-    FlightResponse toEntity(FlightResponseDTO dto);
+    List<FlightResponseDTO> toDTO(List<FlightResponse> entities);
 
 }

@@ -5,163 +5,123 @@ import by.piskunou.solvdlaba.persistent.AirlineRepository;
 import by.piskunou.solvdlaba.persistent.config.DataSourceConfig;
 import by.piskunou.solvdlaba.persistent.impl.mapper.AirlineMapper;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-@Slf4j
 public class AirlineRepositoryImpl implements AirlineRepository {
 
     private final DataSourceConfig config;
     private final AirlineMapper airlineMapper;
 
     @Override
+    @SneakyThrows
     public List<Airline> findAll() {
-        try {
-            Connection conn = config.getConnection();
+        Connection conn = config.getConnection();
 
-            try (PreparedStatement preparedStatement =
-                    conn.prepareStatement("""
-                            select id as airline_id,
-                            name as airline_name
-                            from airline""")) {
+        try (PreparedStatement preparedStatement = conn.prepareStatement(FIND_ALL);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
 
-                try(ResultSet resultSet = preparedStatement.executeQuery()) {
+            List<Airline> airlines = new LinkedList<>();
 
-                    List<Airline> airlines = new LinkedList<>();
-
-                    while (resultSet.next()) {
-                        Airline airline = airlineMapper.mapRow(resultSet, 2);
-                        airlines.add(airline);
-                    }
-
-                    return airlines;
-                }
+            while (resultSet.next()) {
+                Airline airline = airlineMapper.mapRow(resultSet, 2);
+                airlines.add(airline);
             }
-        } catch (SQLException e) {
-            log.warn("SQLException: Didn't find all airlines");
+
+            return airlines;
         }
-        return Collections.emptyList();
     }
 
     @Override
+    @SneakyThrows
     public Optional<Airline> findById(long id) {
-        try {
-            Connection conn = config.getConnection();
+        Connection conn = config.getConnection();
 
-            try(PreparedStatement preparedStatement =
-                    conn.prepareStatement("""
-                            select id as airline_id,
-                            name as airline_name
-                            from airline where id = ?""")) {
+        try(PreparedStatement preparedStatement = conn.prepareStatement(FIND_BY_ID)) {
+            preparedStatement.setLong(1, id);
 
-                preparedStatement.setLong(1, id);
-
-                try(ResultSet resultSet = preparedStatement.executeQuery()) {
-                    resultSet.next();
-
+            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                if(resultSet.next()) {
                     Airline airline = airlineMapper.mapRow(resultSet, 2);
 
                     return Optional.of(airline);
                 }
+                return Optional.empty();
             }
-        } catch (SQLException e) {
-            log.warn("SQLException: Didn't find a airline by id");
         }
-        return Optional.empty();
     }
 
     @Override
+    @SneakyThrows
     public Optional<Airline> findByName(String name) {
-        try {
-            Connection conn = config.getConnection();
+        Connection conn = config.getConnection();
 
-            try(PreparedStatement preparedStatement =
-                    conn.prepareStatement("""
-                            select id as airline_id,
-                            name as airline_name
-                            from airline where name = ?""")) {
+        try(PreparedStatement preparedStatement = conn.prepareStatement(FIND_BY_NAME)) {
+            preparedStatement.setString(1, name);
 
-                preparedStatement.setString(1, name);
-
-                try(ResultSet resultSet = preparedStatement.executeQuery()) {
-                    resultSet.next();
-
+            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
                     Airline airline = airlineMapper.mapRow(resultSet, 2);
 
                     return Optional.of(airline);
                 }
+                return Optional.empty();
             }
-        } catch (SQLException e) {
-            log.warn("SQLException: Didn't find a airline by name");
         }
-        return Optional.empty();
     }
 
     @Override
+    @SneakyThrows
     public void create(Airline airline) {
-        try {
-            Connection conn = config.getConnection();
+        Connection conn = config.getConnection();
 
-            try(PreparedStatement preparedStatement =
-                    conn.prepareStatement("insert into airline(name) values(?)",
-                            Statement.RETURN_GENERATED_KEYS)) {
+        try(PreparedStatement preparedStatement =
+                    conn.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS)) {
 
-                preparedStatement.setString(1, airline.getName());
-                preparedStatement.executeUpdate();
+            preparedStatement.setString(1, airline.getName());
+            preparedStatement.executeUpdate();
 
-                try(ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
-                    resultSet.next();
+            try (ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
+                if(resultSet.next()) {
 
                     Long id = resultSet.getLong("id");
 
                     airline.setId(id);
                 }
             }
-        } catch (SQLException e) {
-            log.warn("SQLException: An airline wasn't created");
         }
     }
 
     @Override
+    @SneakyThrows
     public void updateNameById(long id, String name) {
-        try {
-            Connection conn = config.getConnection();
+        Connection conn = config.getConnection();
 
-            try(PreparedStatement preparedStatement =
-                    conn.prepareStatement("update airline set name = ? where id = ?")) {
+        try(PreparedStatement preparedStatement = conn.prepareStatement(UPDATE)) {
+            preparedStatement.setString(1, name);
+            preparedStatement.setLong(2, id);
 
-                preparedStatement.setString(1, name);
-                preparedStatement.setLong(2, id);
-
-                preparedStatement.executeUpdate();
-            }
-        } catch (SQLException e) {
-            log.warn("SQLException: An airline wasn't updated");
+            preparedStatement.executeUpdate();
         }
     }
 
     @Override
+    @SneakyThrows
     public void removeById(long id) {
-        try {
-            Connection conn = config.getConnection();
+        Connection conn = config.getConnection();
 
-            try(PreparedStatement preparedStatement =
-                    conn.prepareStatement("delete from airline where id = ?")) {
+        try(PreparedStatement preparedStatement = conn.prepareStatement(DELETE)) {
+            preparedStatement.setLong(1, id);
 
-                preparedStatement.setLong(1, id);
-
-                preparedStatement.executeUpdate();
-            }
-        } catch (SQLException e) {
-            log.warn("SQLException: An airline wasn't removed");
+            preparedStatement.executeUpdate();
         }
     }
+
 }

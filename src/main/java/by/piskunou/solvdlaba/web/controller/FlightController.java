@@ -42,19 +42,13 @@ public class FlightController {
 
         FlightRequest flightRequest = flightRequestMapper.toEntity(flightRequestDTO);
 
-        return flightService.search(flightRequest)
-                            .stream()
-                            .map(flightResponseMapper::toDTO)
-                            .toList();
+        return flightResponseMapper.toDTO(flightService.search(flightRequest));
     }
 
     @GetMapping("/{id}/free_seats")
     public List<SeatDTO> findFreeSeats(@PathVariable long id) {
 
-        return flightService.freeSeats(id)
-                            .stream()
-                            .map(seatMapper::toDTO)
-                            .toList();
+        return seatMapper.toDTO(flightService.freeSeats(id));
     }
 
     @PostMapping("/create")
