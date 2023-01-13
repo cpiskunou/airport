@@ -21,4 +21,8 @@ public interface UserRepository {
 
     void updateUsernameById(long id, String username);
 
+    boolean isExists(String username);
+
+    boolean isExists(long id);
+
 }

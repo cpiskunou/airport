@@ -23,4 +23,9 @@ public interface CountryRepository {
 
     void removeById(long id);
 
+    boolean isExists(long id);
+
+    boolean isExists(String name);
+
+
 }

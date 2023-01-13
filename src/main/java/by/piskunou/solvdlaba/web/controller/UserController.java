@@ -20,7 +20,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
-@Validated
 public class UserController {
 
     private final UserService userService;
@@ -35,43 +34,35 @@ public class UserController {
     @GetMapping("/{id}")
     public UserDTO findById(@PathVariable long id) {
         User user = userService.findById(id);
-
         return userMapper.toDTO(user);
     }
 
     @GetMapping("/{id}/tickets")
     public UserDTO findUserTickets(@PathVariable long id) {
         User user = userService.findUserTickets(id);
-
         return userMapper.toDTO(user);
     }
 
-
     @PostMapping("/registration")
     @ResponseStatus(HttpStatus.CREATED)
-    @Validated(onCreate.class)
-    public UserDTO register(@RequestBody @Valid UserDTO userDTO) {
+    public UserDTO register(@RequestBody @Validated(onCreate.class) UserDTO userDTO) {
         User user = userMapper.toEntity(userDTO);
 
         user = userService.register(user);
-
         return userMapper.toDTO(user);
     }
 
     @PutMapping("{id}")
     public UserDTO updateUsernameById(@PathVariable long id, @RequestParam String username) {
         User user = userService.updateUsernameById(id, username);
-
         return userMapper.toDTO(user);
     }
 
     @PutMapping("{id}/buy_ticket")
-    @Validated(onUpdate.class)
-    public UserDTO buyTicket(@PathVariable long id, @RequestBody @Valid TicketDTO ticketDTO) {
+    public UserDTO buyTicket(@PathVariable long id, @RequestBody @Validated(onUpdate.class) TicketDTO ticketDTO) {
         Ticket ticket = ticketMapper.toEntity(ticketDTO);
 
         User user = userService.buyTicket(id, ticket);
-
         return userMapper.toDTO(user);
     }
 

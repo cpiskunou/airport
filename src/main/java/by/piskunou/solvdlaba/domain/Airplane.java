@@ -13,7 +13,7 @@ public class Airplane {
 
     private Long id;
     private String model;
-    private byte seatsInRow;
-    private short rowNo;
+    private Byte seatsInRow;
+    private Short rowNo;
 
 }

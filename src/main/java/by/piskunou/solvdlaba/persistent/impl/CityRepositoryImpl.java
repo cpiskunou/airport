@@ -2,7 +2,7 @@ package by.piskunou.solvdlaba.persistent.impl;
 
 import by.piskunou.solvdlaba.domain.City;
 import by.piskunou.solvdlaba.persistent.CityRepository;
-import by.piskunou.solvdlaba.persistent.config.DataSourceConfig;
+import by.piskunou.solvdlaba.DataSourceConfig;
 import by.piskunou.solvdlaba.persistent.impl.mapper.CityMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -46,7 +46,8 @@ public class CityRepositoryImpl implements CityRepository {
     private static final String CREATE = "insert into city(fk_country_id, name) values(?, ?)";
     private static final String UPDATE = "update city set name = ? where id = ?";
     private static final String DELETE = "delete from city where id = ?";
-
+    private static final String EXISTS_BY_ID = "select exists (select from city where id= ?)";
+    private static final String EXISTS_BY_NAME = "select exists (select from city where name= ?)";
 
     @Override
     @SneakyThrows
@@ -74,12 +75,11 @@ public class CityRepositoryImpl implements CityRepository {
             preparedStatement.setLong(1, id);
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                City city =  null;
                 if (resultSet.next()) {
-                    City city = cityMapper.mapRow(resultSet);
-
-                    return Optional.of(city);
+                    city = cityMapper.mapRow(resultSet);
                 }
-                return Optional.empty();
+                return Optional.ofNullable(city);
             }
         }
     }
@@ -96,12 +96,11 @@ public class CityRepositoryImpl implements CityRepository {
             preparedStatement.setLong(1, id);
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                City city = null;
                 if (resultSet.next()) {
-                    City city = cityMapper.airportsMapRow(resultSet);
-
-                    return Optional.of(city);
+                    city = cityMapper.airportsMapRow(resultSet);
                 }
-                return Optional.empty();
+                return Optional.ofNullable(city);
             }
         }
     }
@@ -115,12 +114,11 @@ public class CityRepositoryImpl implements CityRepository {
             preparedStatement.setString(1, name);
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                City city = null;
                 if(resultSet.next()) {
-                    City city = cityMapper.mapRow(resultSet);
-
-                    return Optional.of(city);
+                    city = cityMapper.mapRow(resultSet);
                 }
-                return Optional.empty();
+                return Optional.ofNullable(city);
             }
         }
     }
@@ -169,6 +167,36 @@ public class CityRepositoryImpl implements CityRepository {
             preparedStatement.setLong(1, id);
 
             preparedStatement.executeUpdate();
+        }
+    }
+
+    @Override
+    @SneakyThrows
+    public boolean isExists(long id) {
+        Connection conn = config.getConnection();
+
+        try (PreparedStatement preparedStatement = conn.prepareStatement(EXISTS_BY_ID)) {
+            preparedStatement.setLong(1, id);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                resultSet.next();
+                return resultSet.getBoolean("exists");
+            }
+        }
+    }
+
+    @Override
+    @SneakyThrows
+    public boolean isExists(String name) {
+        Connection conn = config.getConnection();
+
+        try (PreparedStatement preparedStatement = conn.prepareStatement(EXISTS_BY_NAME)) {
+            preparedStatement.setString(1, name);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                resultSet.next();
+                return resultSet.getBoolean("exists");
+            }
         }
     }
 

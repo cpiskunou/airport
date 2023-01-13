@@ -2,7 +2,7 @@ package by.piskunou.solvdlaba.persistent.impl;
 
 import by.piskunou.solvdlaba.domain.Airline;
 import by.piskunou.solvdlaba.persistent.AirlineRepository;
-import by.piskunou.solvdlaba.persistent.config.DataSourceConfig;
+import by.piskunou.solvdlaba.DataSourceConfig;
 import by.piskunou.solvdlaba.persistent.impl.mapper.AirlineMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -38,6 +38,8 @@ public class AirlineRepositoryImpl implements AirlineRepository {
     private static final String CREATE = "insert into airline(name) values(?)";
     private static final String UPDATE = "update airline set name = ? where id = ?";
     private static final String DELETE = "delete from airline where id = ?";
+    private static final String EXISTS_BY_NAME = "select exists (select from airline where name = ?)";
+    private static final String EXISTS_BY_ID = "select exists (select from airline where id = ?)";
 
     @Override
     @SneakyThrows
@@ -53,7 +55,6 @@ public class AirlineRepositoryImpl implements AirlineRepository {
                 Airline airline = airlineMapper.mapRow(resultSet);
                 airlines.add(airline);
             }
-
             return airlines;
         }
     }
@@ -67,12 +68,11 @@ public class AirlineRepositoryImpl implements AirlineRepository {
             preparedStatement.setLong(1, id);
 
             try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                Airline airline = null;
                 if(resultSet.next()) {
-                    Airline airline = airlineMapper.mapRow(resultSet);
-
-                    return Optional.of(airline);
+                    airline = airlineMapper.mapRow(resultSet);
                 }
-                return Optional.empty();
+                return Optional.ofNullable(airline);
             }
         }
     }
@@ -86,12 +86,11 @@ public class AirlineRepositoryImpl implements AirlineRepository {
             preparedStatement.setString(1, name);
 
             try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                Airline airline = null;
                 if (resultSet.next()) {
-                    Airline airline = airlineMapper.mapRow(resultSet);
-
-                    return Optional.of(airline);
+                    airline = airlineMapper.mapRow(resultSet);
                 }
-                return Optional.empty();
+                return Optional.ofNullable(airline);
             }
         }
     }
@@ -109,7 +108,6 @@ public class AirlineRepositoryImpl implements AirlineRepository {
 
             try (ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
                 if(resultSet.next()) {
-
                     Long id = resultSet.getLong("id");
 
                     airline.setId(id);
@@ -140,6 +138,36 @@ public class AirlineRepositoryImpl implements AirlineRepository {
             preparedStatement.setLong(1, id);
 
             preparedStatement.executeUpdate();
+        }
+    }
+
+    @Override
+    @SneakyThrows
+    public boolean isExists(String name) {
+        Connection conn = config.getConnection();
+
+        try (PreparedStatement preparedStatement = conn.prepareStatement(EXISTS_BY_NAME)) {
+            preparedStatement.setString(1, name);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                resultSet.next();
+                return resultSet.getBoolean("exists");
+            }
+        }
+    }
+
+    @Override
+    @SneakyThrows
+    public boolean isExists(long id) {
+        Connection conn = config.getConnection();
+
+        try (PreparedStatement preparedStatement = conn.prepareStatement(EXISTS_BY_ID)) {
+            preparedStatement.setLong(1, id);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                resultSet.next();
+                return resultSet.getBoolean("exists");
+            }
         }
     }
 

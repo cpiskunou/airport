@@ -23,7 +23,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/flights")
 @RequiredArgsConstructor
-@Validated
 public class FlightController {
 
     private final FlightService  flightService;
@@ -35,32 +34,26 @@ public class FlightController {
     @GetMapping("/{id}")
     public FlightDTO findById(@PathVariable long id) {
         Flight flight = flightService.findById(id);
-
         return flightMapper.toDTO(flight);
     }
 
     @GetMapping("/search")
     public List<FlightResponseDTO> search(@Valid FlightRequestDTO flightRequestDTO) {
-
         FlightRequest flightRequest = flightRequestMapper.toEntity(flightRequestDTO);
-
         return flightResponseMapper.toDTO(flightService.search(flightRequest));
     }
 
     @GetMapping("/{id}/free_seats")
     public List<SeatDTO> findFreeSeats(@PathVariable long id) {
-
         return seatMapper.toDTO(flightService.freeSeats(id));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @Validated(onCreate.class)
-    public FlightDTO create(@RequestBody @Valid FlightDTO flightDTO) {
+    public FlightDTO create(@RequestBody @Validated(onCreate.class) FlightDTO flightDTO) {
         Flight flight = flightMapper.toEntity(flightDTO);
 
         flight = flightService.create(flight);
-
         return flightMapper.toDTO(flight);
     }
 

@@ -2,7 +2,7 @@ package by.piskunou.solvdlaba.persistent.impl;
 
 import by.piskunou.solvdlaba.domain.User;
 import by.piskunou.solvdlaba.persistent.UserRepository;
-import by.piskunou.solvdlaba.persistent.config.DataSourceConfig;
+import by.piskunou.solvdlaba.DataSourceConfig;
 import by.piskunou.solvdlaba.persistent.impl.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -70,6 +70,8 @@ public class UserRepositoryImpl implements UserRepository {
     private static final String REGISTER = "insert into \"user\" (username) values(?)";
     private static final String UPDATE = "update \"user\" set username = ? where id = ?";
     private static final String DELETE = "delete from \"user\" where id = ?";
+    private static final String EXISTS_BY_ID = "select exists (select from \"user\" where id= ?)";
+    private static final String EXISTS_BY_NAME = "select exists (select from \"user\" where username= ?)";
 
     @Override
     @SneakyThrows
@@ -101,12 +103,11 @@ public class UserRepositoryImpl implements UserRepository {
             preparedStatement.setLong(1, id);
 
             try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                User user = null;
                 if(resultSet.next()) {
-                    User user = userMapper.mapRow(resultSet);
-
-                    return Optional.of(user);
+                    user = userMapper.mapRow(resultSet);
                 }
-                return Optional.empty();
+                return Optional.ofNullable(user);
             }
         }
     }
@@ -120,12 +121,11 @@ public class UserRepositoryImpl implements UserRepository {
             preparedStatement.setString(1, username);
 
             try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                User user = null;
                 if(resultSet.next()) {
-                    User user = userMapper.mapRow(resultSet);
-
-                    return Optional.of(user);
+                    user = userMapper.mapRow(resultSet);
                 }
-                return Optional.empty();
+                return Optional.ofNullable(user);
             }
         }
     }
@@ -139,7 +139,6 @@ public class UserRepositoryImpl implements UserRepository {
             ResultSet resultSet = preparedStatement.executeQuery()) {
 
             List<User> users = new LinkedList<>();
-
             while (resultSet.next()) {
                 User user = userMapper.mapRow(resultSet);
                 users.add(user);
@@ -160,12 +159,11 @@ public class UserRepositoryImpl implements UserRepository {
             preparedStatement.setLong(1, id);
 
             try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                User user = null;
                 if(resultSet.next()) {
-                    User user = userMapper.ticketsMapRow(resultSet);
-
-                    return Optional.of(user);
+                    user = userMapper.ticketsMapRow(resultSet);
                 }
-                return Optional.empty();
+                return Optional.ofNullable(user);
             }
         }
     }
@@ -192,6 +190,36 @@ public class UserRepositoryImpl implements UserRepository {
             preparedStatement.setLong(1, id);
 
             preparedStatement.executeUpdate();
+        }
+    }
+
+    @Override
+    @SneakyThrows
+    public boolean isExists(long id) {
+        Connection conn = config.getConnection();
+
+        try (PreparedStatement preparedStatement = conn.prepareStatement(EXISTS_BY_ID)) {
+            preparedStatement.setLong(1, id);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                resultSet.next();
+                return resultSet.getBoolean("exists");
+            }
+        }
+    }
+
+    @Override
+    @SneakyThrows
+    public boolean isExists(String name) {
+        Connection conn = config.getConnection();
+
+        try (PreparedStatement preparedStatement = conn.prepareStatement(EXISTS_BY_NAME)) {
+            preparedStatement.setString(1, name);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                resultSet.next();
+                return resultSet.getBoolean("exists");
+            }
         }
     }
 

@@ -11,10 +11,10 @@ public interface AirplaneRepository {
 
     Optional<Airplane> findById(long id);
 
-    Optional<Airplane> findByModel(String model);
-
     List<Airplane> findAll();
 
     void removeById(long id);
+
+    boolean isExists(String model);
 
 }

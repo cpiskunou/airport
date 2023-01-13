@@ -53,13 +53,10 @@ public class CityServiceImpl implements CityService {
         if(!countryService.isExists(countryId)) {
             throw new ResourceNotExistsException("There's no country with such id");
         }
-
         if(isExists(city.getName())) {
             throw new ResourceAlreadyExistsException("City with such name has already exists");
         }
-
         cityRepository.create(city, countryId);
-
         return city;
     }
 
@@ -69,13 +66,10 @@ public class CityServiceImpl implements CityService {
         if(!isExists(id)) {
             throw new ResourceNotExistsException("There's no city with such id");
         }
-
         if(isExists(name)) {
             throw new ResourceNotExistsException("City with such name has already exists");
         }
-
         cityRepository.updateNameById(id, name);
-
         return new City(id, name);
     }
 
@@ -87,14 +81,12 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public boolean isExists(long id) {
-        return cityRepository.findById(id)
-                             .isPresent();
+        return cityRepository.isExists(id);
     }
 
     @Override
     public boolean isExists(String name) {
-        return cityRepository.findByName(name)
-                             .isPresent();
+        return cityRepository.isExists(name);
     }
 
 }

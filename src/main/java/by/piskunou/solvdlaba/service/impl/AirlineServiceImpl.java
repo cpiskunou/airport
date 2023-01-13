@@ -4,7 +4,6 @@ import by.piskunou.solvdlaba.domain.Airline;
 import by.piskunou.solvdlaba.domain.exception.ResourceAlreadyExistsException;
 import by.piskunou.solvdlaba.domain.exception.ResourceNotExistsException;
 import by.piskunou.solvdlaba.persistent.AirlineRepository;
-import by.piskunou.solvdlaba.persistent.impl.AirlineRepositoryImpl;
 import by.piskunou.solvdlaba.service.AirlineService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -37,9 +36,7 @@ public class AirlineServiceImpl implements AirlineService {
         if(isExists(airline.getName())) {
             throw new ResourceAlreadyExistsException("Airline with such name has already exists");
         }
-
         airlineRepository.create(airline);
-
         return airline;
     }
 
@@ -49,13 +46,10 @@ public class AirlineServiceImpl implements AirlineService {
         if(!isExists(id)) {
             throw new ResourceNotExistsException("There's no airline with such id");
         }
-
         if(isExists(name)) {
             throw new ResourceAlreadyExistsException("Airline with such name has already exists");
         }
-
         airlineRepository.updateNameById(id, name);
-
         return new Airline(id, name);
     }
 
@@ -67,14 +61,12 @@ public class AirlineServiceImpl implements AirlineService {
 
     @Override
     public boolean isExists(String name) {
-        return airlineRepository.findByName(name)
-                                .isPresent();
+        return airlineRepository.isExists(name);
     }
 
     @Override
     public boolean isExists(long id) {
-        return airlineRepository.findById(id)
-                                .isPresent();
+        return airlineRepository.isExists(id);
     }
 
 }

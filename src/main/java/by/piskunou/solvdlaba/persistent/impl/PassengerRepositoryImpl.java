@@ -2,7 +2,7 @@ package by.piskunou.solvdlaba.persistent.impl;
 
 import by.piskunou.solvdlaba.domain.Passenger;
 import by.piskunou.solvdlaba.persistent.PassengerRepository;
-import by.piskunou.solvdlaba.persistent.config.DataSourceConfig;
+import by.piskunou.solvdlaba.DataSourceConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Repository;
@@ -18,6 +18,8 @@ public class PassengerRepositoryImpl implements PassengerRepository {
     private static final String CREATE = """
             insert into passenger(fk_country_id, firstname, surname, date_of_birth, age, gender)
             values (?, ?, ?, ?, ?, ?)""";
+
+    private static final String EXISTS_BY_ID = "select exists (select from passenger where id= ?)";
 
     @Override
     @SneakyThrows
@@ -41,6 +43,21 @@ public class PassengerRepositoryImpl implements PassengerRepository {
 
                     passenger.setId(id);
                 }
+            }
+        }
+    }
+
+    @Override
+    @SneakyThrows
+    public boolean isExists(long id) {
+        Connection conn = config.getConnection();
+
+        try (PreparedStatement preparedStatement = conn.prepareStatement(EXISTS_BY_ID)) {
+            preparedStatement.setLong(1, id);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                resultSet.next();
+                return resultSet.getBoolean("exists");
             }
         }
     }

@@ -24,7 +24,6 @@ public class FlightServiceImpl implements FlightService {
     @Override
     @Transactional(readOnly = true)
     public Flight findById(long id) {
-
        return flightRepository.findById(id)
                               .orElseThrow(() -> new ResourceNotExistsException("There's no flight with such id"));
     }
@@ -35,17 +34,14 @@ public class FlightServiceImpl implements FlightService {
 
         Airplane airplane = airplaneService.findById(flight.getAirplane()
                                                             .getId());
-
         List<Seat> seats = createSeats(airplane);
         flight.setSeats(seats);
 
         flightRepository.create(flight);
-
         return flight;
     }
 
     private List<Seat> createSeats(Airplane airplane) {
-
         byte seatInRow = airplane.getSeatsInRow();
         short rowNo = airplane.getRowNo();
 
@@ -58,7 +54,6 @@ public class FlightServiceImpl implements FlightService {
                 seats.add(seat);
             }
         }
-
         return seats;
     }
 
@@ -87,9 +82,7 @@ public class FlightServiceImpl implements FlightService {
                     flightRequest.getArrivalDate().atTime(LocalTime.MAX));
             backPrices = cost(passengers, backFlights);
         }
-
         List<FlightResponse> responses = buildFlightResponse(toFlights, toPrices, backFlights, backPrices);
-
         return responses;
     }
 
@@ -105,8 +98,7 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     public boolean isExists(long id) {
-        return flightRepository.findById(id)
-                               .isPresent();
+        return flightRepository.isExists(id);
     }
 
     private List<FlightResponse> buildFlightResponse(List<Flight> toFlights, List<BigDecimal> toPrices,
@@ -122,7 +114,6 @@ public class FlightServiceImpl implements FlightService {
 
                 responses.add(response);
             }
-
             return responses;
         }
 
@@ -137,7 +128,6 @@ public class FlightServiceImpl implements FlightService {
                 responses.add(response);
             }
         }
-
         return responses;
     }
 
@@ -156,7 +146,6 @@ public class FlightServiceImpl implements FlightService {
             }
             prices.add(new BigDecimal(totalPrice));
         }
-
         return prices;
     }
 

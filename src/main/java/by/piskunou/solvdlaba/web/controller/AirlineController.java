@@ -16,7 +16,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/airlines")
 @RequiredArgsConstructor
-@Validated
 public class AirlineController {
 
     private final AirlineService airlineService;
@@ -30,25 +29,21 @@ public class AirlineController {
     @GetMapping("/{id}")
     public AirlineDTO findById(@PathVariable long id) {
         Airline airline = airlineService.findById(id);
-
         return airlineMapper.toDTO(airline);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @Validated(onCreate.class)
-    public AirlineDTO create(@RequestBody @Valid AirlineDTO airlineDTO) {
+    public AirlineDTO create(@RequestBody @Validated(onCreate.class) AirlineDTO airlineDTO) {
         Airline airline = airlineMapper.toEntity(airlineDTO);
 
         airline = airlineService.create(airline);
-
         return airlineMapper.toDTO(airline);
     }
 
     @PutMapping ("/{id}")
     public AirlineDTO updateNameById(@PathVariable long id, @RequestParam String name) {
         Airline airline = airlineService.updateNameById(id, name);
-
         return airlineMapper.toDTO(airline);
     }
 

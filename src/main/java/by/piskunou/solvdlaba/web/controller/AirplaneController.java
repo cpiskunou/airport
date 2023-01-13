@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/airplanes")
 @RequiredArgsConstructor
-@Validated
 public class AirplaneController {
 
     private final AirplaneService airplaneService;
@@ -23,18 +22,15 @@ public class AirplaneController {
     @GetMapping("/{id}")
     public AirplaneDTO findById(@PathVariable int id) {
         Airplane airplane = airplaneService.findById(id);
-
         return mapper.toDTO(airplane);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @Validated(onCreate.class)
-    public AirplaneDTO create(@RequestBody @Valid AirplaneDTO airplaneDTO) {
+    public AirplaneDTO create(@RequestBody @Validated(onCreate.class) AirplaneDTO airplaneDTO) {
         Airplane airplane = mapper.toEntity(airplaneDTO);
 
         airplane = airplaneService.create(airplane);
-
         return mapper.toDTO(airplane);
     }
 

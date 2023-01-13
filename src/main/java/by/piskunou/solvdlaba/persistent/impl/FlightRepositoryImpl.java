@@ -3,7 +3,7 @@ package by.piskunou.solvdlaba.persistent.impl;
 import by.piskunou.solvdlaba.domain.Flight;
 import by.piskunou.solvdlaba.domain.Seat;
 import by.piskunou.solvdlaba.persistent.FlightRepository;
-import by.piskunou.solvdlaba.persistent.config.DataSourceConfig;
+import by.piskunou.solvdlaba.DataSourceConfig;
 import by.piskunou.solvdlaba.persistent.impl.mapper.FlightMapper;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -89,8 +89,10 @@ public class FlightRepositoryImpl implements FlightRepository {
 
     private static final String FREE_SEATS = """
             select jsonb_path_query_array(flight.free_seats, '$[*] ? (@.free == false)') as free_seats
-            from flight where flight.id = ?;
-            """;
+            from flight where flight.id = ?""";
+
+    private static final String EXISTS_BY_ID = "select exists (select from flight where id= ?)";
+
 
     @Override
     @SneakyThrows
@@ -104,12 +106,11 @@ public class FlightRepositoryImpl implements FlightRepository {
             preparedStatement.setLong(1, id);
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                Flight flight = null;
                 if (resultSet.next()) {
-                    Flight flight = flightMapper.mapFindRow(resultSet);
-
-                    return Optional.of(flight);
+                    flight = flightMapper.mapFindRow(resultSet);
                 }
-                return Optional.empty();
+                return Optional.ofNullable(flight);
             }
         }
     }
@@ -166,7 +167,6 @@ public class FlightRepositoryImpl implements FlightRepository {
                     Flight flight = flightMapper.mapSearchRow(resultSet);
                     flights.add(flight);
                 }
-
                 return flights;
             }
         }
@@ -185,7 +185,6 @@ public class FlightRepositoryImpl implements FlightRepository {
                     Type listType = new TypeToken<List<Seat>>() {}.getType();
 
                     String json = resultSet.getString("free_seats");
-
                     return gson.fromJson(json, listType);
                 }
                 return Collections.emptyList();
@@ -202,6 +201,21 @@ public class FlightRepositoryImpl implements FlightRepository {
             preparedStatement.setString(1, number);
 
             preparedStatement.executeUpdate();
+        }
+    }
+
+    @Override
+    @SneakyThrows
+    public boolean isExists(long id) {
+        Connection conn = config.getConnection();
+
+        try (PreparedStatement preparedStatement = conn.prepareStatement(EXISTS_BY_ID)) {
+            preparedStatement.setLong(1, id);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                resultSet.next();
+                return resultSet.getBoolean("exists");
+            }
         }
     }
 

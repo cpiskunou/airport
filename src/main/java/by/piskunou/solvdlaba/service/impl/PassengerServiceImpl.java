@@ -17,13 +17,12 @@ public class PassengerServiceImpl implements PassengerService {
     @Transactional
     public Passenger create(Passenger passenger) {
         passengerRepository.create(passenger);
-
         return passenger;
     }
 
     @Override
     public boolean isExists(long id) {
-        return false;
+        return passengerRepository.isExists(id);
     }
 
 }

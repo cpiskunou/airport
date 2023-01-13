@@ -27,15 +27,12 @@ public class TicketServiceImpl implements TicketService {
         if(!flightService.isExists(ticket.getFlight().getId())) {
             throw new ResourceNotExistsException("There's no flight with such id");
         }
-
         if(!passengerService.isExists(ticket.getPassenger().getId())) {
             passengerService.create(ticket.getPassenger());
             passportService.create(ticket.getPassenger().getPassport());
         }
-
         flightService.bookSeat(ticket.getSeat().getNumber());
         ticketRepository.create(ticket, userId);
-
         return ticket;
     }
 

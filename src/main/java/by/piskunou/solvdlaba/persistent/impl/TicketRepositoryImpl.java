@@ -2,7 +2,7 @@ package by.piskunou.solvdlaba.persistent.impl;
 
 import by.piskunou.solvdlaba.domain.Ticket;
 import by.piskunou.solvdlaba.persistent.TicketRepository;
-import by.piskunou.solvdlaba.persistent.config.DataSourceConfig;
+import by.piskunou.solvdlaba.DataSourceConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Repository;

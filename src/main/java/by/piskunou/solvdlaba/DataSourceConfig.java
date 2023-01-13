@@ -1,4 +1,4 @@
-package by.piskunou.solvdlaba.persistent.config;
+package by.piskunou.solvdlaba;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;

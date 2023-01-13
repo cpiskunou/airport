@@ -24,9 +24,7 @@ public class AirplaneServiceImpl implements AirplaneService {
         if(isExists(airplane.getModel())) {
             throw new ResourceAlreadyExistsException("Such model of airplane already exists");
         }
-
         airplaneRepository.create(airplane);
-
         return airplane;
     }
 
@@ -51,8 +49,7 @@ public class AirplaneServiceImpl implements AirplaneService {
 
     @Override
     public boolean isExists(String model) {
-        return airplaneRepository.findByModel(model)
-                .isPresent();
+        return airplaneRepository.isExists(model);
     }
 
 }

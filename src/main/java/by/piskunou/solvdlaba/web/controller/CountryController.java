@@ -16,7 +16,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/countries")
 @RequiredArgsConstructor
-@Validated
 public class CountryController {
 
     private final CountryService countryService;
@@ -30,39 +29,33 @@ public class CountryController {
     @GetMapping ("/{countryId}/cities")
     public CountryDTO findCountryCities(@PathVariable long countryId) {
         Country country = countryService.findCountryCities(countryId);
-
         return mapper.toDTO(country);
     }
 
     @GetMapping ("/{countryId}/airports")
     public CountryDTO findCountryAirports(@PathVariable long countryId) {
         Country country = countryService.findCountryAirports(countryId);
-
         return mapper.toDTO(country);
     }
 
     @GetMapping("/{id}")
     public CountryDTO findById(@PathVariable long id) {
         Country country = countryService.findById(id);
-
         return mapper.toDTO(country);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @Validated(onCreate.class)
-    public CountryDTO create(@RequestBody @Valid CountryDTO countryDTO) {
+    public CountryDTO create(@RequestBody @Validated(onCreate.class) CountryDTO countryDTO) {
         Country country = mapper.toEntity(countryDTO);
 
         country = countryService.create(country);
-
         return mapper.toDTO(country);
     }
 
     @PutMapping("/{id}")
     public CountryDTO updateNameById(@PathVariable long id, @RequestParam String name) {
         Country country = countryService.updateNameById(id, name);
-
         return mapper.toDTO(country);
     }
 

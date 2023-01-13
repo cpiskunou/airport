@@ -1,5 +1,5 @@
-create schema if not exists piskunou;
-set schema 'piskunou';
+create schema if not exists airport;
+set schema 'airport';
 
 create table if not exists "user"(
     id bigserial primary key,

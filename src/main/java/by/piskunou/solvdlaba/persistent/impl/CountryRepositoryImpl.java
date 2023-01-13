@@ -2,7 +2,7 @@ package by.piskunou.solvdlaba.persistent.impl;
 
 import by.piskunou.solvdlaba.domain.Country;
 import by.piskunou.solvdlaba.persistent.CountryRepository;
-import by.piskunou.solvdlaba.persistent.config.DataSourceConfig;
+import by.piskunou.solvdlaba.DataSourceConfig;
 import by.piskunou.solvdlaba.persistent.impl.mapper.CountryMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -57,6 +57,8 @@ public class CountryRepositoryImpl implements CountryRepository {
     private static final String CREATE = "insert into country(name) values(?)";
     private static final String UPDATE = "update country set name = ? where id = ?";
     private static final String DELETE = "delete from country where id = ?";
+    private static final String EXISTS_BY_ID = "select exists (select from country where id= ?)";
+    private static final String EXISTS_BY_NAME = "select exists (select from country where name= ?)";
 
     @Override
     @SneakyThrows
@@ -67,12 +69,10 @@ public class CountryRepositoryImpl implements CountryRepository {
              ResultSet resultSet = preparedStatement.executeQuery()) {
 
             List<Country> countries = new LinkedList<>();
-
             while (resultSet.next()) {
                 Country country = countryMapper.mapRow(resultSet);
                 countries.add(country);
             }
-
             return countries;
         }
     }
@@ -86,12 +86,11 @@ public class CountryRepositoryImpl implements CountryRepository {
             preparedStatement.setLong(1, id);
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                Country country = null;
                 if (resultSet.next()) {
-                    Country country = countryMapper.mapRow(resultSet);
-
-                    return Optional.of(country);
+                    country = countryMapper.mapRow(resultSet);
                 }
-                return Optional.empty();
+                return Optional.ofNullable(country);
             }
         }
     }
@@ -105,12 +104,11 @@ public class CountryRepositoryImpl implements CountryRepository {
             preparedStatement.setString(1, name);
 
             try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                Country country = null;
                 if(resultSet.next()) {
-                    Country country = countryMapper.mapRow(resultSet);
-
-                    return Optional.of(country);
+                    country = countryMapper.mapRow(resultSet);
                 }
-                return Optional.empty();
+                return Optional.ofNullable(country);
             }
         }
     }
@@ -126,12 +124,11 @@ public class CountryRepositoryImpl implements CountryRepository {
             preparedStatement.setLong(1, id);
 
             try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                Country country = null;
                 if(resultSet.next()) {
-                    Country country = countryMapper.citiesMapRow(resultSet);
-
-                    return Optional.of(country);
+                    country = countryMapper.citiesMapRow(resultSet);
                 }
-                return Optional.empty();
+                return Optional.ofNullable(country);
             }
         }
     }
@@ -148,12 +145,11 @@ public class CountryRepositoryImpl implements CountryRepository {
             preparedStatement.setLong(1, id);
 
             try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                Country country = null;
                 if(resultSet.next()) {
-                    Country country = countryMapper.airportsMapRow(resultSet);
-
-                    return Optional.of(country);
+                    country = countryMapper.airportsMapRow(resultSet);
                 }
-                return Optional.empty();
+                return Optional.ofNullable(country);
             }
         }
     }
@@ -201,6 +197,36 @@ public class CountryRepositoryImpl implements CountryRepository {
             preparedStatement.setLong(1, id);
 
             preparedStatement.executeUpdate();
+        }
+    }
+
+    @Override
+    @SneakyThrows
+    public boolean isExists(long id) {
+        Connection conn = config.getConnection();
+
+        try (PreparedStatement preparedStatement = conn.prepareStatement(EXISTS_BY_ID)) {
+            preparedStatement.setLong(1, id);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                resultSet.next();
+                return resultSet.getBoolean("exists");
+            }
+        }
+    }
+
+    @Override
+    @SneakyThrows
+    public boolean isExists(String name) {
+        Connection conn = config.getConnection();
+
+        try (PreparedStatement preparedStatement = conn.prepareStatement(EXISTS_BY_NAME)) {
+            preparedStatement.setString(1, name);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                resultSet.next();
+                return resultSet.getBoolean("exists");
+            }
         }
     }
 

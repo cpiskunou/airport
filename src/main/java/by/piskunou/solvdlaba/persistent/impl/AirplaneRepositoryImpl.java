@@ -2,7 +2,7 @@ package by.piskunou.solvdlaba.persistent.impl;
 
 import by.piskunou.solvdlaba.domain.Airplane;
 import by.piskunou.solvdlaba.persistent.AirplaneRepository;
-import by.piskunou.solvdlaba.persistent.config.DataSourceConfig;
+import by.piskunou.solvdlaba.DataSourceConfig;
 import by.piskunou.solvdlaba.persistent.impl.mapper.AirplaneMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -41,6 +41,7 @@ public class AirplaneRepositoryImpl implements AirplaneRepository {
 
     private static final String CREATE = "insert into airplane(username, row_seat_no, row_no) values(?, ?, ?)";
     private static final String DELETE = "delete from airplane where id = ?";
+    private static final String EXISTS_BY_MODEL = "select exists (select from airplane where model = ?)";
 
     @Override
     @SneakyThrows
@@ -57,7 +58,6 @@ public class AirplaneRepositoryImpl implements AirplaneRepository {
 
             try(ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
                 if(resultSet.next()) {
-
                     Long id = resultSet.getLong("id");
 
                     airplane.setId(id);
@@ -75,31 +75,11 @@ public class AirplaneRepositoryImpl implements AirplaneRepository {
             preparedStatement.setLong(1, id);
 
             try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                Airplane airplane = null;
                 if(resultSet.next()) {
-                    Airplane airplane = mapper.mapRow(resultSet);
-
-                    return Optional.of(airplane);
+                    airplane = mapper.mapRow(resultSet);
                 }
-                return Optional.empty();
-            }
-        }
-    }
-
-    @Override
-    @SneakyThrows
-    public Optional<Airplane> findByModel(String model) {
-        Connection conn = config.getConnection();
-
-        try(PreparedStatement preparedStatement = conn.prepareStatement(FIND_BY_MODEL)) {
-            preparedStatement.setString(1, model);
-
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                if(resultSet.next()) {
-                    Airplane airplane = mapper.mapRow(resultSet);
-
-                    return Optional.of(airplane);
-                }
-                return Optional.empty();
+                return Optional.ofNullable(airplane);
             }
         }
     }
@@ -118,7 +98,6 @@ public class AirplaneRepositoryImpl implements AirplaneRepository {
                 Airplane airplane = mapper.mapRow(resultSet);
                 airplanes.add(airplane);
             }
-
             return airplanes;
         }
     }
@@ -132,6 +111,21 @@ public class AirplaneRepositoryImpl implements AirplaneRepository {
             preparedStatement.setLong(1, id);
 
             preparedStatement.executeUpdate();
+        }
+    }
+
+    @Override
+    @SneakyThrows
+    public boolean isExists(String model) {
+        Connection conn = config.getConnection();
+
+        try (PreparedStatement preparedStatement = conn.prepareStatement(EXISTS_BY_MODEL)) {
+            preparedStatement.setString(1, model);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                resultSet.next();
+                return resultSet.getBoolean("exists");
+            }
         }
     }
 

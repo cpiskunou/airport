@@ -17,7 +17,6 @@ public class PassportServiceImpl implements PassportService {
     @Transactional
     public Passport create(Passport passport) {
         passportRepository.create(passport);
-
         return passport;
     }
 

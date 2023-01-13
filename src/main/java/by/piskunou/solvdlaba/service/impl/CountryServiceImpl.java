@@ -59,9 +59,7 @@ public class CountryServiceImpl implements CountryService {
         if(isExists(country.getName())) {
             throw new ResourceAlreadyExistsException("Country with such name has already exists");
         }
-
         countryRepository.create(country);
-
         return country;
     }
 
@@ -71,13 +69,10 @@ public class CountryServiceImpl implements CountryService {
         if(!isExists(id)){
             throw new ResourceNotExistsException("There's no country with such id");
         }
-
         if(isExists(name)) {
             throw new ResourceNotExistsException("Country with such name has already exists");
         }
-
         countryRepository.updateNameById(id, name);
-
         return new Country(id, name);
     }
 
@@ -89,14 +84,12 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     public boolean isExists(long id) {
-        return countryRepository.findById(id)
-                                .isPresent();
+        return countryRepository.isExists(id);
     }
 
     @Override
     public boolean isExists(String name) {
-        return countryRepository.findByName(name)
-                                .isPresent();
+        return countryRepository.isExists(name);
     }
 
 }

@@ -27,9 +27,7 @@ public class UserServiceImpl implements UserService {
         if (isExists(user.getUsername())) {
             throw new ResourceAlreadyExistsException( "Username is taken");
         }
-
         userRepository.register(user);
-
         return user;
     }
 
@@ -58,11 +56,9 @@ public class UserServiceImpl implements UserService {
         if(!isExists(id)) {
             throw new ResourceNotExistsException("There's no user with such id");
         }
-
         if(isExists(username)) {
             throw new ResourceAlreadyExistsException("Username is taken");
         }
-
         return new User(id, username);
     }
 
@@ -78,23 +74,19 @@ public class UserServiceImpl implements UserService {
         if(!isExists(id)) {
             throw new ResourceNotExistsException("There's no user with such id");
         }
-
         ticketService.appointOwner(ticket, id);
-
         return findUserTickets(id);
     }
 
 
     @Override
     public boolean isExists(String username) {
-        return userRepository.findByUsername(username)
-                             .isPresent();
+        return userRepository.isExists(username);
     }
 
     @Override
     public boolean isExists(long id) {
-        return userRepository.findById(id)
-                             .isPresent();
+        return userRepository.isExists(id);
     }
 
 }

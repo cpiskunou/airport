@@ -19,4 +19,8 @@ public interface AirlineRepository {
 
     void removeById(long id);
 
+    boolean isExists(String name);
+
+    boolean isExists(long id);
+
 }

@@ -20,4 +20,6 @@ public interface FlightRepository {
 
     void bookSeat(String number);
 
+    boolean isExists(long id);
+
 }
