@@ -20,6 +20,25 @@ public class AirlineRepositoryImpl implements AirlineRepository {
     private final DataSourceConfig config;
     private final AirlineMapper airlineMapper;
 
+    private final static String FIND_BY_ID = """
+            select id as airline_id,
+                   name as airline_name
+            from airline where id = ?""";
+
+    private final static String FIND_BY_NAME = """
+            select id as airline_id,
+                   name as airline_name
+            from airline where name = ?""";
+
+    private final static String FIND_ALL = """
+            select id as airline_id,
+                   name as airline_name
+            from airline""";
+
+    private static final String CREATE = "insert into airline(name) values(?)";
+    private static final String UPDATE = "update airline set name = ? where id = ?";
+    private static final String DELETE = "delete from airline where id = ?";
+
     @Override
     @SneakyThrows
     public List<Airline> findAll() {

@@ -8,9 +8,9 @@ public interface CountryService {
 
     List<Country> findAll();
 
-    Country findCountryCities(long id);
+    Country findCountryCities(long countryId);
 
-    Country findCountryAirports(long id);
+    Country findCountryAirports(long countryId);
 
     Country findById(long id);
 

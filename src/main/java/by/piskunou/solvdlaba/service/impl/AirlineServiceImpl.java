@@ -1,8 +1,8 @@
 package by.piskunou.solvdlaba.service.impl;
 
 import by.piskunou.solvdlaba.domain.Airline;
-import by.piskunou.solvdlaba.domain.exception.ResourseAlreadyExistsException;
-import by.piskunou.solvdlaba.domain.exception.ResourseNotExistsException;
+import by.piskunou.solvdlaba.domain.exception.ResourceAlreadyExistsException;
+import by.piskunou.solvdlaba.domain.exception.ResourceNotExistsException;
 import by.piskunou.solvdlaba.persistent.impl.AirlineRepositoryImpl;
 import by.piskunou.solvdlaba.service.AirlineService;
 import lombok.RequiredArgsConstructor;
@@ -27,14 +27,14 @@ public class AirlineServiceImpl implements AirlineService {
     @Transactional(readOnly = true)
     public Airline findById(long id) {
         return airlineRepository.findById(id)
-                                .orElseThrow(() -> new ResourseNotExistsException("There's no airline with such id"));
+                                .orElseThrow(() -> new ResourceNotExistsException("There's no airline with such id"));
     }
 
     @Override
     @Transactional
     public Airline create(Airline airline) {
         if(isExists(airline.getName())) {
-            throw new ResourseAlreadyExistsException("Airline with such name has already exists");
+            throw new ResourceAlreadyExistsException("Airline with such name has already exists");
         }
 
         airlineRepository.create(airline);
@@ -46,11 +46,11 @@ public class AirlineServiceImpl implements AirlineService {
     @Transactional
     public Airline updateNameById(long id, String name) {
         if(!isExists(id)) {
-            throw new ResourseNotExistsException("There's no airline with such id");
+            throw new ResourceNotExistsException("There's no airline with such id");
         }
 
         if(isExists(name)) {
-            throw new ResourseAlreadyExistsException("Airline with such name has already exists");
+            throw new ResourceAlreadyExistsException("Airline with such name has already exists");
         }
 
         airlineRepository.updateNameById(id, name);
@@ -75,5 +75,5 @@ public class AirlineServiceImpl implements AirlineService {
         return airlineRepository.findById(id)
                                 .isPresent();
     }
-    
+
 }

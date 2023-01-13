@@ -20,6 +20,34 @@ public class CityRepositoryImpl implements CityRepository {
     private final DataSourceConfig config;
     private final CityMapper cityMapper;
 
+    private static final String FIND_BY_ID = """
+             select id as city_id,
+                    name as city_name
+             from city where id = ?""";
+
+    private static final String FIND_BY_NAME = """
+             select id as city_id,
+                    name as city_name
+             from city where name = ?""";
+
+    private static final String FIND_AIRPORTS_BY_ID = """
+            select city.id as city_id,
+                   city.name as city_name,
+                   airport.id as airport_id,
+                   airport.name as airport_name
+            from city join airport on city.id = airport.fk_city_id 
+            where city.id = ?""";
+
+    private static final String FIND_ALL = """
+             select id as city_id,
+                    name as city_name
+             from city""";
+
+    private static final String CREATE = "insert into city(fk_country_id, name) values(?, ?)";
+    private static final String UPDATE = "update city set name = ? where id = ?";
+    private static final String DELETE = "delete from city where id = ?";
+
+
     @Override
     @SneakyThrows
     public List<City> findAll() {

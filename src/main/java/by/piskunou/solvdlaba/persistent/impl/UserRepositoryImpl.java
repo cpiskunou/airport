@@ -21,6 +21,28 @@ public class UserRepositoryImpl implements UserRepository {
     private final DataSourceConfig config;
     private final UserMapper userMapper;
 
+    private static final String FIND_BY_ID = """
+        select id as user_id,
+               username as user_name
+        from \"user\" where id = ?""";
+
+    private static final String FIND_BY_USERNAME = """
+            select id as user_id,
+                   username as user_name
+            from \"user\" where username = ?""";
+
+    //TODO: write whole join
+    private static final String FIND_TICKETS_BY_ID = "";
+
+    private static final String FIND_ALL = """
+            "select id as user_id,
+                    username as user_name
+            from \"user\"""";
+
+    private static final String REGISTER = "insert into \"user\" (username) values(?)";
+    private static final String UPDATE = "update \"user\" set username = ? where id = ?";
+    private static final String DELETE = "delete from \"user\" where id = ?";
+
     @Override
     @SneakyThrows
     public void register(User user) {

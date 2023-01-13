@@ -1,8 +1,8 @@
 package by.piskunou.solvdlaba.web.controller;
 
-import by.piskunou.solvdlaba.domain.exception.ResourseAlreadyExistsException;
-import by.piskunou.solvdlaba.domain.exception.ResourseNotExistsException;
-import by.piskunou.solvdlaba.web.dto.MyErrorResponse;
+import by.piskunou.solvdlaba.domain.exception.ResourceAlreadyExistsException;
+import by.piskunou.solvdlaba.domain.exception.ResourceNotExistsException;
+import by.piskunou.solvdlaba.web.dto.ErrorResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
@@ -16,26 +16,27 @@ import java.util.List;
 @RestControllerAdvice
 public class AdviceController {
 
-    @ExceptionHandler(ResourseNotExistsException.class)
+    @ExceptionHandler(ResourceNotExistsException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public String handleResourseNotExistsException(ResourseNotExistsException e) {
-        return e.getMessage();
+    public ErrorResponseDTO handleResourceNotExistsException(ResourceNotExistsException e) {
+        return new ErrorResponseDTO(e.getMessage());
     }
 
-    @ExceptionHandler(ResourseAlreadyExistsException.class)
+    @ExceptionHandler(ResourceAlreadyExistsException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleResourceNotUpdatedException(ResourseNotExistsException e) {
-        return e.getMessage();
+    public ErrorResponseDTO handleResourceNotUpdatedException(ResourceNotExistsException e) {
+        return new ErrorResponseDTO(e.getMessage());
     }
 
     @ExceptionHandler(BindException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public List<MyErrorResponse> handleBindException(BindException e) {
-        List<MyErrorResponse> myErrorResponseList = new ArrayList<>();
+    public List<ErrorResponseDTO> handleBindException(BindException e) {
+        List<ErrorResponseDTO> errorResponseDTOS = new ArrayList<>();
         for(FieldError fieldError: e.getFieldErrors()) {
-            myErrorResponseList.add( new MyErrorResponse(fieldError.getObjectName() + "." + fieldError.getField(), fieldError.getDefaultMessage()));
+            errorResponseDTOS.add( new ErrorResponseDTO(fieldError.getObjectName() + "."
+                    + fieldError.getField(), fieldError.getDefaultMessage()));
         }
-        return myErrorResponseList;
+        return errorResponseDTOS;
     }
 
 }

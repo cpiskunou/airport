@@ -1,7 +1,7 @@
 package by.piskunou.solvdlaba.service.impl;
 
-import by.piskunou.solvdlaba.domain.exception.ResourseAlreadyExistsException;
-import by.piskunou.solvdlaba.domain.exception.ResourseNotExistsException;
+import by.piskunou.solvdlaba.domain.exception.ResourceAlreadyExistsException;
+import by.piskunou.solvdlaba.domain.exception.ResourceNotExistsException;
 import by.piskunou.solvdlaba.persistent.impl.UserRepositoryImpl;
 import by.piskunou.solvdlaba.domain.User;
 import by.piskunou.solvdlaba.service.UserService;
@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public User register(User user) {
         if (isExists(user.getUsername())) {
-            throw new ResourseAlreadyExistsException( "Username is taken");
+            throw new ResourceAlreadyExistsException( "Username is taken");
         }
 
         userRepository.register(user);
@@ -33,13 +33,13 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public User findById(long id) {
             return userRepository.findById(id)
-                                 .orElseThrow(() -> new ResourseNotExistsException("There's no user with such id"));
+                                 .orElseThrow(() -> new ResourceNotExistsException("There's no user with such id"));
     }
 
     @Override
     public User findUserTickets(long id) {
         return userRepository.findUserTickets(id)
-                             .orElseThrow(() -> new ResourseNotExistsException("There's no user with such id"));
+                             .orElseThrow(() -> new ResourceNotExistsException("There's no user with such id"));
     }
 
     @Override
@@ -52,11 +52,11 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public User updateUsernameById(long id, String username) {
         if(!isExists(id)) {
-            throw new ResourseAlreadyExistsException("There's no user with such id");
+            throw new ResourceAlreadyExistsException("There's no user with such id");
         }
 
         if(isExists(username)) {
-            throw new ResourseNotExistsException("Username is taken");
+            throw new ResourceNotExistsException("Username is taken");
         }
 
         return new User(id, username);

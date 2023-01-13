@@ -18,6 +18,30 @@ public class AirplaneRepositoryImpl implements AirplaneRepository {
     private final DataSourceConfig config;
     private final AirplaneMapper mapper;
 
+    private static final String FIND_BY_ID = """
+            select id as airplane_id,
+                   model as airplane_model,
+                   seats_in_row as airplane_seats_in_row,
+                   row_no as airplane_row_no
+            from airplane where id = ?""";
+
+    private static final String FIND_BY_MODEL = """
+            select id as airplane_id,
+                   model as airplane_model,
+                   seats_in_row as airplane_seats_in_row,
+                   row_no as airplane_row_no
+            from airplane where model = ?""";
+
+    private static final String FIND_ALL = """
+             select id as airplane_id,
+                    model as airplane_model,
+                    seats_in_row as airplane_seats_in_row,
+                    row_no as airplane_row_no
+             from airplane""";
+
+    private static final String CREATE = "insert into airplane(username, row_seat_no, row_no) values(?, ?, ?)";
+    private static final String DELETE = "delete from airplane where id = ?";
+
     @Override
     @SneakyThrows
     public void create(Airplane airplane) {

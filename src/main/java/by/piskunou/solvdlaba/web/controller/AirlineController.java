@@ -3,10 +3,12 @@ package by.piskunou.solvdlaba.web.controller;
 import by.piskunou.solvdlaba.domain.Airline;
 import by.piskunou.solvdlaba.service.AirlineService;
 import by.piskunou.solvdlaba.web.dto.AirlineDTO;
+import by.piskunou.solvdlaba.web.groups.onCreate;
 import by.piskunou.solvdlaba.web.mapper.AirlineMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,6 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/airlines")
 @RequiredArgsConstructor
+@Validated
 public class AirlineController {
 
     private final AirlineService airlineService;
@@ -31,8 +34,9 @@ public class AirlineController {
         return airlineMapper.toDTO(airline);
     }
 
-    @PostMapping("/create")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @Validated(onCreate.class)
     public AirlineDTO create(@RequestBody @Valid AirlineDTO airlineDTO) {
         Airline airline = airlineMapper.toEntity(airlineDTO);
 

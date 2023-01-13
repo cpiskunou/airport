@@ -1,8 +1,8 @@
 package by.piskunou.solvdlaba.service.impl;
 
 import by.piskunou.solvdlaba.domain.Airplane;
-import by.piskunou.solvdlaba.domain.exception.ResourseAlreadyExistsException;
-import by.piskunou.solvdlaba.domain.exception.ResourseNotExistsException;
+import by.piskunou.solvdlaba.domain.exception.ResourceAlreadyExistsException;
+import by.piskunou.solvdlaba.domain.exception.ResourceNotExistsException;
 import by.piskunou.solvdlaba.persistent.impl.AirplaneRepositoryImpl;
 import by.piskunou.solvdlaba.service.AirplaneService;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +21,7 @@ public class AirplaneServiceImpl implements AirplaneService {
     @Transactional
     public Airplane create(Airplane airplane) {
         if(isExists(airplane.getModel())) {
-            throw new ResourseAlreadyExistsException("Such model of airplane already exists");
+            throw new ResourceAlreadyExistsException("Such model of airplane already exists");
         }
 
         airplaneRepository.create(airplane);
@@ -34,7 +33,7 @@ public class AirplaneServiceImpl implements AirplaneService {
     @Transactional(readOnly = true)
     public Airplane findById(long id) {
         return airplaneRepository.findById(id)
-                                 .orElseThrow(() -> new ResourseNotExistsException("There's no airplane with such id"));
+                                 .orElseThrow(() -> new ResourceNotExistsException("There's no airplane with such id"));
     }
 
     @Override

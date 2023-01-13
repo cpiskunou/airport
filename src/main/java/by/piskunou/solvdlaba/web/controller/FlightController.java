@@ -7,6 +7,7 @@ import by.piskunou.solvdlaba.web.dto.FlightDTO;
 import by.piskunou.solvdlaba.web.dto.FlightRequestDTO;
 import by.piskunou.solvdlaba.web.dto.FlightResponseDTO;
 import by.piskunou.solvdlaba.web.dto.SeatDTO;
+import by.piskunou.solvdlaba.web.groups.onCreate;
 import by.piskunou.solvdlaba.web.mapper.FlightMapper;
 import by.piskunou.solvdlaba.web.mapper.FlightRequestMapper;
 import by.piskunou.solvdlaba.web.mapper.FlightResponseMapper;
@@ -22,6 +23,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/flights")
 @RequiredArgsConstructor
+@Validated
 public class FlightController {
 
     private final FlightService  flightService;
@@ -51,8 +53,9 @@ public class FlightController {
         return seatMapper.toDTO(flightService.freeSeats(id));
     }
 
-    @PostMapping("/create")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @Validated(onCreate.class)
     public FlightDTO create(@RequestBody @Valid FlightDTO flightDTO) {
         Flight flight = flightMapper.toEntity(flightDTO);
 

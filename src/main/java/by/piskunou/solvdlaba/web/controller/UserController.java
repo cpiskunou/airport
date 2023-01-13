@@ -2,11 +2,13 @@ package by.piskunou.solvdlaba.web.controller;
 
 import by.piskunou.solvdlaba.domain.User;
 import by.piskunou.solvdlaba.service.UserService;
+import by.piskunou.solvdlaba.web.groups.onCreate;
 import by.piskunou.solvdlaba.web.mapper.UserMapper;
 import by.piskunou.solvdlaba.web.dto.UserDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,6 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
+@Validated
 public class UserController {
 
     private final UserService userService;
@@ -41,6 +44,7 @@ public class UserController {
 
     @PostMapping("/registration")
     @ResponseStatus(HttpStatus.CREATED)
+    @Validated(onCreate.class)
     public UserDTO register(@RequestBody @Valid UserDTO userDTO) {
         User user = mapper.toEntity(userDTO);
 

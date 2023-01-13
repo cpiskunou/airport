@@ -8,7 +8,7 @@ public interface CityService {
 
     List<City> findAll();
 
-    City findCityAirports(long id);
+    City findCityAirports(long cityId);
 
     City findById(long id);
 

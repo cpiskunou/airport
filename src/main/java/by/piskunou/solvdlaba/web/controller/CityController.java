@@ -3,10 +3,12 @@ package by.piskunou.solvdlaba.web.controller;
 import by.piskunou.solvdlaba.domain.City;
 import by.piskunou.solvdlaba.service.CityService;
 import by.piskunou.solvdlaba.web.dto.CityDTO;
+import by.piskunou.solvdlaba.web.groups.onCreate;
 import by.piskunou.solvdlaba.web.mapper.CityMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,6 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/cities")
 @RequiredArgsConstructor
+@Validated
 public class CityController {
 
     private final CityService cityService;
@@ -24,9 +27,9 @@ public class CityController {
         return cityMapper.toDTO(cityService.findAll());
     }
 
-    @GetMapping ("/{id}/airports")
-    public CityDTO findCountryCities(@PathVariable long id) {
-        City city = cityService.findCityAirports(id);
+    @GetMapping ("/{countryId}/airports")
+    public CityDTO findCountryCities(@PathVariable long countryId) {
+        City city = cityService.findCityAirports(countryId);
 
         return cityMapper.toDTO(city);
     }
@@ -38,8 +41,9 @@ public class CityController {
         return cityMapper.toDTO(city);
     }
 
-    @PostMapping("/create")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @Validated(onCreate.class)
     public CityDTO create(@RequestBody @Valid CityDTO cityDTO, @RequestParam("country_id") long countryId) {
         City city = cityMapper.toEntity(cityDTO);
 

@@ -3,10 +3,12 @@ package by.piskunou.solvdlaba.web.controller;
 import by.piskunou.solvdlaba.domain.Country;
 import by.piskunou.solvdlaba.service.CountryService;
 import by.piskunou.solvdlaba.web.dto.CountryDTO;
+import by.piskunou.solvdlaba.web.groups.onCreate;
 import by.piskunou.solvdlaba.web.mapper.CountryMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,6 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/countries")
 @RequiredArgsConstructor
+@Validated
 public class CountryController {
 
     private final CountryService countryService;
@@ -24,16 +27,16 @@ public class CountryController {
         return mapper.toDTOList(countryService.findAll());
     }
 
-    @GetMapping ("/{id}/cities")
-    public CountryDTO findCountryCities(@PathVariable long id) {
-        Country country = countryService.findCountryCities(id);
+    @GetMapping ("/{countryId}/cities")
+    public CountryDTO findCountryCities(@PathVariable long countryId) {
+        Country country = countryService.findCountryCities(countryId);
 
         return mapper.toDTO(country);
     }
 
-    @GetMapping ("/{id}/airports")
-    public CountryDTO findCountryAiports(@PathVariable long id) {
-        Country country = countryService.findCountryAirports(id);
+    @GetMapping ("/{countryId}/airports")
+    public CountryDTO findCountryAirports(@PathVariable long countryId) {
+        Country country = countryService.findCountryAirports(countryId);
 
         return mapper.toDTO(country);
     }
@@ -45,8 +48,9 @@ public class CountryController {
         return mapper.toDTO(country);
     }
 
-    @PostMapping("/create")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @Validated(onCreate.class)
     public CountryDTO create(@RequestBody @Valid CountryDTO countryDTO) {
         Country country = mapper.toEntity(countryDTO);
 

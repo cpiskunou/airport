@@ -7,33 +7,6 @@ import java.util.Optional;
 
 public interface CityRepository {
 
-    String FIND_BY_ID = """
-             select id as city_id,
-                    name as city_name
-             from city where id = ?""";
-
-    String FIND_BY_NAME = """
-             select id as city_id,
-                    name as city_name
-             from city where name = ?""";
-
-    String FIND_AIRPORTS_BY_ID = """
-            select city.id as city_id,
-                   city.name as city_name,
-                   airport.id as airport_id,
-                   airport.name as airport_name
-            from city join airport on city.id = airport.fk_city_id 
-            where city.id = ?""";
-
-    String FIND_ALL = """
-             select id as city_id,
-                    name as city_name
-             from city""";
-
-    String CREATE = "insert into city(fk_country_id, name) values(?, ?)";
-    String UPDATE = "update city set name = ? where id = ?";
-    String DELETE = "delete from city where id = ?";
-
     List<City> findAll();
 
     Optional<City> findById(long id);

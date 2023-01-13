@@ -14,12 +14,12 @@ import lombok.*;
 @AllArgsConstructor
 public class UserDTO {
 
-    @Null(groups = onCreate.class)
-    @NotNull(groups = onUpdate.class)
+    @Null(groups = onCreate.class, message = "Id should be null")
+    @NotNull(groups = onUpdate.class, message = "Id should be not null")
     private Long id;
 
-    @NotBlank(groups = onCreate.class)
-    @Size(max = 300, groups = {onUpdate.class, onCreate.class}, message = "The username must be less than 300 characters")
+    @NotBlank(groups = onCreate.class, message = "Username should be not blank")
+    @Size(max = 50, groups = {onUpdate.class, onCreate.class}, message = "The username must be less than 50 characters")
     private String username;
 
 }

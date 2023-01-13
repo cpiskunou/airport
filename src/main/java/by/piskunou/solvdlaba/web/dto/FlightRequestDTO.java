@@ -14,18 +14,22 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class FlightRequestDTO {
 
-    @NotNull
+    @NotNull(message = "Airport from should be not null")
     private String fromAirport;
+
     private String toAirport;
 
+    @NotNull(message = "Passengers should be not null")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "\\d-\\d-\\d")
     private String passengers;
 
+    @NotNull(message = "Departure time should be not null")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Future
     private LocalDate departureDate;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @Future
     private LocalDate arrivalDate;
 
 }
