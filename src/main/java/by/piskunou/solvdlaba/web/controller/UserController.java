@@ -34,12 +34,14 @@ public class UserController {
         return userMapper.toDTO(userService.findAll());
     }
 
+    @PreAuthorize("hasUser(#id)")
     @GetMapping("/{id}")
     public UserDTO findById(@PathVariable long id) {
         User user = userService.findById(id);
         return userMapper.toDTO(user);
     }
 
+    @PreAuthorize("hasUser(#id)")
     @GetMapping("/{id}/tickets")
     public UserDTO findUserTickets(@PathVariable long id) {
         User user = userService.findUserTickets(id);
@@ -54,12 +56,14 @@ public class UserController {
         return ticketMapper.toDTO(ticket);
     }
 
+    @PreAuthorize("hasUser(#id)")
     @PutMapping("{id}")
     public UserDTO updateUsernameById(@PathVariable long id, @RequestParam String username) {
         User user = userService.updateUsernameById(id, username);
         return userMapper.toDTO(user);
     }
 
+    @PreAuthorize("hasUser(#id)")
     @PutMapping("{id}/buy_ticket")
     public UserDTO buyTicket(@PathVariable long id, @RequestBody @Validated(onUpdate.class) TicketDTO ticketDTO) {
         Ticket ticket = ticketMapper.toEntity(ticketDTO);
@@ -68,6 +72,7 @@ public class UserController {
         return userMapper.toDTO(user);
     }
 
+    @PreAuthorize("hasUser(#id) or hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remove(@PathVariable int id) {

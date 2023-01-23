@@ -1,6 +1,7 @@
 package by.piskunou.solvdlaba.security.expression;
 
 import by.piskunou.solvdlaba.service.TicketService;
+import by.piskunou.solvdlaba.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.aopalliance.intercept.MethodInvocation;
@@ -26,6 +27,7 @@ public class CustomMethodSecurityExpressionHandler extends DefaultMethodSecurity
         root.setTrustResolver(this.trustResolver);
         root.setPermissionEvaluator(getPermissionEvaluator());
         root.setTicketService(this.applicationContext.getBean(TicketService.class));
+        root.setUserService(this.applicationContext.getBean(UserService.class));
         return root;
     }
 
