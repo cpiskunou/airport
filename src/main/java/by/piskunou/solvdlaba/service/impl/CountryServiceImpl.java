@@ -4,7 +4,6 @@ import by.piskunou.solvdlaba.domain.Country;
 import by.piskunou.solvdlaba.domain.exception.ResourceAlreadyExistsException;
 import by.piskunou.solvdlaba.domain.exception.ResourceNotExistsException;
 import by.piskunou.solvdlaba.persistent.CountryRepository;
-import by.piskunou.solvdlaba.persistent.impl.CountryRepositoryImpl;
 import by.piskunou.solvdlaba.service.CountryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -84,12 +83,12 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     public boolean isExists(long id) {
-        return countryRepository.isExists(id);
+        return countryRepository.isExistsById(id);
     }
 
     @Override
     public boolean isExists(String name) {
-        return countryRepository.isExists(name);
+        return countryRepository.isExistsByName(name);
     }
 
 }

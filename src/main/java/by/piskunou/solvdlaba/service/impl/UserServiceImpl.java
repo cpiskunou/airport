@@ -4,11 +4,14 @@ import by.piskunou.solvdlaba.domain.Ticket;
 import by.piskunou.solvdlaba.domain.exception.ResourceAlreadyExistsException;
 import by.piskunou.solvdlaba.domain.exception.ResourceNotExistsException;
 import by.piskunou.solvdlaba.persistent.UserRepository;
-import by.piskunou.solvdlaba.persistent.impl.UserRepositoryImpl;
 import by.piskunou.solvdlaba.domain.User;
+import by.piskunou.solvdlaba.security.UserDetailsImpl;
 import by.piskunou.solvdlaba.service.TicketService;
 import by.piskunou.solvdlaba.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,7 +19,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository userRepository;
     private final TicketService ticketService;
@@ -36,6 +39,21 @@ public class UserServiceImpl implements UserService {
     public User findById(long id) {
             return userRepository.findById(id)
                                  .orElseThrow(() -> new ResourceNotExistsException("There's no user with such id"));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username)
+                             .orElseThrow(() -> new ResourceNotExistsException("There's no user with such username"));
+    }
+
+    @Override
+    @Transactional
+    public UserDetails loadUserByUsername(String username) {
+        User user = userRepository.findByUsername(username)
+                                  .orElseThrow(() -> new UsernameNotFoundException("There's no user with such username"));
+        return new UserDetailsImpl(user);
     }
 
     @Override
@@ -81,12 +99,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean isExists(String username) {
-        return userRepository.isExists(username);
+        return userRepository.isExistsByUsername(username);
     }
 
     @Override
     public boolean isExists(long id) {
-        return userRepository.isExists(id);
+        return userRepository.isExistsById(id);
     }
-
 }

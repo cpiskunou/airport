@@ -22,7 +22,7 @@ public class PassengerServiceImpl implements PassengerService {
 
     @Override
     public boolean isExists(long id) {
-        return passengerRepository.isExists(id);
+        return passengerRepository.isExistsById(id);
     }
 
 }

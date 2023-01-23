@@ -5,7 +5,6 @@ import by.piskunou.solvdlaba.service.CityService;
 import by.piskunou.solvdlaba.web.dto.CityDTO;
 import by.piskunou.solvdlaba.web.groups.onCreate;
 import by.piskunou.solvdlaba.web.mapper.CityMapper;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -26,9 +25,9 @@ public class CityController {
         return cityMapper.toDTO(cityService.findAll());
     }
 
-    @GetMapping ("/{countryId}/airports")
-    public CityDTO findCountryCities(@PathVariable long countryId) {
-        City city = cityService.findCityAirports(countryId);
+    @GetMapping ("/{id}/airports")
+    public CityDTO findCountryCities(@PathVariable long id) {
+        City city = cityService.findCityAirports(id);
         return cityMapper.toDTO(city);
     }
 

@@ -14,7 +14,7 @@ public class Airport {
     private Long id;
     private String name;
 
-    public Airport(Long id) {
+    public Airport(long id) {
         this.id = id;
     }
 

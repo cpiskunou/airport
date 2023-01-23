@@ -16,4 +16,6 @@ public interface AirplaneService {
 
     boolean isExists(String name);
 
+    boolean isExists(long id);
+
 }

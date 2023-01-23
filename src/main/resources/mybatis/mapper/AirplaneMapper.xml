@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="by.piskunou.solvdlaba.persistent.AirplaneRepository">
+
+    <resultMap id="airplaneMap" type="Airplane" autoMapping="false">
+        <id property="id" column="airplane_id"/>
+        <result property="model" column="airplane_model"/>
+        <result property="seatsInRow" column="airplane_seats_in_row"/>
+        <result property="rowNo" column="airplane_row_no"/>
+    </resultMap>
+
+    <select id="findAll" resultMap="airplaneMap">
+        select id as airplne_id,
+               model as airplane_model,
+               seats_in_row as airplane_seats_in_row,
+               row_no as airplane_row_no
+        from airplanes
+    </select>
+
+    <select id="findById" resultMap="airplaneMap">
+        select id as airplne_id,
+               model as airplane_model,
+               seats_in_row as airplane_seats_in_row,
+               row_no as airplane_row_no
+        from airplanes
+        where id = #{id}
+    </select>
+
+    <select id="findByName" resultMap="airplaneMap">
+        select id as airplne_id,
+               model as airplane_model,
+               seats_in_row as airplane_seats_in_row,
+               row_no as airplane_row_no
+        from airplanes
+        where model = #{model}
+    </select>
+
+    <insert id="create" useGeneratedKeys="true" keyProperty="id">
+        insert into airplanes(model, seats_in_row, row_no)
+        values(#{model}, #{seatsInRow}, #{rowNo})
+    </insert>
+
+    <delete id="removeById">
+        delete from airplanes where id = #{id}
+    </delete>
+
+    <select id="isExistsById" resultType="boolean">
+        select exists (select from airplanes where id = #{id})
+    </select>
+
+    <select id="isExistsByModel" resultType="boolean">
+        select exists (select from airplanes where model = #{model})
+    </select>
+
+</mapper>

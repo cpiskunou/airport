@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="by.piskunou.solvdlaba.persistent.UserRepository">
+
+    <resultMap id="userMap" type="User" autoMapping="false">
+        <id property="id" column="user_id"/>
+        <result property="username" column="user_name"/>
+    </resultMap>
+
+    <resultMap id="userWithTickets" type="User" autoMapping="false" extends="userMap">
+        <collection property="tickets" ofType="Ticket" javaType="java.util.List" autoMapping="false"
+                    resultMap="by.piskunou.solvdlaba.persistent.TicketRepository.ticketMap"/>
+    </resultMap>
+
+    <select id="findAll" resultType="User">
+        select id as user_id,
+               username as user_name
+        from users
+    </select>
+
+    <select id="findById" resultType="User">
+        select id as user_id,
+               username as user_name
+        from users where id = #{id}
+    </select>
+
+    <select id="findByUsername" resultType="User">
+        select id as user_id,
+               username as user_name
+        from users where username = #{username}
+    </select>
+
+    <select id="findUserTickets" resultMap="userWithTickets">
+        select users.id as user_id,
+               users.username as user_name,
+
+               tickets.id as ticket_id,
+               tickets.seat_no as ticket_seat_no,
+
+               passengers.id as passenger_id,
+               passengers.firstname as passenger_firstname,
+               passengers.surname as passenger_surname,
+
+               flights.id as flight_id,
+               flights.departure_time as flight_departure_time,
+
+               airport_from.id as airport_from_id,
+               airport_from.name as airport_from_name,
+
+               airport_to.id as airport_to_id,
+               airport_to.name as airport_to_name,
+
+               airlines.id as airline_id,
+               airlines.name airline_name
+
+        from users left join tickets on users.id = tickets.fk_owner_id
+                   left join passengers on tickets.fk_passenger_id = passengers.id
+                   left join flights on tickets.fk_flight_id = flights.id
+                   left join airports airport_from on flights.fk_airport_from_id = airport_from.id
+                   left join airports airport_to on flights.fk_airport_to_id = airport_to.id
+                   left join airlines on flights.fk_airline_id = airlines.id
+        where users.id = #{id}
+    </select>
+
+    <insert id="register" useGeneratedKeys="true" keyProperty="id">
+        insert into users (username) values(#{username})
+    </insert>
+
+    <update id="updateUsernameById">
+        update users set username = #{username} where id = #{id}
+    </update>
+
+    <delete id="removeById">
+        delete from users where id = #{id}
+    </delete>
+
+    <select id="isExistsById" resultType="boolean">
+        select exists (select from "user" where id = #{id})
+    </select>
+
+    <select id="isExistsByUsername" resultType="boolean">
+        select exists (select from "user" where username = #{username})
+    </select>
+
+</mapper>

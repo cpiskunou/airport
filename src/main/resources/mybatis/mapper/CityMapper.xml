@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="by.piskunou.solvdlaba.persistent.CityRepository">
+
+    <resultMap id="cityMap" type="City" autoMapping="false">
+        <id property="id" column="city_id"/>
+        <result property="name" column="city_name"/>
+    </resultMap>
+
+    <resultMap id="cityWithAirportsMap" type="City" autoMapping="false" extends="cityMap">
+        <collection property="airports" ofType="Airport" javaType="java.util.List" autoMapping="false">
+            <id property="id" column="airport_id"/>
+            <result property="name" column="airport_name"/>
+        </collection>
+    </resultMap>
+
+    <select id="findAll" resultMap="cityMap">
+        select id as city_id,
+               name as city_name
+        from cities
+    </select>
+
+    <select id="findById" resultMap="cityMap">
+        select id as city_id,
+               name as city_name
+        from cities where id = #{id}
+    </select>
+
+    <select id="findByName" resultMap="cityMap">
+        select id as city_id,
+               name as city_name
+        from cities where name = #{name}
+    </select>
+
+    <select id="findCityAirports" resultMap="cityWithAirportsMap">
+        select cities.id as city_id,
+               cities.name as city_name,
+               airports.id as airport_id,
+               airports.name as airport_name
+        from cities left join airports on cities.id = airports.fk_city_id
+        where cities.id = #{id}
+    </select>
+
+    <insert id="create" useGeneratedKeys="true" keyProperty="city.id">
+        insert into cities(fk_country_id, name) values(#{countryId}, #{city.name})
+    </insert>
+
+    <update id="updateNameById">
+        update cities set name = #{name} where id =#{id}
+    </update>
+
+    <delete id="removeById">
+        delete from cities where id = #{id}
+    </delete>
+
+    <select id="isExistsById" resultType="boolean">
+        select exists (select from cities where id = #{id})
+    </select>
+
+    <select id="isExistsByName" parameterType="java.lang.String" resultType="boolean">
+        select exists (select from cities where name = #{name})
+    </select>
+
+</mapper>

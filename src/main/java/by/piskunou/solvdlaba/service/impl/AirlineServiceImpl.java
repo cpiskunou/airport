@@ -61,12 +61,12 @@ public class AirlineServiceImpl implements AirlineService {
 
     @Override
     public boolean isExists(String name) {
-        return airlineRepository.isExists(name);
+        return airlineRepository.isExistsByName(name);
     }
 
     @Override
     public boolean isExists(long id) {
-        return airlineRepository.isExists(id);
+        return airlineRepository.isExistsById(id);
     }
 
 }

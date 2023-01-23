@@ -1,10 +1,13 @@
 package by.piskunou.solvdlaba.persistent;
 
 import by.piskunou.solvdlaba.domain.City;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Optional;
 
+@Mapper
 public interface CityRepository {
 
     List<City> findAll();
@@ -15,14 +18,14 @@ public interface CityRepository {
 
     Optional<City> findByName(String name);
 
-    void create(City city, long countryId);
+    void create(@Param("city") City city, @Param("countryId") long countryId);
 
-    void updateNameById(long id, String name);
+    void updateNameById(@Param("id") long id, @Param("name") String name);
 
     void removeById(long id);
 
-    boolean isExists(long id);
+    boolean isExistsById(long id);
 
-    boolean isExists(String name);
+    boolean isExistsByName(String name);
 
 }

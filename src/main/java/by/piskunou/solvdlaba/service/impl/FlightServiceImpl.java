@@ -31,7 +31,6 @@ public class FlightServiceImpl implements FlightService {
     @Override
     @Transactional
     public Flight create(Flight flight) {
-
         Airplane airplane = airplaneService.findById(flight.getAirplane()
                                                             .getId());
         List<Seat> seats = createSeats(airplane);
@@ -65,7 +64,6 @@ public class FlightServiceImpl implements FlightService {
         List<Flight> toFlights = flightRepository.search(
                 flightRequest.getFromAirports(),
                 flightRequest.getToAirports(),
-                flightRequest.getPassengers().size(),
                 flightRequest.getDepartureDate().atStartOfDay(),
                 flightRequest.getDepartureDate().atTime(LocalTime.MAX));
         List<BigDecimal> toPrices = cost(passengers, toFlights);
@@ -77,7 +75,6 @@ public class FlightServiceImpl implements FlightService {
             backFlights = flightRepository.search(
                     flightRequest.getToAirports(),
                     flightRequest.getFromAirports(),
-                    flightRequest.getPassengers().size(),
                     flightRequest.getArrivalDate().atStartOfDay(),
                     flightRequest.getArrivalDate().atTime(LocalTime.MAX));
             backPrices = cost(passengers, backFlights);
@@ -88,7 +85,9 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     public List<Seat> freeSeats(long id) {
-        return flightRepository.freeSeats(id);
+        return flightRepository.freeSeats(id)
+                               .orElseThrow(() -> new ResourceNotExistsException("There's no flight with such id"))
+                               .getSeats();
     }
 
     @Override
@@ -98,7 +97,7 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     public boolean isExists(long id) {
-        return flightRepository.isExists(id);
+        return flightRepository.isExistsById(id);
     }
 
     private List<FlightResponse> buildFlightResponse(List<Flight> toFlights, List<BigDecimal> toPrices,

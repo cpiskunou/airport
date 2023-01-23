@@ -2,6 +2,7 @@ package by.piskunou.solvdlaba.web.dto;
 
 import by.piskunou.solvdlaba.web.groups.onCreate;
 import by.piskunou.solvdlaba.web.groups.onUpdate;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;
@@ -23,6 +24,7 @@ public class AirportDTO {
 
     @NotBlank(groups = {onUpdate.class, onCreate.class}, message = "Airport name should be not blank")
     @Size(max = 200, groups = {onUpdate.class, onCreate.class}, message = "Airpot name should be less than 200 characters")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String name;
 
 }

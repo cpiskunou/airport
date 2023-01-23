@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="by.piskunou.solvdlaba.persistent.TicketRepository">
+
+    <resultMap id="ticketMap" type="Ticket" autoMapping="false">
+        <id property="id" column="ticket_id"/>
+        <association property="passenger" javaType="Passenger" autoMapping="false"
+                     resultMap="by.piskunou.solvdlaba.persistent.PassengerRepository.passengerMap"/>
+        <association property="flight" javaType="Flight" autoMapping="false"
+                     resultMap="by.piskunou.solvdlaba.persistent.FlightRepository.departureFlightMap"/>
+        <association property="seat" javaType="Seat" autoMapping="false">
+            <result property="number" column="ticket_seat_no"/>
+        </association>
+    </resultMap>
+
+    <insert id="create" useGeneratedKeys="true" keyProperty="id">
+        insert into tickets(fk_owner_id, fk_flight_id, fk_passenger_id, seat_no)
+        values (#{userId}, #{ticket.flight.id}, #{ticket.passenger.id}, #{ticket.seat.number})
+    </insert>
+
+    <select id="isOwner" resultType="boolean">
+        select exists (select from tickets where id = #{ticketId} and fk_owner_id = #{userId})
+    </select>
+
+</mapper>

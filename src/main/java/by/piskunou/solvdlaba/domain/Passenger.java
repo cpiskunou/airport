@@ -11,15 +11,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class Passenger {
 
-    private Long id;
-    private String firstname;
-    private String surname;
-    private Passport passport;
-    private LocalDate dateOfBirth;
-    private Age age;
-    private Gender gender;
-    private Country country;
-
     public enum Gender {
         MALE, FEMALE
     }
@@ -27,11 +18,20 @@ public class Passenger {
         ADULT, CHILD, INFANT;
     }
 
+    private Long id;
+    private Country country;
+    private String firstname;
+    private String surname;
+    private Passport passport;
+    private LocalDate dateOfBirth;
+    private Age age;
+    private Gender gender;
+
     public Passenger(Age age) {
         this.age = age;
     }
 
-    public Passenger(Long id, String firstname, String surname) {
+    public Passenger(long id, String firstname, String surname) {
         this.id = id;
         this.firstname = firstname;
         this.surname = surname;

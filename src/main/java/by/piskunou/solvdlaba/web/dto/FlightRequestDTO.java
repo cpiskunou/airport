@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -15,9 +16,9 @@ import java.time.LocalDate;
 public class FlightRequestDTO {
 
     @NotNull(message = "Airport from should be not null")
-    private String fromAirport;
+    private List<Long> fromAirports;
 
-    private String toAirport;
+    private List<Long> toAirports;
 
     @NotNull(message = "Passengers should be not null")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "\\d-\\d-\\d")

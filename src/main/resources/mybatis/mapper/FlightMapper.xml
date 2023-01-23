@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="by.piskunou.solvdlaba.persistent.FlightRepository">
+
+    <resultMap id="departureFlightMap" type="Flight">
+        <id property="id" column="flight_id"/>
+        <result property="departureTime" column="flight_departure_time"
+                javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP"/>
+        <association property="from" javaType="Airport" autoMapping="false"
+                     resultMap="by.piskunou.solvdlaba.persistent.AirportRepository.fromAirportMap"/>
+        <association property="to" javaType="Airport" autoMapping="false"
+                     resultMap="by.piskunou.solvdlaba.persistent.AirportRepository.toAirportMap"/>
+        <association property="airline" javaType="Airline" autoMapping="false"
+                     resultMap="by.piskunou.solvdlaba.persistent.AirlineRepository.airlineMap"/>
+    </resultMap>
+
+    <resultMap id="searchMap" type="Flight" autoMapping="false" extends="departureFlightMap">
+        <result property="arrivalTime" column="flight_arrival_time"
+                javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP"/>
+        <result property="price" column="flight_price"/>
+    </resultMap>
+
+    <resultMap id="flightMap" type="Flight" autoMapping="false" extends="searchMap">
+        <association property="airplane" javaType="Airplane" autoMapping="false"
+                     resultMap="by.piskunou.solvdlaba.persistent.AirplaneRepository.airplaneMap"/>
+    </resultMap>
+
+    <resultMap id="freeSeatsMap" type="Flight" autoMapping="false">
+        <id property="id" column="flight_id"/>
+        <result property="seats" column="free_seats" javaType="java.util.List"
+                typeHandler="by.piskunou.solvdlaba.persistent.mybatis.SeatsJsonTypeHandler"/>
+    </resultMap>
+
+    <select id="findById" resultMap="flightMap">
+        select flights.id as flight_id,
+               flights.departure_time as flight_departure_time,
+               flights.arrival_time as flight_arrival_time,
+               flights.price as flight_price,
+
+               airport_from.id as airport_from_id,
+               airport_from.name as airport_from_name,
+
+               airport_to.id as airport_to_id,
+               airport_to.name as airport_to_name,
+
+               airplanes.id as airplane_id,
+               airplanes.model as airplane_model,
+               airplanes.seats_in_row as airplane_seats_in_row,
+               airplanes.row_no as airplane_row_no,
+
+               airlines.id as airline_id,
+               airlines.name as airline_name
+        from flights inner join airports airport_from on flights.fk_airport_from_id = airport_from.id
+                     inner join airports airport_to on flights.fk_airport_to_id = airport_to.id
+                     inner join airlines on flights.fk_airline_id = airlines.id
+                     inner join airplanes on flights.fk_airplane_id = airplanes.id
+        where flights.id = #{id}
+    </select>
+
+    <select id="search" resultMap="searchMap">
+        select flights.id as flight_id,
+               flights.departure_time as flight_departure_time,
+               flights.arrival_time as flight_arrival_time,
+               flights.price as flight_price,
+
+               airport_from.id as airport_from_id,
+               airport_from.name as airport_from_name,
+
+               airport_to.id as airport_to_id,
+               airport_to.name as airport_to_name,
+
+               airlines.id as airline_id,
+               airlines.name as airline_name
+
+        from flights inner join airports airport_from on flights.fk_airport_from_id = airport_from.id
+                     inner join airports airport_to on flights.fk_airport_to_id = airport_to.id
+                     inner join airlines on flights.fk_airline_id = airlines.id
+        where airport_from.id in
+              <foreach collection="fromAirports" item="id" open="(" separator="," close=")">
+                    #{id}
+              </foreach> and
+              airport_to.id in
+              <foreach collection="toAirports" item="id" open="(" separator="," close=")">
+                    #{id}
+              </foreach> and flights.departure_time between #{start} and #{end};
+    </select>
+
+    <insert id="create" useGeneratedKeys="true" keyProperty="id">
+        insert into flights(fk_airport_from_id,
+                           fk_airport_to_id,
+                           fk_airline_id,
+                           fk_airplane_id,
+                           departure_time,
+                           arrival_time,
+                           price,
+                           free_seats)
+        values (#{from.id}, #{to.id}, #{airline.id}, #{airplane.id},
+                #{departureTime}, #{arrivalTime}, #{price},
+                #{seats, typeHandler = by.piskunou.solvdlaba.persistent.mybatis.SeatsJsonTypeHandler}::jsonb)
+    </insert>
+
+    <select id="freeSeats" resultMap="freeSeatsMap">
+        select id as flight_id,
+               jsonb_path_query_array(flights.free_seats, '$[*] ? (@.free == true)') as free_seats
+        from flights
+        where flights.id = #{id}
+    </select>
+
+    <select id="isExistsById" resultType="boolean">
+        select exists (select from flights where id = #{id})
+    </select>
+
+</mapper>

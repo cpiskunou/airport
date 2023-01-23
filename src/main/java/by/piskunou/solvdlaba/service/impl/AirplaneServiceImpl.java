@@ -4,7 +4,6 @@ import by.piskunou.solvdlaba.domain.Airplane;
 import by.piskunou.solvdlaba.domain.exception.ResourceAlreadyExistsException;
 import by.piskunou.solvdlaba.domain.exception.ResourceNotExistsException;
 import by.piskunou.solvdlaba.persistent.AirplaneRepository;
-import by.piskunou.solvdlaba.persistent.impl.AirplaneRepositoryImpl;
 import by.piskunou.solvdlaba.service.AirplaneService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -49,7 +48,12 @@ public class AirplaneServiceImpl implements AirplaneService {
 
     @Override
     public boolean isExists(String model) {
-        return airplaneRepository.isExists(model);
+        return airplaneRepository.isExistsByModel(model);
+    }
+
+    @Override
+    public boolean isExists(long id) {
+        return airplaneRepository.isExistsById(id);
     }
 
 }

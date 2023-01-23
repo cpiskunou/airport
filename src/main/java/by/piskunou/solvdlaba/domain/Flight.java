@@ -1,5 +1,6 @@
 package by.piskunou.solvdlaba.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,6 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Flight {
 
     private Long id;
@@ -25,14 +27,14 @@ public class Flight {
     private LocalDateTime arrivalTime;
     private List<Seat> seats;
 
-    public Flight(Long id, BigDecimal price, LocalDateTime departureTime, LocalDateTime arrivalTime) {
+    public Flight(long id, BigDecimal price, LocalDateTime departureTime, LocalDateTime arrivalTime) {
         this.id = id;
         this.price = price;
         this.departureTime = departureTime;
         this.arrivalTime = arrivalTime;
     }
 
-    public Flight(Long id, LocalDateTime departureTime) {
+    public Flight(long id, LocalDateTime departureTime) {
         this.id = id;
         this.departureTime = departureTime;
     }

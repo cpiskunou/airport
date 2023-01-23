@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="by.piskunou.solvdlaba.persistent.AirlineRepository">
+
+    <resultMap id="airlineMap" type="Airline" autoMapping="false">
+        <id property="id" column="airline_id"/>
+        <result property="name" column="airline_name"/>
+    </resultMap>
+
+    <select id="findAll" resultMap="airlineMap">
+        select id as airline_id,
+               name as airline_name
+        from airlines
+    </select>
+
+    <select id="findById" resultMap="airlineMap">
+        select id as airline_id,
+               name as airline_name
+        from airlines
+        where id = #{id}
+    </select>
+
+    <select id="findByName" resultMap="airlineMap">
+        select id as airline_id,
+               name as airline_name
+        from airlines
+        where name = #{name}
+    </select>
+
+    <insert id="create" useGeneratedKeys="true" keyProperty="id">
+        insert into airlines(name) values(#{name})
+    </insert>
+
+    <update id="updateNameById">
+        update airlines set name = #{name} where id = #{id}
+    </update>
+
+    <delete id="removeById">
+        delete from airlines where id = #{id}
+    </delete>
+
+    <select id="isExistsById" resultType="boolean">
+        select exists (select from airlines where id = #{id})
+    </select>
+
+    <select id="isExistsByName" resultType="boolean">
+        select exists (select from airlines where name = #{name})
+    </select>
+
+</mapper>

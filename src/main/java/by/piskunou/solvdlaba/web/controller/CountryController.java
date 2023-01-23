@@ -5,7 +5,6 @@ import by.piskunou.solvdlaba.service.CountryService;
 import by.piskunou.solvdlaba.web.dto.CountryDTO;
 import by.piskunou.solvdlaba.web.groups.onCreate;
 import by.piskunou.solvdlaba.web.mapper.CountryMapper;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -26,15 +25,15 @@ public class CountryController {
         return mapper.toDTOList(countryService.findAll());
     }
 
-    @GetMapping ("/{countryId}/cities")
-    public CountryDTO findCountryCities(@PathVariable long countryId) {
-        Country country = countryService.findCountryCities(countryId);
+    @GetMapping ("/{id}/cities")
+    public CountryDTO findCountryCities(@PathVariable long id) {
+        Country country = countryService.findCountryCities(id);
         return mapper.toDTO(country);
     }
 
-    @GetMapping ("/{countryId}/airports")
-    public CountryDTO findCountryAirports(@PathVariable long countryId) {
-        Country country = countryService.findCountryAirports(countryId);
+    @GetMapping ("/{id}/airports")
+    public CountryDTO findCountryAirports(@PathVariable long id) {
+        Country country = countryService.findCountryAirports(id);
         return mapper.toDTO(country);
     }
 

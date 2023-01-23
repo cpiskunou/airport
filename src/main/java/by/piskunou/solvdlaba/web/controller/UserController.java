@@ -2,16 +2,17 @@ package by.piskunou.solvdlaba.web.controller;
 
 import by.piskunou.solvdlaba.domain.Ticket;
 import by.piskunou.solvdlaba.domain.User;
+import by.piskunou.solvdlaba.service.TicketService;
 import by.piskunou.solvdlaba.service.UserService;
 import by.piskunou.solvdlaba.web.dto.TicketDTO;
-import by.piskunou.solvdlaba.web.groups.onCreate;
 import by.piskunou.solvdlaba.web.groups.onUpdate;
 import by.piskunou.solvdlaba.web.mapper.TicketMapper;
 import by.piskunou.solvdlaba.web.mapper.UserMapper;
 import by.piskunou.solvdlaba.web.dto.UserDTO;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.parameters.P;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +26,9 @@ public class UserController {
     private final UserService userService;
     private final UserMapper userMapper;
     private final TicketMapper ticketMapper;
+    private final TicketService ticketService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public List<UserDTO> findAll() {
         return userMapper.toDTO(userService.findAll());
@@ -43,13 +46,12 @@ public class UserController {
         return userMapper.toDTO(user);
     }
 
-    @PostMapping("/registration")
-    @ResponseStatus(HttpStatus.CREATED)
-    public UserDTO register(@RequestBody @Validated(onCreate.class) UserDTO userDTO) {
-        User user = userMapper.toEntity(userDTO);
+    @PreAuthorize("hasOwner(#id, #ticket_id)")
+    @GetMapping("/{id}/{ticket_id}")
+    public TicketDTO findUserTicket(@PathVariable("id") long userId, @PathVariable("ticket_id") long ticketId) {
+        Ticket ticket = ticketService.findById(ticketId);
 
-        user = userService.register(user);
-        return userMapper.toDTO(user);
+        return ticketMapper.toDTO(ticket);
     }
 
     @PutMapping("{id}")

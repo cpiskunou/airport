@@ -12,8 +12,8 @@ import java.util.List;
 @NoArgsConstructor
 public class FlightRequest {
 
-    private Long[] fromAirports;
-    private Long[] toAirports;
+    private List<Long> fromAirports;
+    private List<Long> toAirports;
     private List<Passenger> passengers;
     private LocalDate departureDate;
     private LocalDate arrivalDate;

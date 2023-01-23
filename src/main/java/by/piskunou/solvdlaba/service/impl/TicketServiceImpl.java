@@ -1,7 +1,7 @@
 package by.piskunou.solvdlaba.service.impl;
 
+import by.piskunou.solvdlaba.domain.Passport;
 import by.piskunou.solvdlaba.domain.Ticket;
-import by.piskunou.solvdlaba.domain.exception.ResourceAlreadyExistsException;
 import by.piskunou.solvdlaba.domain.exception.ResourceNotExistsException;
 import by.piskunou.solvdlaba.persistent.TicketRepository;
 import by.piskunou.solvdlaba.service.FlightService;
@@ -29,11 +29,27 @@ public class TicketServiceImpl implements TicketService {
         }
         if(!passengerService.isExists(ticket.getPassenger().getId())) {
             passengerService.create(ticket.getPassenger());
-            passportService.create(ticket.getPassenger().getPassport());
+
+            Passport passport = ticket.getPassenger().getPassport();
+            passport.setId(ticket.getPassenger().getId());
+
+            passportService.create(passport);
         }
         flightService.bookSeat(ticket.getSeat().getNumber());
         ticketRepository.create(ticket, userId);
         return ticket;
+    }
+
+    @Override
+    @Transactional
+    public Ticket findById(long id) {
+        return ticketRepository.findById(id)
+                               .orElseThrow(() -> new ResourceNotExistsException("There's no ticket with such id"));
+    }
+
+    @Override
+    public boolean isOwner(long ticketId, long userId) {
+        return ticketRepository.isOwner(ticketId, userId);
     }
 
 }

@@ -21,28 +21,17 @@ public class FlightRequestMapperImpl implements FlightRequestMapper {
 
         FlightRequest flightRequest = new FlightRequest();
 
-        String[] fromAirports = dto.getFromAirport()
-                                   .split("-");
-        String[] toAirports = dto.getToAirport()
-                                 .split("-");
         String[] passengersAmount = dto.getPassengers()
                                        .split("-");
 
-        flightRequest.setFromAirports( parseAirports( fromAirports ) );
-        flightRequest.setToAirports( parseAirports( toAirports ) );
+
+        flightRequest.setFromAirports( dto.getFromAirports() );
+        flightRequest.setToAirports( dto.getToAirports() );
         flightRequest.setPassengers( parsePassengers( passengersAmount ) );
         flightRequest.setDepartureDate( dto.getDepartureDate() );
         flightRequest.setArrivalDate( dto.getArrivalDate() );
 
         return flightRequest;
-    }
-
-    private Long[] parseAirports(String[] airports) {
-        Long[] ids = new Long[airports.length];
-        return Arrays.stream(airports)
-                .map(id -> Long.valueOf(id))
-                .toList()
-                .toArray(ids);
     }
 
     private List<Passenger> parsePassengers(String[] passengersAmount) {

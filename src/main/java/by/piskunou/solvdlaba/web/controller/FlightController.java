@@ -2,6 +2,7 @@ package by.piskunou.solvdlaba.web.controller;
 
 import by.piskunou.solvdlaba.domain.Flight;
 import by.piskunou.solvdlaba.domain.FlightRequest;
+import by.piskunou.solvdlaba.domain.Seat;
 import by.piskunou.solvdlaba.service.FlightService;
 import by.piskunou.solvdlaba.web.dto.FlightDTO;
 import by.piskunou.solvdlaba.web.dto.FlightRequestDTO;
@@ -15,6 +16,7 @@ import by.piskunou.solvdlaba.web.mapper.SeatMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,18 +40,20 @@ public class FlightController {
     }
 
     @GetMapping("/search")
-    public List<FlightResponseDTO> search(@Valid FlightRequestDTO flightRequestDTO) {
+    public List<FlightResponseDTO> search(@Validated FlightRequestDTO flightRequestDTO) {
         FlightRequest flightRequest = flightRequestMapper.toEntity(flightRequestDTO);
         return flightResponseMapper.toDTO(flightService.search(flightRequest));
     }
 
+    //TODO: write normal with query parameter
     @GetMapping("/{id}/free_seats")
     public List<SeatDTO> findFreeSeats(@PathVariable long id) {
-        return seatMapper.toDTO(flightService.freeSeats(id));
+        return seatMapper.toDTO( flightService.freeSeats(id) );
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole('ADMIN')")
     public FlightDTO create(@RequestBody @Validated(onCreate.class) FlightDTO flightDTO) {
         Flight flight = flightMapper.toEntity(flightDTO);
 

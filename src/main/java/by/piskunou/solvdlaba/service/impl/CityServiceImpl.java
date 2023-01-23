@@ -4,7 +4,6 @@ import by.piskunou.solvdlaba.domain.City;
 import by.piskunou.solvdlaba.domain.exception.ResourceAlreadyExistsException;
 import by.piskunou.solvdlaba.domain.exception.ResourceNotExistsException;
 import by.piskunou.solvdlaba.persistent.CityRepository;
-import by.piskunou.solvdlaba.persistent.impl.CityRepositoryImpl;
 import by.piskunou.solvdlaba.service.CityService;
 import by.piskunou.solvdlaba.service.CountryService;
 import lombok.RequiredArgsConstructor;
@@ -81,12 +80,12 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public boolean isExists(long id) {
-        return cityRepository.isExists(id);
+        return cityRepository.isExistsById(id);
     }
 
     @Override
     public boolean isExists(String name) {
-        return cityRepository.isExists(name);
+        return cityRepository.isExistsByName(name);
     }
 
 }
