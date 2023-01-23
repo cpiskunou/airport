@@ -30,7 +30,6 @@ public class AuthController {
         return authMapper.toDTO(authEntity);
     }
 
-
     @PostMapping("/authenticate")
     public AuthEntityDTO authenticate(@RequestBody @Validated(UserDTO.onAuth.class) UserDTO userDTO) {
         User user = userMapper.toEntity(userDTO);
@@ -45,7 +44,6 @@ public class AuthController {
         authEntity = authService.refresh(authEntity);
         return authMapper.toDTO(authEntity);
     }
-
 
     @PostMapping("/new-access")
     public AuthEntityDTO newAccessToken(@RequestBody @Validated AuthEntityDTO authEntityDTO) {

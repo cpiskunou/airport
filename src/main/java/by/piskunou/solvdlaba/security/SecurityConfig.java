@@ -1,7 +1,6 @@
 package by.piskunou.solvdlaba.security;
 
 import by.piskunou.solvdlaba.domain.User;
-import by.piskunou.solvdlaba.security.JwtAuthFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,6 +29,9 @@ public class SecurityConfig {
                         "/airplanes/*",
                         "/city/*",
                         "/country/*").hasRole(User.Role.ADMIN.name())
+                .requestMatchers("/{id}/*",
+                                           "/search").hasAnyRole(User.Role.ADMIN.name(),
+                                                                        User.Role.USER.name())
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

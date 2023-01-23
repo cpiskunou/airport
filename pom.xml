@@ -20,6 +20,7 @@
         <liquibase.version>4.18.0</liquibase.version>
         <java.jwt.version>4.2.2</java.jwt.version>
         <jjwt.version>0.11.5</jjwt.version>
+        <spring.doc.version>2.0.0</spring.doc.version>
     </properties>
 
     <dependencies>
@@ -53,6 +54,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
             <version>${springboot.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>${spring.doc.version}</version>
         </dependency>
 
         <!-- Database -->
