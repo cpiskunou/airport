@@ -22,13 +22,13 @@ public class AdviceController {
 
     @ExceptionHandler({ResourceNotExistsException.class, UsernameNotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponseDTO handleResourceNotExistsException(Exception e) {
+    public ErrorResponseDTO handleNotFoundException(Exception e) {
         return new ErrorResponseDTO(e.getMessage());
     }
 
-    @ExceptionHandler(ResourceAlreadyExistsException.class)
+    @ExceptionHandler({ResourceAlreadyExistsException.class, IllegalArgumentException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponseDTO handleResourceAlreadyExistsException(ResourceAlreadyExistsException e) {
+    public ErrorResponseDTO handleBadRequestException(Exception e) {
         return new ErrorResponseDTO(e.getMessage());
     }
 

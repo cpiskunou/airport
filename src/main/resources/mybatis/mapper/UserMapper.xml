@@ -5,6 +5,7 @@
     <resultMap id="userMap" type="User" autoMapping="false">
         <id property="id" column="user_id"/>
         <result property="username" column="user_name"/>
+        <result property="role" column="user_role"/>
     </resultMap>
 
     <resultMap id="userWithTickets" type="User" autoMapping="false" extends="userMap">
@@ -14,25 +15,29 @@
 
     <select id="findAll" resultType="User">
         select id as user_id,
-               username as user_name
+               username as user_name,
+               role as user_role
         from users
     </select>
 
     <select id="findById" resultType="User">
         select id as user_id,
-               username as user_name
+               username as user_name,
+               role as user_role
         from users where id = #{id}
     </select>
 
     <select id="findByUsername" resultType="User">
         select id as user_id,
-               username as user_name
+               username as user_name,
+               role as user_role
         from users where username = #{username}
     </select>
 
     <select id="findUserTickets" resultMap="userWithTickets">
         select users.id as user_id,
                users.username as user_name,
+               role as user_role,
 
                tickets.id as ticket_id,
                tickets.seat_no as ticket_seat_no,
@@ -63,7 +68,7 @@
     </select>
 
     <insert id="register" useGeneratedKeys="true" keyProperty="id">
-        insert into users (username) values(#{username})
+        insert into users (username, password, role) values(#{username}, #{password}, #{role});
     </insert>
 
     <update id="updateUsernameById">
