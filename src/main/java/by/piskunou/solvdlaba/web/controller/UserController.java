@@ -28,27 +28,27 @@ public class UserController {
     private final TicketMapper ticketMapper;
     private final TicketService ticketService;
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping
     public List<UserDTO> findAll() {
         return userMapper.toDTO(userService.findAll());
     }
 
-    @PreAuthorize("hasUser(#id)")
+    @PreAuthorize("hasUser(#id) and hasRole('USER')")
     @GetMapping("/{id}")
     public UserDTO findById(@PathVariable long id) {
         User user = userService.findById(id);
         return userMapper.toDTO(user);
     }
 
-    @PreAuthorize("hasUser(#id)")
+    @PreAuthorize("hasUser(#id) and hasRole('USER')")
     @GetMapping("/{id}/tickets")
     public UserDTO findUserTickets(@PathVariable long id) {
         User user = userService.findUserTickets(id);
         return userMapper.toDTO(user);
     }
 
-    @PreAuthorize("hasOwner(#id, #ticket_id)")
+    @PreAuthorize("hasOwner(#id, #ticket_id) and hasRole('USER')")
     @GetMapping("/{id}/{ticket_id}")
     public TicketDTO findUserTicket(@PathVariable("id") long userId, @PathVariable("ticket_id") long ticketId) {
         Ticket ticket = ticketService.findById(ticketId);
@@ -56,14 +56,14 @@ public class UserController {
         return ticketMapper.toDTO(ticket);
     }
 
-    @PreAuthorize("hasUser(#id)")
+    @PreAuthorize("hasUser(#id) and hasRole('USER')")
     @PutMapping("{id}")
     public UserDTO updateUsernameById(@PathVariable long id, @RequestParam String username) {
         User user = userService.updateUsernameById(id, username);
         return userMapper.toDTO(user);
     }
 
-    @PreAuthorize("hasUser(#id)")
+    @PreAuthorize("hasUser(#id) and hasRole('USER')")
     @PutMapping("{id}/buy_ticket")
     public UserDTO buyTicket(@PathVariable long id, @RequestBody @Validated(onUpdate.class) TicketDTO ticketDTO) {
         Ticket ticket = ticketMapper.toEntity(ticketDTO);
