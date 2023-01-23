@@ -1,4 +1,4 @@
-package by.piskunou.solvdlaba.security;
+package by.piskunou.solvdlaba.security.expression;
 
 import by.piskunou.solvdlaba.security.expression.CustomMethodSecurityExpressionHandler;
 import lombok.AllArgsConstructor;
