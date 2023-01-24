@@ -27,8 +27,4 @@ public class CountryDTO {
     @Size(max = 50, message = "Country name should be less than 50 characters")
     private String name;
 
-    @Null(groups = onCreate.class, message = "List of cities should be null")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private List<City> cities;
-
 }

@@ -3,15 +3,11 @@ package by.piskunou.solvdlaba.service.impl;
 import by.piskunou.solvdlaba.domain.Ticket;
 import by.piskunou.solvdlaba.domain.exception.ResourceAlreadyExistsException;
 import by.piskunou.solvdlaba.domain.exception.ResourceNotExistsException;
-import by.piskunou.solvdlaba.persistent.UserRepository;
+import by.piskunou.solvdlaba.persistence.UserRepository;
 import by.piskunou.solvdlaba.domain.User;
-import by.piskunou.solvdlaba.security.UserDetailsImpl;
 import by.piskunou.solvdlaba.service.TicketService;
 import by.piskunou.solvdlaba.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +15,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService, UserDetailsService {
+public class UserServiceImpl implements UserService { //UserDetailsService {
 
     private final UserRepository userRepository;
     private final TicketService ticketService;
@@ -48,13 +44,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                              .orElseThrow(() -> new ResourceNotExistsException("There's no user with such username"));
     }
 
-    @Override
-    @Transactional
-    public UserDetails loadUserByUsername(String username) {
-        User user = userRepository.findByUsername(username)
-                                  .orElseThrow(() -> new UsernameNotFoundException("There's no user with such username"));
-        return new UserDetailsImpl(user);
-    }
+//    @Override
+//    @Transactional
+//    public UserDetails loadUserByUsername(String username) {
+//        User user = userRepository.findByUsername(username)
+//                                  .orElseThrow(() -> new UsernameNotFoundException("There's no user with such username"));
+//        return new UserDetailsImpl(user);
+//    }
 
     @Override
     public User findUserTickets(long id) {

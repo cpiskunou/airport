@@ -11,11 +11,12 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Seat {
 
-    private String number;
+    private Long number;
+    private String place;
     private boolean free;
 
-    public Seat(String number) {
-        this.number = number;
+    public Seat(String place) {
+        this.place = place;
         free = true;
     }
 

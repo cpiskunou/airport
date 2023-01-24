@@ -3,7 +3,9 @@
 --changeset cichan:create-users-table
 create table if not exists users(
     id bigserial primary key,
-    username varchar(50) not null unique
+    username varchar(50) not null unique,
+    password varchar(300) not null unique,
+    role varchar(10) not null
 );
 --rollback drop table users;
 
@@ -42,7 +44,10 @@ create table if not exists airports(
 --changeset cichan:create-airlines-table
 create table if not exists airlines(
     id bigserial primary key,
-    "name" varchar(50) not null unique
+    "name" varchar(50) not null unique,
+    iata varchar(2) not null unique,
+    icao varchar(3) not null unique,
+    callsign varchar(30) not null unique
 );
 --rollback drop table airlines;
 
@@ -90,10 +95,3 @@ create table if not exists tickets(
 );
 --rollback drop table tickets
 
---changeset cichan:add-columns-to-users
-alter table users add password varchar(300) unique;
-alter table users add role varchar(10);
-
---changeset cichan:add-columns-not-null-constraints
-alter table users alter column password set not null;
-alter table users alter column role set not null;

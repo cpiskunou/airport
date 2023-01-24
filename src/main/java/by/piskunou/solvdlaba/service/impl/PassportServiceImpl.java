@@ -1,7 +1,7 @@
 package by.piskunou.solvdlaba.service.impl;
 
 import by.piskunou.solvdlaba.domain.Passport;
-import by.piskunou.solvdlaba.persistent.PassportRepository;
+import by.piskunou.solvdlaba.persistence.PassportRepository;
 import by.piskunou.solvdlaba.service.PassportService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

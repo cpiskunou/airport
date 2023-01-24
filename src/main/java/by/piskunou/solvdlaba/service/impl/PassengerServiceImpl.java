@@ -1,7 +1,7 @@
 package by.piskunou.solvdlaba.service.impl;
 
 import by.piskunou.solvdlaba.domain.Passenger;
-import by.piskunou.solvdlaba.persistent.PassengerRepository;
+import by.piskunou.solvdlaba.persistence.PassengerRepository;
 import by.piskunou.solvdlaba.service.PassengerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

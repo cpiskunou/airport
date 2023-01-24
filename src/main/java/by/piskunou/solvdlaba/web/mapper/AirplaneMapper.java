@@ -13,4 +13,6 @@ public interface AirplaneMapper {
 
     Airplane toEntity(AirplaneDTO dto);
 
+    List<AirplaneDTO> toDTO(List<Airplane> entities);
+
 }

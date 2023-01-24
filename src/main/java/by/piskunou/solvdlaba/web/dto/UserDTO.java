@@ -16,6 +16,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+//@Schema(description = "User info")
 public class UserDTO {
 
     public interface onRegister {};

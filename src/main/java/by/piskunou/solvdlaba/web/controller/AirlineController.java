@@ -3,9 +3,7 @@ package by.piskunou.solvdlaba.web.controller;
 import by.piskunou.solvdlaba.domain.Airline;
 import by.piskunou.solvdlaba.service.AirlineService;
 import by.piskunou.solvdlaba.web.dto.AirlineDTO;
-import by.piskunou.solvdlaba.web.groups.onCreate;
 import by.piskunou.solvdlaba.web.mapper.AirlineMapper;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -18,39 +16,55 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AirlineController {
 
-    private final AirlineService airlineService;
-    private final AirlineMapper airlineMapper;
+    private final AirlineService service;
+    private final AirlineMapper mapper;
 
     @GetMapping
     public List<AirlineDTO> findAll() {
-        return airlineMapper.toDTO(airlineService.findAll());
+        return mapper.toDTO( service.findAll() );
     }
 
     @GetMapping("/{id}")
     public AirlineDTO findById(@PathVariable long id) {
-        Airline airline = airlineService.findById(id);
-        return airlineMapper.toDTO(airline);
+        return mapper.toDTO( service.findById(id) );
+    }
+
+    @GetMapping("/search")
+    public AirlineDTO search(@RequestParam String designator) {
+        return mapper.toDTO( service.findByDesignator(designator) );
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public AirlineDTO create(@RequestBody @Validated(onCreate.class) AirlineDTO airlineDTO) {
-        Airline airline = airlineMapper.toEntity(airlineDTO);
+    public AirlineDTO create(@RequestBody @Validated AirlineDTO airlineDTO) {
+        Airline airline = mapper.toEntity(airlineDTO);
 
-        airline = airlineService.create(airline);
-        return airlineMapper.toDTO(airline);
+        airline = service.create(airline);
+        return mapper.toDTO(airline);
     }
 
     @PutMapping ("/{id}")
     public AirlineDTO updateNameById(@PathVariable long id, @RequestParam String name) {
-        Airline airline = airlineService.updateNameById(id, name);
-        return airlineMapper.toDTO(airline);
+        Airline airline = service.updateNameById(id, name);
+        return mapper.toDTO(airline);
+    }
+
+    @PutMapping("/update")
+    public AirlineDTO updateNameByDesignator(@RequestParam String designator, @RequestParam String name) {
+        Airline airline = service.updateNameByDesignator(designator, name);
+        return mapper.toDTO(airline);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeById(@PathVariable long id) {
-        airlineService.removeById(id);
+        service.removeById(id);
+    }
+
+    @DeleteMapping("/delete")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void removeByDesignator(@RequestParam String designator) {
+        service.removeByDesignator(designator);
     }
 
 }

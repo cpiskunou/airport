@@ -14,6 +14,7 @@ public class City {
 
     private Long id;
     private String name;
+    private Country country;
     private List<Airport> airports;
 
     public City(long id, String name) {

@@ -3,7 +3,7 @@ package by.piskunou.solvdlaba.service.impl;
 import by.piskunou.solvdlaba.domain.City;
 import by.piskunou.solvdlaba.domain.exception.ResourceAlreadyExistsException;
 import by.piskunou.solvdlaba.domain.exception.ResourceNotExistsException;
-import by.piskunou.solvdlaba.persistent.CityRepository;
+import by.piskunou.solvdlaba.persistence.CityRepository;
 import by.piskunou.solvdlaba.service.CityService;
 import by.piskunou.solvdlaba.service.CountryService;
 import lombok.RequiredArgsConstructor;

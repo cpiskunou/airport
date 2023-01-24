@@ -1,5 +1,6 @@
 package by.piskunou.solvdlaba.web.dto;
 
+import by.piskunou.solvdlaba.domain.Airport;
 import by.piskunou.solvdlaba.web.groups.onCreate;
 import by.piskunou.solvdlaba.web.groups.onUpdate;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -26,8 +27,8 @@ public class CityDTO {
     @Size(max = 50, groups = {onUpdate.class, onCreate.class}, message = "City name should be less than50 characters")
     private String name;
 
-    @Null(groups = onCreate.class, message = "List of airports should be null")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private CountryDTO countryDTO;
+
     private List<AirportDTO> airports;
 
 }

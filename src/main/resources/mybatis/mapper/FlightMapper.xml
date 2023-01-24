@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="by.piskunou.solvdlaba.persistent.FlightRepository">
+<mapper namespace="by.piskunou.solvdlaba.persistence.FlightRepository">
 
     <resultMap id="departureFlightMap" type="Flight">
         <id property="id" column="flight_id"/>
         <result property="departureTime" column="flight_departure_time"
                 javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP"/>
         <association property="from" javaType="Airport" autoMapping="false"
-                     resultMap="by.piskunou.solvdlaba.persistent.AirportRepository.fromAirportMap"/>
+                     resultMap="by.piskunou.solvdlaba.persistence.AirportRepository.fromAirportMap"/>
         <association property="to" javaType="Airport" autoMapping="false"
-                     resultMap="by.piskunou.solvdlaba.persistent.AirportRepository.toAirportMap"/>
+                     resultMap="by.piskunou.solvdlaba.persistence.AirportRepository.toAirportMap"/>
         <association property="airline" javaType="Airline" autoMapping="false"
-                     resultMap="by.piskunou.solvdlaba.persistent.AirlineRepository.airlineMap"/>
+                     resultMap="by.piskunou.solvdlaba.persistence.AirlineRepository.airlineMap"/>
     </resultMap>
 
     <resultMap id="searchMap" type="Flight" autoMapping="false" extends="departureFlightMap">
@@ -22,13 +22,13 @@
 
     <resultMap id="flightMap" type="Flight" autoMapping="false" extends="searchMap">
         <association property="airplane" javaType="Airplane" autoMapping="false"
-                     resultMap="by.piskunou.solvdlaba.persistent.AirplaneRepository.airplaneMap"/>
+                     resultMap="by.piskunou.solvdlaba.persistence.AirplaneRepository.airplaneMap"/>
     </resultMap>
 
     <resultMap id="freeSeatsMap" type="Flight" autoMapping="false">
         <id property="id" column="flight_id"/>
         <result property="seats" column="free_seats" javaType="java.util.List"
-                typeHandler="by.piskunou.solvdlaba.persistent.mybatis.SeatsJsonTypeHandler"/>
+                typeHandler="by.piskunou.solvdlaba.persistence.mybatis.SeatsJsonTypeHandler"/>
     </resultMap>
 
     <select id="findById" resultMap="flightMap">
@@ -96,7 +96,7 @@
                            free_seats)
         values (#{from.id}, #{to.id}, #{airline.id}, #{airplane.id},
                 #{departureTime}, #{arrivalTime}, #{price},
-                #{seats, typeHandler = by.piskunou.solvdlaba.persistent.mybatis.SeatsJsonTypeHandler}::jsonb)
+                #{seats, typeHandler = by.piskunou.solvdlaba.persistence.mybatis.SeatsJsonTypeHandler}::jsonb)
     </insert>
 
     <select id="freeSeats" resultMap="freeSeatsMap">

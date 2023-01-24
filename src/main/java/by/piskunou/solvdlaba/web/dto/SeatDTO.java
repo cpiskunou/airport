@@ -9,7 +9,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class SeatDTO {
 
-    private String number;
+    private Long number;
+    private String place;
     private Boolean free;
 
 }

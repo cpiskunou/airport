@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="by.piskunou.solvdlaba.persistent.PassengerRepository">
+<mapper namespace="by.piskunou.solvdlaba.persistence.PassengerRepository">
 
     <resultMap id="passengerMap" type="Passenger" autoMapping="false">
         <id property="id" column="passenger_id"/>

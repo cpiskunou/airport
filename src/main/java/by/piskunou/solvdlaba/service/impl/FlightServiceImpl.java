@@ -2,7 +2,7 @@ package by.piskunou.solvdlaba.service.impl;
 
 import by.piskunou.solvdlaba.domain.*;
 import by.piskunou.solvdlaba.domain.exception.ResourceNotExistsException;
-import by.piskunou.solvdlaba.persistent.FlightRepository;
+import by.piskunou.solvdlaba.persistence.FlightRepository;
 import by.piskunou.solvdlaba.service.AirplaneService;
 import by.piskunou.solvdlaba.service.FlightService;
 import lombok.RequiredArgsConstructor;

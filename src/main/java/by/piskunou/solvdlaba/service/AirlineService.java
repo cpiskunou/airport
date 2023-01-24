@@ -10,14 +10,26 @@ public interface AirlineService {
 
     Airline findById(long id);
 
+    Airline findByDesignator(String designator);
+
     Airline create(Airline airline);
 
     Airline updateNameById(long id, String name);
 
+    Airline updateNameByDesignator(String designator, String name);
+
     void removeById(long id);
+
+    void removeByDesignator(String designator);
+
+    boolean isExists(long id);
 
     boolean isExists(String name);
 
-    boolean isExists(long id);
+    boolean isValidIata(String iata);
+
+    boolean isValidIcao(String icao);
+
+    boolean isValidCallsign(String callsign);
 
 }

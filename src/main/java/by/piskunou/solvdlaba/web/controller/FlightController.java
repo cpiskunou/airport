@@ -13,10 +13,8 @@ import by.piskunou.solvdlaba.web.mapper.FlightMapper;
 import by.piskunou.solvdlaba.web.mapper.FlightRequestMapper;
 import by.piskunou.solvdlaba.web.mapper.FlightResponseMapper;
 import by.piskunou.solvdlaba.web.mapper.SeatMapper;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,7 +51,7 @@ public class FlightController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasRole('ADMIN')")
+ //   @PreAuthorize("hasRole('ADMIN')")
     public FlightDTO create(@RequestBody @Validated(onCreate.class) FlightDTO flightDTO) {
         Flight flight = flightMapper.toEntity(flightDTO);
 

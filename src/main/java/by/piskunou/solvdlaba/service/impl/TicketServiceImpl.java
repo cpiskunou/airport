@@ -3,7 +3,7 @@ package by.piskunou.solvdlaba.service.impl;
 import by.piskunou.solvdlaba.domain.Passport;
 import by.piskunou.solvdlaba.domain.Ticket;
 import by.piskunou.solvdlaba.domain.exception.ResourceNotExistsException;
-import by.piskunou.solvdlaba.persistent.TicketRepository;
+import by.piskunou.solvdlaba.persistence.TicketRepository;
 import by.piskunou.solvdlaba.service.FlightService;
 import by.piskunou.solvdlaba.service.PassengerService;
 import by.piskunou.solvdlaba.service.PassportService;
@@ -35,7 +35,7 @@ public class TicketServiceImpl implements TicketService {
 
             passportService.create(passport);
         }
-        flightService.bookSeat(ticket.getSeat().getNumber());
+        flightService.bookSeat(ticket.getSeat().getPlace());
         ticketRepository.create(ticket, userId);
         return ticket;
     }

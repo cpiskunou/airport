@@ -1,46 +1,29 @@
 package by.piskunou.solvdlaba.web.controller;
 
+import by.piskunou.solvdlaba.domain.exception.InvalidResourceParamException;
 import by.piskunou.solvdlaba.domain.exception.ResourceAlreadyExistsException;
 import by.piskunou.solvdlaba.domain.exception.ResourceNotExistsException;
 import by.piskunou.solvdlaba.web.dto.ErrorResponseDTO;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.BindException;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import javax.naming.AuthenticationException;
-import java.nio.file.AccessDeniedException;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestControllerAdvice
 public class AdviceController {
 
-    @ExceptionHandler({ResourceNotExistsException.class, UsernameNotFoundException.class})
+    @ExceptionHandler({ResourceNotExistsException.class}) //UsernameNotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponseDTO handleNotFoundException(Exception e) {
         return new ErrorResponseDTO(e.getMessage());
     }
 
-    @ExceptionHandler({ResourceAlreadyExistsException.class, IllegalArgumentException.class})
+    @ExceptionHandler({ResourceAlreadyExistsException.class, IllegalArgumentException.class, InvalidResourceParamException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponseDTO handleBadRequestException(Exception e) {
-        return new ErrorResponseDTO(e.getMessage());
-    }
-
-    @ExceptionHandler(AuthenticationException.class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ErrorResponseDTO handleAuthException(AuthenticationException e) {
-        return new ErrorResponseDTO(e.getMessage());
-    }
-
-    @ExceptionHandler(AccessDeniedException.class)
-    @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ErrorResponseDTO handleAccessException(AuthenticationException e) {
         return new ErrorResponseDTO(e.getMessage());
     }
 

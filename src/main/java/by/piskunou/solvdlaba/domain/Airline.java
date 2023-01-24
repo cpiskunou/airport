@@ -13,5 +13,17 @@ public class Airline {
 
     private Long id;
     private String name;
+    private String iata;
+    private String icao;
+    private String callsign;
+
+    public Airline(String name) {
+        this.name = name;
+    }
+
+    public Airline(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
 }

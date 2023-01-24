@@ -3,7 +3,7 @@ package by.piskunou.solvdlaba.service.impl;
 import by.piskunou.solvdlaba.domain.Airplane;
 import by.piskunou.solvdlaba.domain.exception.ResourceAlreadyExistsException;
 import by.piskunou.solvdlaba.domain.exception.ResourceNotExistsException;
-import by.piskunou.solvdlaba.persistent.AirplaneRepository;
+import by.piskunou.solvdlaba.persistence.AirplaneRepository;
 import by.piskunou.solvdlaba.service.AirplaneService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

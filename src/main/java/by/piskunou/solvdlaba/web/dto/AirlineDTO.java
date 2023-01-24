@@ -18,13 +18,27 @@ import lombok.Setter;
 @AllArgsConstructor
 public class AirlineDTO {
 
-    @Null(groups = onCreate.class, message = "Id should be null")
-    @NotNull(groups = onUpdate.class, message = "Id should be not null")
+    @Null(message = "Id should be null")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long id;
 
-    @NotBlank(groups = {onUpdate.class, onCreate.class}, message = "Name should be not blank")
-    @Size(max = 50, groups = {onUpdate.class, onCreate.class}, message = "Name should be less than 50 characters")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @NotBlank(message = "Name should be not blank")
+    @Size(max = 50, message = "Name should be less than 50 characters")
     private String name;
+
+    @NotNull(message = "IATA code should be not null")
+    @Size(max = 2, message = "IATA code should be less than 2 characters")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String iata;
+
+    @NotNull(message = "ICAO code should be not null")
+    @Size(max = 3, message = "ICAO code should be less than 3 characters")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String icao;
+
+    @NotNull(message = "Callsign should be not null")
+    @Size(max = 30, message = "Callsign should be less than 30 characters")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String callsign;
 
 }

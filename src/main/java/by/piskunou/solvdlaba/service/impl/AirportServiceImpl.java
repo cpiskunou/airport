@@ -2,7 +2,7 @@ package by.piskunou.solvdlaba.service.impl;
 
 import by.piskunou.solvdlaba.domain.Airport;
 import by.piskunou.solvdlaba.domain.exception.ResourceNotExistsException;
-import by.piskunou.solvdlaba.persistent.AirportRepository;
+import by.piskunou.solvdlaba.persistence.AirportRepository;
 import by.piskunou.solvdlaba.service.AirportService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
