@@ -1,13 +1,11 @@
 package by.piskunou.solvdlaba.web.dto;
 
 import by.piskunou.solvdlaba.web.groups.onCreate;
-import by.piskunou.solvdlaba.web.groups.onUpdate;
+import by.piskunou.solvdlaba.web.groups.onSearch;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,16 +13,27 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class AirportDTO {
 
-    @Null(groups = onCreate.class, message = "Id should be null")
-    @NotNull(groups = onUpdate.class, message = "Id should be not null")
+    @Null(groups = {onCreate.class, onSearch.class}, message = "Id should be null")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long id;
 
-    @NotBlank(groups = {onUpdate.class, onCreate.class}, message = "Airport name should be not blank")
-    @Size(max = 200, groups = {onUpdate.class, onCreate.class}, message = "Airpot name should be less than 200 characters")
+    @NotBlank(groups = onCreate.class, message = "Airport name should be not blank")
+    @Size(max = 200, groups = onCreate.class, message = "Airport name should be less than 200 characters")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String name;
+
+    @NotBlank(groups = onCreate.class, message = "IATA code should be not blank")
+    @Size(max = 3, groups = onSearch.class, message = "IATA code should be less than 3 characters")
+    @Size(min = 3, max = 3, groups = onCreate.class, message = "IATA code length should be 3")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String iata;
+
+    @NotBlank(groups = onCreate.class, message = "ICAO code should be not blank")
+    @Size(max = 4, groups = onSearch.class, message = "IATA code should be less than 4 characters")
+    @Size(min = 4, max = 4, groups = onCreate.class, message = "ICAO code length should be 4")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String icao;
 
 }

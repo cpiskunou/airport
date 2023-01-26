@@ -5,7 +5,6 @@ import by.piskunou.solvdlaba.domain.User;
 import by.piskunou.solvdlaba.service.TicketService;
 import by.piskunou.solvdlaba.service.UserService;
 import by.piskunou.solvdlaba.web.dto.TicketDTO;
-import by.piskunou.solvdlaba.web.groups.onUpdate;
 import by.piskunou.solvdlaba.web.mapper.TicketMapper;
 import by.piskunou.solvdlaba.web.mapper.UserMapper;
 import by.piskunou.solvdlaba.web.dto.UserDTO;
@@ -66,7 +65,7 @@ public class UserController {
 
  //   @PreAuthorize("hasUser(#id) and hasRole('USER')")
     @PutMapping("{id}/buy_ticket")
-    public UserDTO buyTicket(@PathVariable long id, @RequestBody @Validated(onUpdate.class) TicketDTO ticketDTO) {
+    public UserDTO buyTicket(@PathVariable long id, @RequestBody @Validated TicketDTO ticketDTO) {
         Ticket ticket = ticketMapper.toEntity(ticketDTO);
 
         User user = userService.buyTicket(id, ticket);

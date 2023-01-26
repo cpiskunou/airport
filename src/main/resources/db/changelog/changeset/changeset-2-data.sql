@@ -43,26 +43,26 @@ insert into cities(fk_country_id, name) values (6, 'Dubai');
 insert into cities(fk_country_id, name) values (6, 'Abu Dhabi');
 
 --changeset cichan:insertion-into-airports
-insert into airports(fk_city_id, name) values (1, 'Minsk National Airport');
-insert into airports(fk_city_id, name) values (4, 'Moscow Domodedovo Airport');
-insert into airports(fk_city_id, name) values (4, 'Sheremetyevo International Airport');
-insert into airports(fk_city_id, name) values (4, 'Vnukovo International Airport');
-insert into airports(fk_city_id, name) values (4, 'Zhukovsky International Airport');
-insert into airports(fk_city_id, name) values (5, 'Pulkovo Airport');
-insert into airports(fk_city_id, name) values (6, 'Koltsovo International Airport');
-insert into airports(fk_city_id, name) values (7, 'Kyiv International Airport (Zhuliany)');
-insert into airports(fk_city_id, name) values (8, 'Odesa International Airport');
-insert into airports(fk_city_id, name) values (9, 'Lviv Danylo Halytskyi International Airport');
-insert into airports(fk_city_id, name) values (10, 'Warsaw Chopin Airport');
-insert into airports(fk_city_id, name) values (10, 'Warsaw Modlin Airport');
-insert into airports(fk_city_id, name) values (11, 'Kraków John Paul II International Airport');
-insert into airports(fk_city_id, name) values (12, 'Berlin Brandenburg Airport');
-insert into airports(fk_city_id, name) values (13, 'Bremen Airport');
-insert into airports(fk_city_id, name) values (14, 'Hannover Airport');
-insert into airports(fk_city_id, name) values (15, 'Munich International Airport- Franz Josef Strauß');
-insert into airports(fk_city_id, name) values (16, 'Frankfurt Airport');
-insert into airports(fk_city_id, name) values (17, 'Dubai International Airport');
-insert into airports(fk_city_id, name) values (18, 'Abu Dhabi International Airport');
+insert into airports(fk_city_id, name, iata, icao) values (1, 'Minsk National Airport', 'MSQ', 'UMMS');
+insert into airports(fk_city_id, name, iata, icao) values (4, 'Domodedovo Mikhail Lomonosov International Airport', 'DME', 'UUDD');
+insert into airports(fk_city_id, name, iata, icao) values (4, 'Sheremetyevo Alexander S. Pushkin International Airport', 'SVO', 'UUEE');
+insert into airports(fk_city_id, name, iata, icao) values (4, 'Vnukovo Andrei Tupolev International Airport', 'VKO', 'UUWW');
+insert into airports(fk_city_id, name, iata, icao) values (4, 'Zhukovsky International Airport', 'ZIA', 'UUBW');
+insert into airports(fk_city_id, name, iata, icao) values (5, 'Pulkovo Airport', 'LED', 'ULLI');
+insert into airports(fk_city_id, name, iata, icao) values (6, 'Koltsovo International Airport', 'SVX', 'USSS');
+insert into airports(fk_city_id, name, iata, icao) values (7, 'Ihor Sikorsky Kyiv International Airport (Zhuliany)', 'IEV', 'UKKK');
+insert into airports(fk_city_id, name, iata, icao) values (8, 'Odesa International Airport', 'ODS', 'UKOO');
+insert into airports(fk_city_id, name, iata, icao) values (9, 'Lviv Danylo Halytskyi International Airport', 'LWO', 'UKLL');
+insert into airports(fk_city_id, name, iata, icao) values (10, 'Warsaw Chopin Airport', 'WAW', 'EPWA');
+insert into airports(fk_city_id, name, iata, icao) values (10, 'Warsaw Modlin Airport', 'WMI', 'EPMO');
+insert into airports(fk_city_id, name, iata, icao) values (11, 'Kraków John Paul II International Airport', 'KRK', 'EPKK');
+insert into airports(fk_city_id, name, iata, icao) values (12, 'Berlin Brandenburg Airport Willy Brandt', 'BER', 'EDDB');
+insert into airports(fk_city_id, name, iata, icao) values (13, 'Bremen Airport', 'BRE', 'EDDW');
+insert into airports(fk_city_id, name, iata, icao) values (14, 'Hannover Airport', 'HAJ', 'EDDV');
+insert into airports(fk_city_id, name, iata, icao) values (15, 'Munich International Airport - Franz Josef Strauß', 'MUC', 'EDDM');
+insert into airports(fk_city_id, name, iata, icao) values (16, 'Frankfurt Airport', 'FRA', 'EDDF');
+insert into airports(fk_city_id, name, iata, icao) values (17, 'Dubai International Airport', 'DXB', 'OMDB');
+insert into airports(fk_city_id, name, iata, icao) values (18, 'Abu Dhabi International Airport', 'AUH', 'OMAA');
 
 --changeset cichan:insertion-into-airlines
 insert into airlines(name, iata, icao, callsign) values ('Belavia Belarusian Airlines', 'B2', 'BRU', 'BELAVIA');

@@ -2,9 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="by.piskunou.solvdlaba.persistence.AirportRepository">
 
-    <resultMap id="airportMap" type="Airport" autoMapping="false">
+    <resultMap id="elementaryMap" type="Airport" autoMapping="false">
         <id property="id" column="airport_id"/>
         <result property="name" column="airport_name"/>
+    </resultMap>
+
+    <resultMap id="fullMap" type="Airport" autoMapping="false" extends="elementaryMap">
+        <result property="iata" column="airport_iata_code"/>
+        <result property="icao" column="airport_icao_code"/>
     </resultMap>
 
     <resultMap id="fromAirportMap" type="Airport" autoMapping="false">
@@ -17,16 +22,63 @@
         <result property="name" column="airport_to_name"/>
     </resultMap>
 
-    <select id="findAll" resultMap="airportMap">
+    <select id="findAll" resultMap="fullMap">
         select id as airport_id,
-               name as airport_name
+               name as airport_name,
+               iata as airport_iata_code,
+               icao as airport_icao_code
         from airports
     </select>
 
-    <select id="findById" resultMap="airportMap">
+    <select id="findById" resultMap="fullMap">
         select id as airport_id,
-               name as airport_name
+               name as airport_name,
+               iata as airport_iata_code,
+               icao as airport_icao_code
         from airports
         where id = #{id}
     </select>
+    
+    <select id="search" resultMap="fullMap">
+        select id as airport_id,
+               name as airport_name,
+               iata as airport_iata_code,
+               icao as airport_icao_code
+        from airports
+        where name like #{name} and
+              iata like #{iata} and
+              icao like #{icao}
+    </select>
+
+    <insert id="create" useGeneratedKeys="true" keyProperty="airport.id">
+        insert into airports(fk_city_id, name, iata, icao)
+        values(#{cityId}, #{airport.name}, #{airport.iata}, #{airport.icao})
+    </insert>
+
+    <update id="updateNameById">
+        update airports set name = #{updatedName} where id = #{id}
+    </update>
+
+    <update id="updateNameByCode">
+        update airports set name = #{updatedName} where iata = #{code} or
+                                                        icao = #{code}
+    </update>
+
+    <delete id="removeById">
+        delete from airports where id = #{id}
+    </delete>
+
+    <update id="removeByCode">
+        delete from airports where iata = #{code} or
+                                   icao = #{code}
+    </update>
+
+    <select id="isExistsById" resultType="boolean">
+        select exists (select from airports where id = #{id})
+    </select>
+
+    <select id="isExistsByName" resultType="boolean">
+        select exists (select from airports where name = #{name})
+    </select>
+
 </mapper>

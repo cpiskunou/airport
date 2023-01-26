@@ -1,6 +1,6 @@
 package by.piskunou.solvdlaba.persistence.jdbc;
 
-import by.piskunou.solvdlaba.domain.Flight;
+import by.piskunou.solvdlaba.domain.flights.Flight;
 import by.piskunou.solvdlaba.domain.Seat;
 import by.piskunou.solvdlaba.persistence.FlightRepository;
 import by.piskunou.solvdlaba.persistence.DataSourceConfig;

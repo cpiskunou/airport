@@ -1,13 +1,12 @@
 package by.piskunou.solvdlaba.web.mapper.impl;
 
-import by.piskunou.solvdlaba.domain.FlightRequest;
+import by.piskunou.solvdlaba.domain.flights.FlightRequest;
 import by.piskunou.solvdlaba.domain.Passenger;
-import by.piskunou.solvdlaba.web.dto.FlightRequestDTO;
+import by.piskunou.solvdlaba.web.dto.flight.FlightRequestDTO;
 import by.piskunou.solvdlaba.web.mapper.FlightRequestMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Component
@@ -23,7 +22,6 @@ public class FlightRequestMapperImpl implements FlightRequestMapper {
 
         String[] passengersAmount = dto.getPassengers()
                                        .split("-");
-
 
         flightRequest.setFromAirports( dto.getFromAirports() );
         flightRequest.setToAirports( dto.getToAirports() );

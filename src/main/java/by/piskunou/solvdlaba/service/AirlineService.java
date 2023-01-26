@@ -10,17 +10,17 @@ public interface AirlineService {
 
     Airline findById(long id);
 
-    Airline findByDesignator(String designator);
+    List<Airline> search(Airline airline);
 
     Airline create(Airline airline);
 
-    Airline updateNameById(long id, String name);
+    Airline updateNameById(long id, String updatedName);
 
-    Airline updateNameByDesignator(String designator, String name);
+    Airline updateNameByCode(String code, String updatedName);
 
     void removeById(long id);
 
-    void removeByDesignator(String designator);
+    void removeByCode(String code);
 
     boolean isExists(long id);
 

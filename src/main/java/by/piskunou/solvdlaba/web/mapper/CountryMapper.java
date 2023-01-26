@@ -6,13 +6,13 @@ import org.mapstruct.Mapper;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = CityMapper.class)
+@Mapper(componentModel = "spring")
 public interface CountryMapper {
 
     CountryDTO toDTO(Country entity);
 
     Country toEntity(CountryDTO dto);
 
-    List<CountryDTO> toDTOList(List<Country> countries);
+    List<CountryDTO> toDTO(List<Country> countries);
 
 }

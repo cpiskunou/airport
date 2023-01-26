@@ -94,7 +94,6 @@ public class CountryRepositoryImpl implements CountryRepository {
         }
     }
 
-    @Override
     @SneakyThrows
     public Optional<Country> findByName(String name) {
         Connection conn = config.getConnection();
@@ -112,7 +111,6 @@ public class CountryRepositoryImpl implements CountryRepository {
         }
     }
 
-    @Override
     @SneakyThrows
     public Optional<Country> findCountryCities(long id) {
         Connection conn = config.getConnection();
@@ -132,7 +130,6 @@ public class CountryRepositoryImpl implements CountryRepository {
         }
     }
 
-    @Override
     @SneakyThrows
     public Optional<Country> findCountryAirports(long id) {
         Connection conn = config.getConnection();
@@ -176,11 +173,11 @@ public class CountryRepositoryImpl implements CountryRepository {
 
     @Override
     @SneakyThrows
-    public void updateNameById(long id, String name) {
+    public void updateNameById(long id, String updatedName) {
         Connection conn = config.getConnection();
 
         try(PreparedStatement preparedStatement = conn.prepareStatement(UPDATE)) {
-            preparedStatement.setString(1, name);
+            preparedStatement.setString(1, updatedName);
             preparedStatement.setLong(2, id);
 
             preparedStatement.executeUpdate();

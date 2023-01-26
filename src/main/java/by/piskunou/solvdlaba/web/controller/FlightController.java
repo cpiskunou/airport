@@ -1,12 +1,11 @@
 package by.piskunou.solvdlaba.web.controller;
 
-import by.piskunou.solvdlaba.domain.Flight;
-import by.piskunou.solvdlaba.domain.FlightRequest;
-import by.piskunou.solvdlaba.domain.Seat;
+import by.piskunou.solvdlaba.domain.flights.Flight;
+import by.piskunou.solvdlaba.domain.flights.FlightRequest;
 import by.piskunou.solvdlaba.service.FlightService;
-import by.piskunou.solvdlaba.web.dto.FlightDTO;
-import by.piskunou.solvdlaba.web.dto.FlightRequestDTO;
-import by.piskunou.solvdlaba.web.dto.FlightResponseDTO;
+import by.piskunou.solvdlaba.web.dto.flight.FlightDTO;
+import by.piskunou.solvdlaba.web.dto.flight.FlightRequestDTO;
+import by.piskunou.solvdlaba.web.dto.flight.FlightResponseDTO;
 import by.piskunou.solvdlaba.web.dto.SeatDTO;
 import by.piskunou.solvdlaba.web.groups.onCreate;
 import by.piskunou.solvdlaba.web.mapper.FlightMapper;

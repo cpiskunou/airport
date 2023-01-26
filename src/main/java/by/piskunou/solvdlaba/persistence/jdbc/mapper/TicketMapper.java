@@ -1,6 +1,6 @@
 package by.piskunou.solvdlaba.persistence.jdbc.mapper;
 
-import by.piskunou.solvdlaba.domain.Flight;
+import by.piskunou.solvdlaba.domain.flights.Flight;
 import by.piskunou.solvdlaba.domain.Passenger;
 import by.piskunou.solvdlaba.domain.Seat;
 import by.piskunou.solvdlaba.domain.Ticket;

@@ -1,6 +1,6 @@
 package by.piskunou.solvdlaba.persistence.jdbc.mapper;
 
-import by.piskunou.solvdlaba.domain.Airplane;
+import by.piskunou.solvdlaba.domain.airplane.Airplane;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
 

@@ -1,6 +1,6 @@
-package by.piskunou.solvdlaba.web.dto;
+package by.piskunou.solvdlaba.web.dto.flight;
 
-import by.piskunou.solvdlaba.domain.Flight;
+import by.piskunou.solvdlaba.domain.flights.Flight;
 
 import java.math.BigDecimal;
 

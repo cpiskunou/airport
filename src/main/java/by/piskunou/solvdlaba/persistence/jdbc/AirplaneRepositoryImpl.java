@@ -1,6 +1,7 @@
 package by.piskunou.solvdlaba.persistence.jdbc;
 
-import by.piskunou.solvdlaba.domain.Airplane;
+import by.piskunou.solvdlaba.domain.airplane.Airplane;
+import by.piskunou.solvdlaba.domain.airplane.AirplaneRequest;
 import by.piskunou.solvdlaba.persistence.AirplaneRepository;
 import by.piskunou.solvdlaba.persistence.DataSourceConfig;
 import by.piskunou.solvdlaba.persistence.jdbc.mapper.AirplaneMapper;
@@ -64,6 +65,14 @@ public class AirplaneRepositoryImpl implements AirplaneRepository {
                 }
             }
         }
+    }
+
+    @Override
+    public void updatedModelById(long id, String updatedModel) {}
+
+    @Override
+    public List<Airplane> search(AirplaneRequest request) {
+        return Collections.emptyList();
     }
 
     @Override

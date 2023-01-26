@@ -1,8 +1,7 @@
 package by.piskunou.solvdlaba.web.dto;
 
-import by.piskunou.solvdlaba.domain.Airport;
 import by.piskunou.solvdlaba.web.groups.onCreate;
-import by.piskunou.solvdlaba.web.groups.onUpdate;
+import by.piskunou.solvdlaba.web.groups.onSearch;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -19,16 +18,19 @@ import java.util.List;
 @NoArgsConstructor
 public class CityDTO {
 
-    @Null(groups = onCreate.class, message = "Id should be null")
-    @NotNull(groups = onUpdate.class, message = "Id should be not null")
+    @Null(message = "Id should be null")
     private Long id;
 
-    @NotBlank(groups = {onUpdate.class, onCreate.class}, message = "City name should be not blank")
-    @Size(max = 50, groups = {onUpdate.class, onCreate.class}, message = "City name should be less than50 characters")
+    @NotBlank(message = "City name should be not blank")
+    @Size(max = 50, message = "City name should be less than50 characters")
     private String name;
 
-    private CountryDTO countryDTO;
+    @Null(message = "Country should be null")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private CountryDTO country;
 
+    @Null(message = "List of airports should be null")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<AirportDTO> airports;
 
 }

@@ -1,4 +1,4 @@
-package by.piskunou.solvdlaba.domain;
+package by.piskunou.solvdlaba.domain.flights;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

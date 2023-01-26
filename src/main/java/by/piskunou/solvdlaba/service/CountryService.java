@@ -8,17 +8,11 @@ public interface CountryService {
 
     List<Country> findAll();
 
-    Country findCountryCities(long countryId);
-
-    Country findCountryAirports(long countryId);
-
     Country findById(long id);
-
-    Country findByName(String name);
 
     Country create(Country country);
 
-    Country updateNameById(long id, String name);
+    Country updateNameById(long id, String updatedName);
 
     void removeById(long id);
 

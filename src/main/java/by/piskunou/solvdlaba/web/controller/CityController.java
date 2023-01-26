@@ -17,46 +17,43 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CityController {
 
-    private final CityService cityService;
-    private final CityMapper cityMapper;
+    private final CityService service;
+    private final CityMapper mapper;
 
     @GetMapping
     public List<CityDTO> findAll() {
-        return cityMapper.toDTO(cityService.findAll());
-    }
-
-    @GetMapping ("/{id}/airports")
-    public CityDTO findCountryCities(@PathVariable long id) {
-        City city = cityService.findCityAirports(id);
-        return cityMapper.toDTO(city);
+        return mapper.toDTO( service.findAll() );
     }
 
     @GetMapping("/{id}")
-    public CityDTO findById(@PathVariable long id) {
-        City city = cityService.findById(id);
-        return cityMapper.toDTO(city);
+    public CityDTO findById(@PathVariable long id, @RequestParam(required = false) boolean withAirports) {
+        return mapper.toDTO( service.findById(id, withAirports) );
+    }
+
+    @GetMapping("/search")
+    public List<CityDTO> search(@RequestParam String inquiry) {
+        return mapper.toDTO( service.search(inquiry) );
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CityDTO create(@RequestBody @Validated(onCreate.class) CityDTO cityDTO,
-                          @RequestParam("country_id") long countryId) {
-        City city = cityMapper.toEntity(cityDTO);
+    public CityDTO create(@RequestParam("country-id") long countryId,
+                          @RequestBody @Validated(onCreate.class) CityDTO cityDTO) {
+        City city = mapper.toEntity(cityDTO);
 
-        city = cityService.create(city, countryId);
-        return cityMapper.toDTO(city);
+        city = service.create(countryId, city);
+        return mapper.toDTO(city);
     }
 
     @PutMapping("/{id}")
-    public CityDTO updateNameById(@PathVariable long id, @RequestParam String name) {
-        City city = cityService.updateNameById(id, name);
-        return cityMapper.toDTO(city);
+    public CityDTO updateNameById(@PathVariable long id, @RequestParam("updated-name") String updatedName) {
+        return mapper.toDTO( service.updateNameById(id, updatedName) );
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeById(@PathVariable long id) {
-        cityService.removeById(id);
+        service.removeById(id);
     }
 
 }

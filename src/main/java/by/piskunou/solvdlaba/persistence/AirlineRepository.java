@@ -14,17 +14,17 @@ public interface AirlineRepository {
 
     Optional<Airline> findById(long id);
 
-    Optional<Airline> findByDesignator(String designator);
+    List<Airline> search(Airline airline);
 
     void create(Airline airline);
 
-    void updateNameById(@Param("id") long id, @Param("name") String name);
+    void updateNameById(@Param("id") long id, @Param("updatedName") String updatedName);
 
-    void updateNameByDesignator(@Param("designator") String designator, @Param("name") String name);
+    void updateNameByCode(@Param("code") String code, @Param("updatedName") String updatedName);
 
     void removeById(long id);
 
-    void removeByDesignator(String designator);
+    void removeByCode(String designator);
 
     boolean isExistsById(long id);
 

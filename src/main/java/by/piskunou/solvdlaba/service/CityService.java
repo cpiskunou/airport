@@ -8,20 +8,17 @@ public interface CityService {
 
     List<City> findAll();
 
-    City findCityAirports(long cityId);
+    City findById(long id, boolean withAirports);
 
-    City findById(long id);
+    List<City> search(String inquiry);
 
-    City findByName(String name);
+    City create(long countryId, City city);
 
-    City create(City city, long countryId);
-
-    City updateNameById(long id, String name);
+    City updateNameById(long id, String updatedName);
 
     void removeById(long id);
 
     boolean isExists(long id);
 
     boolean isExists(String name);
-
 }

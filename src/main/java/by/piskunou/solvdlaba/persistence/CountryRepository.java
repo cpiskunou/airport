@@ -14,15 +14,9 @@ public interface CountryRepository {
 
     Optional<Country> findById(long id);
 
-    Optional<Country> findByName(String name);
-
-    Optional<Country> findCountryCities(long id);
-
-    Optional<Country> findCountryAirports(long id);
-
     void create(Country country);
 
-    void updateNameById(@Param("id") long id, @Param("name") String name);
+    void updateNameById(@Param("id") long id, @Param("updatedName") String updatedName);
 
     void removeById(long id);
 

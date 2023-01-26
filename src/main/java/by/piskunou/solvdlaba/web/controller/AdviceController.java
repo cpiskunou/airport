@@ -37,10 +37,10 @@ public class AdviceController {
                 .toList();
     }
 
-    @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorResponseDTO handleException(Exception e) {
-        return new ErrorResponseDTO("Internal Server Error. Please try later");
-    }
+//    @ExceptionHandler(Exception.class)
+//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+//    public ErrorResponseDTO handleException(Exception e) {
+//        return new ErrorResponseDTO("Internal Server Error. Please try later");
+//    }
 
 }

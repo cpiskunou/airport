@@ -1,8 +1,8 @@
 package by.piskunou.solvdlaba.service;
 
-import by.piskunou.solvdlaba.domain.Flight;
-import by.piskunou.solvdlaba.domain.FlightRequest;
-import by.piskunou.solvdlaba.domain.FlightResponse;
+import by.piskunou.solvdlaba.domain.flights.Flight;
+import by.piskunou.solvdlaba.domain.flights.FlightRequest;
+import by.piskunou.solvdlaba.domain.flights.FlightResponse;
 import by.piskunou.solvdlaba.domain.Seat;
 
 import java.util.List;

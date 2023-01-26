@@ -32,16 +32,17 @@
         where id = #{id}
     </select>
 
-    <select id="findByDesignator" resultMap="fullMap">
+    <select id="search" resultMap="fullMap">
         select id as airline_id,
                name as airline_name,
                iata as airline_iata_code,
                icao as airline_icao_code,
                callsign as airline_callsign
         from airlines
-        where iata = #{designator} or
-              icao = #{designator} or
-              callsign = #{designator}
+        where name like #{name} and
+              iata like #{iata} and
+              icao like #{icao} and
+              callsign like #{callsign}
     </select>
 
     <insert id="create" useGeneratedKeys="true" keyProperty="id">
@@ -50,23 +51,23 @@
     </insert>
 
     <update id="updateNameById">
-        update airlines set name = #{name} where id = #{id}
+        update airlines set name = #{updatedName} where id = #{id}
     </update>
 
-    <update id="updateNameByDesignator">
-        update airlines set name = #{name} where iata = #{designator} or
-                                                 icao = #{designator} or
-                                                 callsign = #{designator}
+    <update id="updateNameByCode">
+        update airlines set name = #{updatedName} where iata = #{code} or
+                                                 icao = #{code} or
+                                                 callsign = #{code}
     </update>
 
     <delete id="removeById">
         delete from airlines where id = #{id}
     </delete>
 
-    <update id="removeByDesignator">
-        delete from airlines where iata = #{designator} or
-                                   icao = #{designator} or
-                                   callsign = #{designator}
+    <update id="removeByCode">
+        delete from airlines where iata = #{code} or
+                                   icao = #{code} or
+                                   callsign = #{code}
     </update>
 
     <select id="isExistsById" resultType="boolean">

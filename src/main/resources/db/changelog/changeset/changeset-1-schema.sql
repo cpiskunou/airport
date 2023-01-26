@@ -37,7 +37,9 @@ create table if not exists cities(
 create table if not exists airports(
     id bigserial primary key,
     fk_city_id bigint not null references cities(id) on delete cascade on update no action,
-    "name" varchar(200) not null unique
+    "name" varchar(200) not null unique,
+    iata varchar check (length(iata) = 3) unique,
+    icao varchar check (length(icao) = 4) unique
 );
 --rollback drop table airports;
 
@@ -45,8 +47,8 @@ create table if not exists airports(
 create table if not exists airlines(
     id bigserial primary key,
     "name" varchar(50) not null unique,
-    iata varchar(2) not null unique,
-    icao varchar(3) not null unique,
+    iata varchar check (length(iata) = 2) unique,
+    icao varchar check (length(icao) = 3) unique,
     callsign varchar(30) not null unique
 );
 --rollback drop table airlines;

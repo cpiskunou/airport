@@ -1,4 +1,4 @@
-package by.piskunou.solvdlaba.web.dto;
+package by.piskunou.solvdlaba.web.dto.flight;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.Future;

@@ -14,13 +14,13 @@ public interface CityRepository {
 
     Optional<City> findById(long id);
 
-    Optional<City> findCityAirports(long id);
+    Optional<City> findByIdWithAirports(long id);
 
-    Optional<City> findByName(String name);
+    List<City> search(String inquiry);
 
-    void create(@Param("city") City city, @Param("countryId") long countryId);
+    void create(@Param("countryId") long countryId, @Param("city") City city);
 
-    void updateNameById(@Param("id") long id, @Param("name") String name);
+    void updateNameById(@Param("id") long id, @Param("updatedName") String updatedName);
 
     void removeById(long id);
 

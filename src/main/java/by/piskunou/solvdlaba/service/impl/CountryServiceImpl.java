@@ -15,41 +15,20 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CountryServiceImpl implements CountryService {
 
-    private final CountryRepository countryRepository;
+    private final CountryRepository repository;
 
     @Override
     @Transactional(readOnly = true)
     public List<Country> findAll() {
-        return countryRepository.findAll();
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Country findCountryCities(long countryId) {
-        return countryRepository.findCountryCities(countryId)
-                                .orElseThrow(() -> new ResourceNotExistsException("There's no country with such id"));
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Country findCountryAirports(long countryId) {
-        return countryRepository.findCountryAirports(countryId)
-                                .orElseThrow(() -> new ResourceNotExistsException("There's no country with such id"));
+        return repository.findAll();
     }
 
 
     @Override
     @Transactional(readOnly = true)
     public Country findById(long id) {
-        return countryRepository.findById(id)
+        return repository.findById(id)
                                 .orElseThrow(() -> new ResourceNotExistsException("There's no country with such id"));
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Country findByName(String name) {
-        return countryRepository.findByName(name)
-                                .orElseThrow(() -> new ResourceNotExistsException("There's no country with such name"));
     }
 
     @Override
@@ -58,37 +37,37 @@ public class CountryServiceImpl implements CountryService {
         if(isExists(country.getName())) {
             throw new ResourceAlreadyExistsException("Country with such name has already exists");
         }
-        countryRepository.create(country);
+        repository.create(country);
         return country;
     }
 
     @Override
     @Transactional
-    public Country updateNameById(long id, String name) {
+    public Country updateNameById(long id, String updatedName) {
         if(!isExists(id)){
             throw new ResourceNotExistsException("There's no country with such id");
         }
-        if(isExists(name)) {
+        if(isExists(updatedName)) {
             throw new ResourceNotExistsException("Country with such name has already exists");
         }
-        countryRepository.updateNameById(id, name);
-        return new Country(id, name);
+        repository.updateNameById(id, updatedName);
+        return new Country(id, updatedName);
     }
 
     @Override
     @Transactional
     public void removeById(long id) {
-        countryRepository.removeById(id);
+        repository.removeById(id);
     }
 
     @Override
     public boolean isExists(long id) {
-        return countryRepository.isExistsById(id);
+        return repository.isExistsById(id);
     }
 
     @Override
     public boolean isExists(String name) {
-        return countryRepository.isExistsByName(name);
+        return repository.isExistsByName(name);
     }
 
 }

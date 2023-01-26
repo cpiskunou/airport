@@ -32,10 +32,13 @@ public class AirlineServiceImpl implements AirlineService {
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public Airline findByDesignator(String designator) {
-        return repository.findByDesignator(designator)
-                         .orElseThrow(() -> new ResourceNotExistsException("There's no airline with such designator"));
+    @Transactional
+    public List<Airline> search(Airline airline) {
+        airline.setName('%' + airline.getName() + '%');
+        airline.setIata('%' + airline.getIata() + '%');
+        airline.setIcao('%' + airline.getIcao() + '%');
+        airline.setCallsign('%' + airline.getCallsign() + '%');
+        return repository.search(airline);
     }
 
     @Override
@@ -45,10 +48,10 @@ public class AirlineServiceImpl implements AirlineService {
             throw new ResourceAlreadyExistsException("Airline with such name has already exists");
         }
         if(!isValidIata(airline.getIata())) {
-            throw new InvalidResourceParamException("Invalid iata");
+            throw new InvalidResourceParamException("Invalid IATA");
         }
         if(!isValidIcao(airline.getIcao())) {
-            throw new InvalidResourceParamException("Invalid icao");
+            throw new InvalidResourceParamException("Invalid ICAO");
         }
         if(!isValidIcao(airline.getCallsign())) {
             throw new InvalidResourceParamException("Invalid callsign");
@@ -59,28 +62,28 @@ public class AirlineServiceImpl implements AirlineService {
 
     @Override
     @Transactional
-    public Airline updateNameById(long id, String name) {
+    public Airline updateNameById(long id, String updatedName) {
         if(!isExists(id)) {
             throw new ResourceNotExistsException("There's no airline with such id");
         }
-        if(isExists(name)) {
+        if(isExists(updatedName)) {
             throw new ResourceAlreadyExistsException("Airline with such name has already exists");
         }
-        repository.updateNameById(id, name);
-        return new Airline(id, name);
+        repository.updateNameById(id, updatedName);
+        return new Airline(id, updatedName);
     }
 
     @Override
     @Transactional
-    public Airline updateNameByDesignator(String designator, String name) {
-        if(!isValidIata(designator) || !isValidIcao(designator) || !isValidCallsign(designator)) {
+    public Airline updateNameByCode(String code, String updatedName) {
+        if(!isValidIata(code) || !isValidIcao(code) || !isValidCallsign(code)) {
             throw new InvalidResourceParamException("Invalid designator");
         }
-        if(isExists(name)) {
+        if(isExists(updatedName)) {
             throw new ResourceAlreadyExistsException("Airline with such name has already exists");
         }
-        repository.updateNameByDesignator(designator, name);
-        return new Airline(name);
+        repository.updateNameByCode(code, updatedName);
+        return new Airline(updatedName);
     }
 
     @Override
@@ -91,8 +94,8 @@ public class AirlineServiceImpl implements AirlineService {
 
     @Override
     @Transactional
-    public void removeByDesignator(String designator) {
-        repository.removeByDesignator(designator);
+    public void removeByCode(String code) {
+        repository.removeByCode(code);
     }
 
     @Override

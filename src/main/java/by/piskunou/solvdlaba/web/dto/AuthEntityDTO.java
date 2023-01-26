@@ -1,6 +1,5 @@
 package by.piskunou.solvdlaba.web.dto;
 
-import by.piskunou.solvdlaba.web.groups.onUpdate;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

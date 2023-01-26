@@ -1,7 +1,10 @@
-package by.piskunou.solvdlaba.web.dto;
+package by.piskunou.solvdlaba.web.dto.flight;
 
+import by.piskunou.solvdlaba.web.dto.AirlineDTO;
+import by.piskunou.solvdlaba.web.dto.airplane.AirplaneDTO;
+import by.piskunou.solvdlaba.web.dto.AirportDTO;
+import by.piskunou.solvdlaba.web.dto.SeatDTO;
 import by.piskunou.solvdlaba.web.groups.onCreate;
-import by.piskunou.solvdlaba.web.groups.onUpdate;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.Future;
@@ -21,7 +24,6 @@ import java.util.List;
 public class FlightDTO {
 
     @Null(groups = onCreate.class, message = "Id should be null")
-    @NotNull(groups = onUpdate.class, message = "Id should be not null")
     private Long id;
 
     @NotNull(groups = onCreate.class, message = "Airport from should be not null")

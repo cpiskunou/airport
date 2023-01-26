@@ -3,6 +3,8 @@ package by.piskunou.solvdlaba.web.controller;
 import by.piskunou.solvdlaba.domain.Airline;
 import by.piskunou.solvdlaba.service.AirlineService;
 import by.piskunou.solvdlaba.web.dto.AirlineDTO;
+import by.piskunou.solvdlaba.web.groups.onCreate;
+import by.piskunou.solvdlaba.web.groups.onSearch;
 import by.piskunou.solvdlaba.web.mapper.AirlineMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,13 +32,14 @@ public class AirlineController {
     }
 
     @GetMapping("/search")
-    public AirlineDTO search(@RequestParam String designator) {
-        return mapper.toDTO( service.findByDesignator(designator) );
+    public List<AirlineDTO> search(@Validated(onSearch.class) AirlineDTO airlineDTO) {
+        Airline airline = mapper.toEntity(airlineDTO);
+        return mapper.toDTO( service.search(airline) );
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public AirlineDTO create(@RequestBody @Validated AirlineDTO airlineDTO) {
+    public AirlineDTO create(@RequestBody @Validated(onCreate.class) AirlineDTO airlineDTO) {
         Airline airline = mapper.toEntity(airlineDTO);
 
         airline = service.create(airline);
@@ -44,15 +47,15 @@ public class AirlineController {
     }
 
     @PutMapping ("/{id}")
-    public AirlineDTO updateNameById(@PathVariable long id, @RequestParam String name) {
-        Airline airline = service.updateNameById(id, name);
-        return mapper.toDTO(airline);
+    public AirlineDTO updateNameById(@PathVariable long id,
+                                     @RequestParam("updated-name") String updatedName) {
+        return mapper.toDTO( service.updateNameById(id, updatedName) );
     }
 
     @PutMapping("/update")
-    public AirlineDTO updateNameByDesignator(@RequestParam String designator, @RequestParam String name) {
-        Airline airline = service.updateNameByDesignator(designator, name);
-        return mapper.toDTO(airline);
+    public AirlineDTO updateNameByCode(@RequestParam String code,
+                                       @RequestParam("updated-name") String updatedName) {
+        return mapper.toDTO( service.updateNameByCode(code, updatedName) );
     }
 
     @DeleteMapping("/{id}")
@@ -63,8 +66,8 @@ public class AirlineController {
 
     @DeleteMapping("/delete")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void removeByDesignator(@RequestParam String designator) {
-        service.removeByDesignator(designator);
+    public void removeByCode(@RequestParam String code) {
+        service.removeByCode(code);
     }
 
 }

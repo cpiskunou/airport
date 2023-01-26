@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
 import java.sql.*;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -23,11 +24,6 @@ public class CityRepositoryImpl implements CityRepository {
              select id as city_id,
                     name as city_name
              from cities where id = ?""";
-
-    private static final String FIND_BY_NAME = """
-             select id as city_id,
-                    name as city_name
-             from cities where name = ?""";
 
     private static final String FIND_AIRPORTS_BY_ID = """
             select cities.id as city_id,
@@ -85,7 +81,7 @@ public class CityRepositoryImpl implements CityRepository {
 
     @Override
     @SneakyThrows
-    public Optional<City> findCityAirports(long id) {
+    public Optional<City> findByIdWithAirports(long id) {
         Connection conn = config.getConnection();
 
         try (PreparedStatement preparedStatement = conn.prepareStatement(FIND_AIRPORTS_BY_ID,
@@ -105,26 +101,13 @@ public class CityRepositoryImpl implements CityRepository {
     }
 
     @Override
-    @SneakyThrows
-    public Optional<City> findByName(String name) {
-        Connection conn = config.getConnection();
-
-        try (PreparedStatement preparedStatement = conn.prepareStatement(FIND_BY_NAME)) {
-            preparedStatement.setString(1, name);
-
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                City city = null;
-                if(resultSet.next()) {
-                    city = cityMapper.mapRow(resultSet);
-                }
-                return Optional.ofNullable(city);
-            }
-        }
+    public List<City> search(String inquiry) {
+        return Collections.emptyList();
     }
 
     @Override
     @SneakyThrows
-    public void create(City city, long countryId) {
+    public void create(long countryId, City city) {
         Connection conn = config.getConnection();
 
         try (PreparedStatement preparedStatement =
@@ -145,12 +128,12 @@ public class CityRepositoryImpl implements CityRepository {
 
     @Override
     @SneakyThrows
-    public void updateNameById(long id, String name) {
+    public void updateNameById(long id, String updatedName) {
         Connection conn = config.getConnection();
 
         try(PreparedStatement preparedStatement = conn.prepareStatement(UPDATE)) {
 
-            preparedStatement.setString(1, name);
+            preparedStatement.setString(1, updatedName);
             preparedStatement.setLong(2, id);
 
             preparedStatement.executeUpdate();

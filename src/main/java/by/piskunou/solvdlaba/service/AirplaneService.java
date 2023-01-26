@@ -1,16 +1,21 @@
 package by.piskunou.solvdlaba.service;
 
-import by.piskunou.solvdlaba.domain.Airplane;
+import by.piskunou.solvdlaba.domain.airplane.Airplane;
+import by.piskunou.solvdlaba.domain.airplane.AirplaneRequest;
 
 import java.util.List;
 
 public interface AirplaneService {
 
-    Airplane create(Airplane airplane);
+    List<Airplane> findAll();
 
     Airplane findById(long id);
 
-    List<Airplane> findAll();
+    List<Airplane> search(AirplaneRequest request);
+
+    Airplane create(Airplane airplane);
+
+    Airplane updateModelById(long id, String updatedModel);
 
     void removeById(long id);
 

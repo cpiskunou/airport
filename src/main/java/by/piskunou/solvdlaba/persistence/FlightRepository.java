@@ -1,6 +1,6 @@
 package by.piskunou.solvdlaba.persistence;
 
-import by.piskunou.solvdlaba.domain.Flight;
+import by.piskunou.solvdlaba.domain.flights.Flight;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

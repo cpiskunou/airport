@@ -1,5 +1,9 @@
-package by.piskunou.solvdlaba.domain;
+package by.piskunou.solvdlaba.domain.flights;
 
+import by.piskunou.solvdlaba.domain.Airline;
+import by.piskunou.solvdlaba.domain.Airport;
+import by.piskunou.solvdlaba.domain.Seat;
+import by.piskunou.solvdlaba.domain.airplane.Airplane;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

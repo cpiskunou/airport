@@ -1,7 +1,7 @@
 package by.piskunou.solvdlaba.web.mapper;
 
-import by.piskunou.solvdlaba.domain.Flight;
-import by.piskunou.solvdlaba.web.dto.FlightDTO;
+import by.piskunou.solvdlaba.domain.flights.Flight;
+import by.piskunou.solvdlaba.web.dto.flight.FlightDTO;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
 import java.sql.*;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -77,8 +78,8 @@ public class AirlineRepositoryImpl implements AirlineRepository {
     }
 
     @Override
-    public Optional<Airline> findByDesignator(String designator) {
-        return Optional.empty();
+    public List<Airline> search(Airline airline) {
+        return Collections.emptyList();
     }
 
     @Override
@@ -104,11 +105,11 @@ public class AirlineRepositoryImpl implements AirlineRepository {
 
     @Override
     @SneakyThrows
-    public void updateNameById(long id, String name) {
+    public void updateNameById(long id, String updatedName) {
         Connection conn = config.getConnection();
 
         try(PreparedStatement preparedStatement = conn.prepareStatement(UPDATE)) {
-            preparedStatement.setString(1, name);
+            preparedStatement.setString(1, updatedName);
             preparedStatement.setLong(2, id);
 
             preparedStatement.executeUpdate();
@@ -116,7 +117,7 @@ public class AirlineRepositoryImpl implements AirlineRepository {
     }
 
     @Override
-    public void updateNameByDesignator(String designator, String name) {}
+    public void updateNameByCode(String code, String updatedName) {}
 
     @Override
     @SneakyThrows
@@ -131,7 +132,7 @@ public class AirlineRepositoryImpl implements AirlineRepository {
     }
 
     @Override
-    public void removeByDesignator(String designator) {}
+    public void removeByCode(String designator) {}
 
     @Override
     @SneakyThrows
