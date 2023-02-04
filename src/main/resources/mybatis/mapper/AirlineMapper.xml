@@ -50,32 +50,36 @@
                values(#{name}, #{iata}, #{icao}, #{callsign})
     </insert>
 
-    <update id="updateNameById">
-        update airlines set name = #{updatedName} where id = #{id}
-    </update>
-
-    <update id="updateNameByCode">
-        update airlines set name = #{updatedName} where iata = #{code} or
-                                                 icao = #{code} or
-                                                 callsign = #{code}
+    <update id="update">
+        update airlines set name = #{name},
+                            iata = #{iata},
+                            icao = #{icao},
+                            callsign = #{callsign}
+        where id = #{id}
     </update>
 
     <delete id="removeById">
         delete from airlines where id = #{id}
     </delete>
 
-    <update id="removeByCode">
-        delete from airlines where iata = #{code} or
-                                   icao = #{code} or
-                                   callsign = #{code}
-    </update>
-
     <select id="isExistsById" resultType="boolean">
         select exists (select from airlines where id = #{id})
     </select>
 
     <select id="isExistsByName" resultType="boolean">
-        select exists (select from airlines where name = #{name})
+        select exists (select from airlines where name = #{name} and id != #{id})
+    </select>
+
+    <select id="isExistsByIata" resultType="boolean">
+        select exists (select from airlines where iata = #{iata} and id != #{id})
+    </select>
+
+    <select id="isExistsByIcao" resultType="boolean">
+        select exists (select from airlines where icao = #{icao} and id != #{id})
+    </select>
+
+    <select id="isExistsByCallsign" resultType="boolean">
+        select exists (select from airlines where callsign = #{callsign} and id != #{id})
     </select>
 
 </mapper>

@@ -1,30 +1,25 @@
 package by.piskunou.solvdlaba.service;
 
-import by.piskunou.solvdlaba.domain.Ticket;
 import by.piskunou.solvdlaba.domain.User;
 
 import java.util.List;
 
 public interface UserService {
 
-    User register(User user);
-
-    User findById(long id);
-
-    User findByUsername(String username);
-
-    User findUserTickets(long id);
+    User findById(long id, boolean withTickets);
 
     List<User> findAll();
 
-    User updateUsernameById(long id, String username);
+    List<User> search(User user);
+
+    User create(User user);
+
+    User updateById(long id, User user);
 
     void removeById(int id);
 
-    User buyTicket(long id, Ticket ticket);
-
-    boolean isExists(String username);
-
     boolean isExists(long id);
+
+    boolean isExists(long id, String username);
 
 }

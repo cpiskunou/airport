@@ -1,55 +1,84 @@
 package by.piskunou.solvdlaba.service.impl;
 
+import by.piskunou.solvdlaba.domain.Passenger;
 import by.piskunou.solvdlaba.domain.Passport;
+import by.piskunou.solvdlaba.domain.Seat;
 import by.piskunou.solvdlaba.domain.Ticket;
 import by.piskunou.solvdlaba.domain.exception.ResourceNotExistsException;
 import by.piskunou.solvdlaba.persistence.TicketRepository;
-import by.piskunou.solvdlaba.service.FlightService;
-import by.piskunou.solvdlaba.service.PassengerService;
-import by.piskunou.solvdlaba.service.PassportService;
-import by.piskunou.solvdlaba.service.TicketService;
+import by.piskunou.solvdlaba.service.*;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.lang.reflect.Type;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class TicketServiceImpl implements TicketService {
 
     private final FlightService flightService;
+    private final UserService userService;
     private final PassengerService passengerService;
-    private final TicketRepository ticketRepository;
     private final PassportService passportService;
+    private final TicketRepository repository;
+    private final Gson gson;
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Ticket> findAll(long userId) {
+        return repository.findAll(userId);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Ticket findById(long id, long userId) {
+        elementaryCheckIsEntityValid(userId);
+        return repository.findById(id, userId)
+                         .orElseThrow(() -> new ResourceNotExistsException("There's no ticket with such id"));
+    }
 
     @Override
     @Transactional
-    public Ticket appointOwner(Ticket ticket, long userId) {
-        if(!flightService.isExists(ticket.getFlight().getId())) {
-            throw new ResourceNotExistsException("There's no flight with such id");
-        }
-        if(!passengerService.isExists(ticket.getPassenger().getId())) {
-            passengerService.create(ticket.getPassenger());
+    public Ticket create(long userId, Ticket ticket) {
+        fullCheckIsEntityValid(userId, ticket);
 
-            Passport passport = ticket.getPassenger().getPassport();
-            passport.setId(ticket.getPassenger().getId());
+        Passenger passenger = ticket.getPassenger();
+        long id = passenger.getId() != null ? passenger.getId() : 0;
+        if(!passengerService.isExists(id)) {
+            passenger = passengerService.create(passenger);
+
+            Passport passport = passenger.getPassport();
+            passport.setId(passenger.getId());
 
             passportService.create(passport);
         }
-        flightService.bookSeat(ticket.getSeat().getPlace());
-        ticketRepository.create(ticket, userId);
+        flightService.bookSeat(ticket.getFlight().getId(), ticket.getSeat().getNumber());
+        repository.create(userId, ticket);
         return ticket;
     }
 
     @Override
-    @Transactional
-    public Ticket findById(long id) {
-        return ticketRepository.findById(id)
-                               .orElseThrow(() -> new ResourceNotExistsException("There's no ticket with such id"));
+    @Transactional(readOnly = true)
+    public boolean isOwner(long ticketId, long userId) {
+        return repository.isOwner(ticketId, userId);
     }
 
-    @Override
-    public boolean isOwner(long ticketId, long userId) {
-        return ticketRepository.isOwner(ticketId, userId);
+    private void elementaryCheckIsEntityValid(long userId) {
+        if(!userService.isExists(userId)) {
+            throw new ResourceNotExistsException("There's no user with such id");
+        }
     }
+
+    private void fullCheckIsEntityValid(long userId, Ticket ticket) {
+        elementaryCheckIsEntityValid(userId);
+        if(!flightService.isExists(ticket.getFlight().getId())) {
+            throw new ResourceNotExistsException("There's no flight with such id");
+        }
+    }
+
 
 }

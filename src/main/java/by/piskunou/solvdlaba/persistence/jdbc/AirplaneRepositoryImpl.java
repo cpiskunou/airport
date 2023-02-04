@@ -68,7 +68,7 @@ public class AirplaneRepositoryImpl implements AirplaneRepository {
     }
 
     @Override
-    public void updatedModelById(long id, String updatedModel) {}
+    public void update(Airplane airplane) {}
 
     @Override
     public List<Airplane> search(AirplaneRequest request) {
@@ -125,7 +125,7 @@ public class AirplaneRepositoryImpl implements AirplaneRepository {
 
     @Override
     @SneakyThrows
-    public boolean isExistsByModel(String model) {
+    public boolean isExistsByModel(long id, String model) {
         Connection conn = config.getConnection();
 
         try (PreparedStatement preparedStatement = conn.prepareStatement(EXISTS_BY_MODEL)) {

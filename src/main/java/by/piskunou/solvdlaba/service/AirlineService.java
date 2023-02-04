@@ -14,22 +14,18 @@ public interface AirlineService {
 
     Airline create(Airline airline);
 
-    Airline updateNameById(long id, String updatedName);
-
-    Airline updateNameByCode(String code, String updatedName);
+    Airline update(long id, Airline airline);
 
     void removeById(long id);
 
-    void removeByCode(String code);
-
     boolean isExists(long id);
 
-    boolean isExists(String name);
+    boolean isExistsByName(long id, String name);
 
-    boolean isValidIata(String iata);
+    boolean isExistsByIata(long id, String iata);
 
-    boolean isValidIcao(String icao);
+    boolean isExistsByIcao(long id, String icao);
 
-    boolean isValidCallsign(String callsign);
+    boolean isExistsByCallsign(long id, String callsign);
 
 }

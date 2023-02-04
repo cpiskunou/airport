@@ -20,12 +20,12 @@ public interface CityRepository {
 
     void create(@Param("countryId") long countryId, @Param("city") City city);
 
-    void updateNameById(@Param("id") long id, @Param("updatedName") String updatedName);
+    void update(@Param("countryId") long countryId, @Param("city") City city);
 
     void removeById(long id);
 
     boolean isExistsById(long id);
 
-    boolean isExistsByName(String name);
+    boolean isExistsByName(@Param("id") long id, @Param("name") String name);
 
 }

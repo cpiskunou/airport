@@ -12,12 +12,12 @@ public interface CountryService {
 
     Country create(Country country);
 
-    Country updateNameById(long id, String updatedName);
+    Country update(long id, Country country);
 
     void removeById(long id);
 
-    boolean isExists(long countryId);
+    boolean isExists(long id);
 
-    boolean isExists(String name);
+    boolean isExists(long id, String name);
 
 }

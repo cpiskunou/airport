@@ -18,16 +18,18 @@ public interface AirlineRepository {
 
     void create(Airline airline);
 
-    void updateNameById(@Param("id") long id, @Param("updatedName") String updatedName);
-
-    void updateNameByCode(@Param("code") String code, @Param("updatedName") String updatedName);
+    void update(Airline airline);
 
     void removeById(long id);
 
-    void removeByCode(String designator);
-
     boolean isExistsById(long id);
 
-    boolean isExistsByName(String name);
+    boolean isExistsByName(@Param("id") long id, @Param("name") String name);
+
+    boolean isExistsByIata(@Param("id") long id, @Param("iata") String iata);
+
+    boolean isExistsByIcao(@Param("id") long id, @Param("icao") String icao);
+
+    boolean isExistsByCallsign(@Param("id") long id, @Param("callsign") String callsign);
 
 }

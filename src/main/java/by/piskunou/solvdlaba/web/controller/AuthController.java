@@ -23,7 +23,7 @@ public class AuthController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public AuthEntityDTO register(@RequestBody @Validated(UserDTO.onRegister.class) UserDTO userDTO) {
+    public AuthEntityDTO register(@RequestBody @Validated UserDTO userDTO) {
         User user = userMapper.toEntity(userDTO);
 
         AuthEntity authEntity = authService.register(user);
@@ -31,7 +31,7 @@ public class AuthController {
     }
 
     @PostMapping("/authenticate")
-    public AuthEntityDTO authenticate(@RequestBody @Validated(UserDTO.onAuth.class) UserDTO userDTO) {
+    public AuthEntityDTO authenticate(@RequestBody @Validated UserDTO userDTO) {
         User user = userMapper.toEntity(userDTO);
 
         AuthEntity authEntity = authService.authenticate(user);

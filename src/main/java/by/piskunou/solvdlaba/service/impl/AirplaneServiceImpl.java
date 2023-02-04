@@ -41,24 +41,21 @@ public class AirplaneServiceImpl implements AirplaneService {
     @Override
     @Transactional
     public Airplane create(Airplane airplane) {
-        if(isExists(airplane.getModel())) {
-            throw new ResourceAlreadyExistsException("Such model of airplane already exists");
-        }
+        checkIsEntityValid(airplane);
         repository.create(airplane);
         return airplane;
     }
 
     @Override
     @Transactional
-    public Airplane updateModelById(long id, String updatedModel) {
+    public Airplane update(long id, Airplane airplane) {
         if(!isExists(id)) {
-            throw new ResourceNotExistsException("There's no airplane with such id");
+            return create(airplane);
         }
-        if(isExists(updatedModel)) {
-            throw new ResourceAlreadyExistsException("Such model of airplane already exists");
-        }
-        repository.updatedModelById(id, updatedModel);
-        return new Airplane(id, updatedModel);
+        airplane.setId(id);
+        checkIsEntityValid(airplane);
+        repository.update(airplane);
+        return airplane;
     }
 
     @Override
@@ -68,13 +65,22 @@ public class AirplaneServiceImpl implements AirplaneService {
     }
 
     @Override
-    public boolean isExists(String model) {
-        return repository.isExistsByModel(model);
+    @Transactional(readOnly = true)
+    public boolean isExists(long id) {
+        return repository.isExistsById(id);
     }
 
     @Override
-    public boolean isExists(long id) {
-        return repository.isExistsById(id);
+    @Transactional(readOnly = true)
+    public boolean isExists(long id, String model) {
+        return repository.isExistsByModel(id, model);
+    }
+
+    private void checkIsEntityValid(Airplane airplane) {
+        long id = airplane.getId() != null ? airplane.getId() : 0;
+        if(isExists(id, airplane.getModel())) {
+            throw new ResourceAlreadyExistsException("Such model of airplane already exists");
+        }
     }
 
 }

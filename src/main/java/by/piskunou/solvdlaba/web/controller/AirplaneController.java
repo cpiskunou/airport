@@ -5,6 +5,7 @@ import by.piskunou.solvdlaba.domain.airplane.AirplaneRequest;
 import by.piskunou.solvdlaba.service.AirplaneService;
 import by.piskunou.solvdlaba.web.dto.airplane.AirplaneDTO;
 import by.piskunou.solvdlaba.web.dto.airplane.AirplaneRequestDTO;
+import by.piskunou.solvdlaba.web.groups.onCreate;
 import by.piskunou.solvdlaba.web.mapper.AirplaneMapper;
 import by.piskunou.solvdlaba.web.mapper.AirplaneRequestMapper;
 import lombok.RequiredArgsConstructor;
@@ -34,24 +35,22 @@ public class AirplaneController {
     }
 
     @GetMapping("/search")
-    public List<AirplaneDTO> search(AirplaneRequestDTO airplaneRequestDTO) {
-        AirplaneRequest request = requestMapper.toEntity(airplaneRequestDTO);
+    public List<AirplaneDTO> search(@Validated AirplaneRequestDTO requestDTO) {
+        AirplaneRequest request = requestMapper.toEntity(requestDTO);
         return airplaneMapper.toDTO( service.search(request) );
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public AirplaneDTO create(@RequestBody @Validated AirplaneDTO airplaneDTO) {
-        Airplane airplane = airplaneMapper.toEntity(airplaneDTO);
-
-        airplane = service.create(airplane);
-        return airplaneMapper.toDTO(airplane);
+    public AirplaneDTO create(@RequestBody @Validated(onCreate.class) AirplaneDTO dto) {
+        Airplane airplane = airplaneMapper.toEntity(dto);
+        return airplaneMapper.toDTO( service.create(airplane) );
     }
 
     @PutMapping("/{id}")
-    public AirplaneDTO updateModelById(@PathVariable long id, @RequestParam("updated-model") String updatedModel) {
-        Airplane airplane = service.updateModelById(id, updatedModel);
-        return airplaneMapper.toDTO(airplane);
+    public AirplaneDTO updateById(@PathVariable long id, @RequestBody @Validated(onCreate.class) AirplaneDTO dto) {
+        Airplane airplane = airplaneMapper.toEntity(dto);
+        return airplaneMapper.toDTO( service.update(id, airplane) );
     }
 
     @DeleteMapping("/{id}")

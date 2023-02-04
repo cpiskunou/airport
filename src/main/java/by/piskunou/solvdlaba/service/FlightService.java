@@ -1,23 +1,29 @@
 package by.piskunou.solvdlaba.service;
 
-import by.piskunou.solvdlaba.domain.flights.Flight;
-import by.piskunou.solvdlaba.domain.flights.FlightRequest;
-import by.piskunou.solvdlaba.domain.flights.FlightResponse;
+import by.piskunou.solvdlaba.domain.flight.Flight;
+import by.piskunou.solvdlaba.domain.flight.FlightRequest;
+import by.piskunou.solvdlaba.domain.flight.FlightResponse;
 import by.piskunou.solvdlaba.domain.Seat;
 
 import java.util.List;
 
 public interface FlightService {
 
-    Flight findById(long id);
+    List<Flight> findAll();
 
-    Flight create(Flight flight);
+    Flight findById(long id);
 
     List<FlightResponse> search(FlightRequest flightRequest);
 
-    List<Seat> freeSeats(long id);
+    List<Seat> flightSeats(long id, Boolean free);
 
-    void bookSeat(String number);
+    Flight create(Flight flight);
+
+    Flight updateById(long id, Flight flight);
+
+    void bookSeat(long id, int number);
+
+    void removeById(long id);
 
     boolean isExists(long id);
 

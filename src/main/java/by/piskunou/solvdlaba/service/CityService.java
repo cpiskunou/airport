@@ -14,11 +14,12 @@ public interface CityService {
 
     City create(long countryId, City city);
 
-    City updateNameById(long id, String updatedName);
+    City update(long id, long countryId, City city);
 
     void removeById(long id);
 
     boolean isExists(long id);
 
-    boolean isExists(String name);
+    boolean isExists(long id, String name);
+
 }

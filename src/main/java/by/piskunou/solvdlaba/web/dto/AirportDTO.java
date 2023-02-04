@@ -24,13 +24,11 @@ public class AirportDTO {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String name;
 
-    @NotBlank(groups = onCreate.class, message = "IATA code should be not blank")
     @Size(max = 3, groups = onSearch.class, message = "IATA code should be less than 3 characters")
     @Size(min = 3, max = 3, groups = onCreate.class, message = "IATA code length should be 3")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String iata;
 
-    @NotBlank(groups = onCreate.class, message = "ICAO code should be not blank")
     @Size(max = 4, groups = onSearch.class, message = "IATA code should be less than 4 characters")
     @Size(min = 4, max = 4, groups = onCreate.class, message = "ICAO code length should be 4")
     @JsonInclude(JsonInclude.Include.NON_NULL)

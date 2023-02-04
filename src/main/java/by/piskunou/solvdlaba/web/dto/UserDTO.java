@@ -1,7 +1,9 @@
 package by.piskunou.solvdlaba.web.dto;
 
 import by.piskunou.solvdlaba.domain.Ticket;
+import by.piskunou.solvdlaba.domain.User;
 import by.piskunou.solvdlaba.web.groups.onCreate;
+import by.piskunou.solvdlaba.web.groups.onUpdate;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -18,22 +20,24 @@ import java.util.List;
 //@Schema(description = "User info")
 public class UserDTO {
 
-    public interface onRegister {};
-    public interface onAuth {};
-
-    @Null(groups = {onRegister.class, onAuth.class}, message = "Id should be null")
-    @NotNull(message = "Id should be not null")
+    @Null(groups = {onCreate.class, onUpdate.class}, message = "Id should be null")
     private Long id;
 
-    @NotBlank(groups = {onRegister.class, onAuth.class}, message = "Username should be not blank")
-    @Size(max = 50, groups = {onCreate.class}, message = "The username must be less than 50 characters")
+    @NotBlank(groups = {onCreate.class, onUpdate.class}, message = "Username should be not blank")
+    @Size(groups = {onCreate.class, onUpdate.class}, max = 50, message = "The username must be less than 50 characters")
     private String username;
 
-    @NotBlank(groups = {onRegister.class, onAuth.class}, message = "Password should be not null")
-    @Size(max = 300, groups = {onRegister.class, onAuth.class}, message = "Password should be less than 300 characters")
+    @NotBlank(groups = {onCreate.class, onUpdate.class}, message = "Password should be blank")
+    @Size(groups = {onCreate.class, onUpdate.class}, max = 300, message = "Password should be less than 300 characters")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String password;
 
-    @Null(groups = onCreate.class, message = "Tickets should be null")
+    @Null(groups = onCreate.class, message = "Role should be null")
+    @NotNull(groups = onUpdate.class, message = "Role should be not null")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private User.Role role;
+
+    @Null(groups = {onCreate.class, onUpdate.class}, message = "Tickets should be null")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<Ticket> tickets;
 

@@ -8,7 +8,8 @@
     </resultMap>
 
     <resultMap id="withCountryMap" type="City" autoMapping="false" extends="elementaryMap">
-        <association property="country" resultMap="by.piskunou.solvdlaba.persistence.CountryRepository.elementaryMap"/>
+        <association property="country" autoMapping="false"
+                     resultMap="by.piskunou.solvdlaba.persistence.CountryRepository.elementaryMap"/>
     </resultMap>
 
     <resultMap id="fullMap" type="City" autoMapping="false" extends="withCountryMap">
@@ -75,8 +76,10 @@
         insert into cities(fk_country_id, name) values(#{countryId}, #{city.name})
     </insert>
 
-    <update id="updateNameById">
-        update cities set name = #{updatedName} where id =#{id}
+    <update id="update">
+        update cities set fk_country_id = #{countryId},
+                          name = #{city.name}
+        where id = #{city.id}
     </update>
 
     <delete id="removeById">
@@ -88,7 +91,7 @@
     </select>
 
     <select id="isExistsByName" resultType="boolean">
-        select exists (select from cities where name = #{name})
+        select exists (select from cities where name = #{name} and id != #{id})
     </select>
 
 </mapper>

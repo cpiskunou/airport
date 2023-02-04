@@ -32,41 +32,30 @@ public class AirportController {
     }
 
     @GetMapping("/search")
-    public List<AirportDTO> search(@Validated(onSearch.class) AirportDTO airportDTO) {
-        Airport airport = mapper.toEntity(airportDTO);
+    public List<AirportDTO> search(@Validated(onSearch.class) AirportDTO dto) {
+        Airport airport = mapper.toEntity(dto);
         return mapper.toDTO( service.search(airport) );
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public AirportDTO create(@RequestParam("city-id") long cityId,
-                             @RequestBody @Validated(onCreate.class) AirportDTO airportDTO) {
-        Airport airport = mapper.toEntity(airportDTO);
+                             @RequestBody @Validated(onCreate.class) AirportDTO dto) {
+        Airport airport = mapper.toEntity(dto);
         return mapper.toDTO( service.create(cityId, airport) );
     }
 
-    @PutMapping("{id}")
-    public AirportDTO updateNameById(@PathVariable long id,
-                                     @RequestParam("updated-name") String updatedName) {
-        return mapper.toDTO( service.updateNameById(id, updatedName) );
-    }
-
-    @PutMapping("/update")
-    public AirportDTO updateNameByCode(@RequestParam String code,
-                                       @RequestParam("updated-name") String updatedName) {
-        return mapper.toDTO( service.updateNameByCode(code, updatedName) );
+    @PutMapping("/{id}")
+    public AirportDTO updateById(@PathVariable long id, @RequestParam("city-id") long cityId,
+                                 @RequestBody @Validated(onCreate.class) AirportDTO dto) {
+        Airport airport = mapper.toEntity(dto);
+        return mapper.toDTO( service.update(id, cityId, airport) );
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeById(@PathVariable long id) {
         service.removeById(id);
-    }
-
-    @DeleteMapping("/delete")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void removeByCode(@RequestParam String code) {
-        service.removeByCode(code);
     }
 
 }

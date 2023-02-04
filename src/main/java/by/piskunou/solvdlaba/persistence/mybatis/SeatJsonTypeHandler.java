@@ -25,7 +25,7 @@ public class SeatJsonTypeHandler extends BaseTypeHandler<Seat> {
     @Override
     @SneakyThrows
     public void setNonNullParameter(PreparedStatement preparedStatement, int i, Seat seat, JdbcType jdbcType) {
-        Type seatType = new TypeToken<Seat>() {}.getType();
+        Type seatType = new TypeToken<Seat>(){}.getType();
         String json = gson.toJson(seat, seatType);
 
         preparedStatement.setObject(i, json);
@@ -35,7 +35,7 @@ public class SeatJsonTypeHandler extends BaseTypeHandler<Seat> {
     @SneakyThrows
     public Seat getNullableResult(ResultSet resultSet, String s) {
         if(resultSet.getString(s) != null) {
-            Type seatType = new TypeToken<Seat>() {}.getType();
+            Type seatType = new TypeToken<Seat>(){}.getType();
             String json = resultSet.getString(s);
             return gson.fromJson(json, seatType);
         }
@@ -46,7 +46,7 @@ public class SeatJsonTypeHandler extends BaseTypeHandler<Seat> {
     @SneakyThrows
     public Seat getNullableResult(ResultSet resultSet, int i) {
         if(resultSet.getString(i) != null) {
-            Type seatType = new TypeToken<Seat>() {}.getType();
+            Type seatType = new TypeToken<Seat>(){}.getType();
             String json = resultSet.getString(i);
             return gson.fromJson(json, seatType);
         }
@@ -57,7 +57,7 @@ public class SeatJsonTypeHandler extends BaseTypeHandler<Seat> {
     @SneakyThrows
     public Seat getNullableResult(CallableStatement callableStatement, int i) {
         if(callableStatement.getString(i) != null) {
-            Type seatType = new TypeToken<Seat>() {}.getType();
+            Type seatType = new TypeToken<Seat>(){}.getType();
             String json = callableStatement.getString(i);
             return gson.fromJson(json, seatType);
         }

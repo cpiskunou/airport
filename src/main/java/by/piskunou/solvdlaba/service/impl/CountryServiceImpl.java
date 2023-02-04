@@ -34,24 +34,20 @@ public class CountryServiceImpl implements CountryService {
     @Override
     @Transactional
     public Country create(Country country) {
-        if(isExists(country.getName())) {
-            throw new ResourceAlreadyExistsException("Country with such name has already exists");
-        }
+        checkIsEntityValid(country);
         repository.create(country);
         return country;
     }
 
     @Override
     @Transactional
-    public Country updateNameById(long id, String updatedName) {
+    public Country update(long id, Country country) {
         if(!isExists(id)){
-            throw new ResourceNotExistsException("There's no country with such id");
+            return create(country);
         }
-        if(isExists(updatedName)) {
-            throw new ResourceNotExistsException("Country with such name has already exists");
-        }
-        repository.updateNameById(id, updatedName);
-        return new Country(id, updatedName);
+        country.setId(id);
+        repository.update(country);
+        return country;
     }
 
     @Override
@@ -66,8 +62,15 @@ public class CountryServiceImpl implements CountryService {
     }
 
     @Override
-    public boolean isExists(String name) {
-        return repository.isExistsByName(name);
+    public boolean isExists(long id, String name) {
+        return repository.isExistsByName(id, name);
+    }
+
+    private void checkIsEntityValid(Country country) {
+        long id = country.getId() != null ? country.getId() : 0;
+        if(isExists(id, country.getName())) {
+            throw new ResourceAlreadyExistsException("Country with such name has already exists");
+        }
     }
 
 }

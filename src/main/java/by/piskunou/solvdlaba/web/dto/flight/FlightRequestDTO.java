@@ -15,10 +15,11 @@ import java.util.List;
 @NoArgsConstructor
 public class FlightRequestDTO {
 
-    @NotNull(message = "Airport from should be not null")
-    private List<Long> fromAirports;
+    @NotNull(message = "Please, select origin")
+    private List<String> fromAirports;
 
-    private List<Long> toAirports;
+    @NotNull(message = "Please, select destination")
+    private List<String> toAirports;
 
     @NotNull(message = "Passengers should be not null")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "\\d-\\d-\\d")
@@ -26,11 +27,11 @@ public class FlightRequestDTO {
 
     @NotNull(message = "Departure time should be not null")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    @Future
+    @Future(message = "Departure date should be future")
     private LocalDate departureDate;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    @Future
+    @Future(message = "Departure date should be future")
     private LocalDate arrivalDate;
 
 }

@@ -127,6 +127,8 @@ public class CityRepositoryImpl implements CityRepository {
     }
 
     @Override
+    public void update(long countryId, City city) {}
+
     @SneakyThrows
     public void updateNameById(long id, String updatedName) {
         Connection conn = config.getConnection();
@@ -169,7 +171,7 @@ public class CityRepositoryImpl implements CityRepository {
 
     @Override
     @SneakyThrows
-    public boolean isExistsByName(String name) {
+    public boolean isExistsByName(long id, String name) {
         Connection conn = config.getConnection();
 
         try (PreparedStatement preparedStatement = conn.prepareStatement(EXISTS_BY_NAME)) {

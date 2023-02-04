@@ -32,42 +32,28 @@ public class AirlineController {
     }
 
     @GetMapping("/search")
-    public List<AirlineDTO> search(@Validated(onSearch.class) AirlineDTO airlineDTO) {
-        Airline airline = mapper.toEntity(airlineDTO);
+    public List<AirlineDTO> search(@Validated(onSearch.class) AirlineDTO dto) {
+        Airline airline = mapper.toEntity(dto);
         return mapper.toDTO( service.search(airline) );
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public AirlineDTO create(@RequestBody @Validated(onCreate.class) AirlineDTO airlineDTO) {
-        Airline airline = mapper.toEntity(airlineDTO);
-
-        airline = service.create(airline);
-        return mapper.toDTO(airline);
+    public AirlineDTO create(@RequestBody @Validated(onCreate.class) AirlineDTO dto) {
+        Airline airline = mapper.toEntity(dto);
+        return mapper.toDTO( service.create(airline) );
     }
 
-    @PutMapping ("/{id}")
-    public AirlineDTO updateNameById(@PathVariable long id,
-                                     @RequestParam("updated-name") String updatedName) {
-        return mapper.toDTO( service.updateNameById(id, updatedName) );
-    }
-
-    @PutMapping("/update")
-    public AirlineDTO updateNameByCode(@RequestParam String code,
-                                       @RequestParam("updated-name") String updatedName) {
-        return mapper.toDTO( service.updateNameByCode(code, updatedName) );
+    @PutMapping("/{id}")
+    public AirlineDTO updateById(@PathVariable long id, @RequestBody @Validated(onCreate.class) AirlineDTO dto) {
+        Airline airline = mapper.toEntity(dto);
+        return mapper.toDTO( service.update(id, airline) );
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeById(@PathVariable long id) {
         service.removeById(id);
-    }
-
-    @DeleteMapping("/delete")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void removeByCode(@RequestParam String code) {
-        service.removeByCode(code);
     }
 
 }

@@ -38,16 +38,16 @@ public class CityController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CityDTO create(@RequestParam("country-id") long countryId,
-                          @RequestBody @Validated(onCreate.class) CityDTO cityDTO) {
-        City city = mapper.toEntity(cityDTO);
-
-        city = service.create(countryId, city);
-        return mapper.toDTO(city);
+                          @RequestBody @Validated CityDTO dto) {
+        City city = mapper.toEntity(dto);
+        return mapper.toDTO( service.create(countryId, city) );
     }
 
     @PutMapping("/{id}")
-    public CityDTO updateNameById(@PathVariable long id, @RequestParam("updated-name") String updatedName) {
-        return mapper.toDTO( service.updateNameById(id, updatedName) );
+    public CityDTO updateById(@PathVariable long id, @RequestParam("country-id") long countryId,
+                              @RequestBody @Validated CityDTO dto) {
+        City city = mapper.toEntity(dto);
+        return mapper.toDTO( service.update(id, countryId, city) );
     }
 
     @DeleteMapping("/{id}")

@@ -1,6 +1,6 @@
 package by.piskunou.solvdlaba.persistence.jdbc;
 
-import by.piskunou.solvdlaba.domain.flights.Flight;
+import by.piskunou.solvdlaba.domain.flight.Flight;
 import by.piskunou.solvdlaba.domain.Seat;
 import by.piskunou.solvdlaba.persistence.FlightRepository;
 import by.piskunou.solvdlaba.persistence.DataSourceConfig;
@@ -96,6 +96,11 @@ public class FlightRepositoryImpl implements FlightRepository {
 
 
     @Override
+    public List<Flight> findAll() {
+        return Collections.emptyList();
+    }
+
+    @Override
     @SneakyThrows
     public Optional<Flight> findById(long id) {
         Connection conn = config.getConnection();
@@ -149,9 +154,24 @@ public class FlightRepositoryImpl implements FlightRepository {
     }
 
     @Override
+    public void update(Flight flight) {
+
+    }
+
+    @Override
+    public void bookSeat(long id, int number) {
+
+    }
+
+    @Override
+    public void removeById(long id) {
+
+    }
+
+    @Override
     @SneakyThrows
-    public List<Flight> search(List<Long> fromAirports, List<Long> toAirports,
-                               LocalDateTime start, LocalDateTime end) {
+    public List<Flight> search(List<String> fromAirports, List<String> toAirports,
+                               long passengerAmount, LocalDateTime start, LocalDateTime end) {
         Connection conn = config.getConnection();
         try(PreparedStatement preparedStatement = conn.prepareStatement(SEARCH,
                 ResultSet.TYPE_SCROLL_INSENSITIVE,
@@ -179,38 +199,30 @@ public class FlightRepositoryImpl implements FlightRepository {
 
     @Override
     @SneakyThrows
-    public Optional<Flight> freeSeats(long id) {
+    public List<Seat> flightSeats(long id) {
         Connection conn = config.getConnection();
 
         try (PreparedStatement preparedStatement = conn.prepareStatement(FREE_SEATS)) {
             preparedStatement.setLong(1, id);
 
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                Flight flight = null;
-                if(resultSet.next()) {
-                    Type listType = new TypeToken<List<Seat>>() {}.getType();
+            try (ResultSet resultSet = preparedStatement.executeQuery()){
+                resultSet.next();
+                Type listType = new TypeToken<List<Seat>>() {}.getType();
 
-                    String json = resultSet.getString("free_seats");
-                    List<Seat> seats = gson.fromJson(json, listType);
-
-                    flight = new Flight();
-                    flight.setSeats(seats);
-                }
-                return Optional.ofNullable(flight);
+                String json = resultSet.getString("free_seats");
+                return gson.fromJson(json, listType);
             }
         }
     }
 
     @Override
-    @SneakyThrows
-    public void bookSeat(String number) {
-        Connection conn = config.getConnection();
+    public List<Seat> flightFreeSeats(long id) {
+        return Collections.emptyList();
+    }
 
-        try(PreparedStatement preparedStatement = conn.prepareStatement(BOOK_SEAT)) {
-            preparedStatement.setString(1, number);
-
-            preparedStatement.executeUpdate();
-        }
+    @Override
+    public List<Seat> flightOccupiedSeats(long id) {
+        return Collections.emptyList();
     }
 
     @Override

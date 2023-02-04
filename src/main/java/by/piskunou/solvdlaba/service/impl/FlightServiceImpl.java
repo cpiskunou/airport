@@ -3,12 +3,15 @@ package by.piskunou.solvdlaba.service.impl;
 import by.piskunou.solvdlaba.domain.*;
 import by.piskunou.solvdlaba.domain.airplane.Airplane;
 import by.piskunou.solvdlaba.domain.exception.ResourceNotExistsException;
-import by.piskunou.solvdlaba.domain.flights.Flight;
-import by.piskunou.solvdlaba.domain.flights.FlightRequest;
-import by.piskunou.solvdlaba.domain.flights.FlightResponse;
+import by.piskunou.solvdlaba.domain.flight.Flight;
+import by.piskunou.solvdlaba.domain.flight.FlightRequest;
+import by.piskunou.solvdlaba.domain.flight.FlightResponse;
 import by.piskunou.solvdlaba.persistence.FlightRepository;
+import by.piskunou.solvdlaba.service.AirlineService;
 import by.piskunou.solvdlaba.service.AirplaneService;
+import by.piskunou.solvdlaba.service.AirportService;
 import by.piskunou.solvdlaba.service.FlightService;
+import by.piskunou.solvdlaba.web.dto.flight.FlightDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,26 +25,117 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FlightServiceImpl implements FlightService {
 
-    private final FlightRepository flightRepository;
+    private final FlightRepository repository;
+    private final AirportService airportService;
+    private final AirlineService airlineService;
     private final AirplaneService airplaneService;
+
+    @Override
+    public List<Flight> findAll() {
+        return repository.findAll();
+    }
 
     @Override
     @Transactional(readOnly = true)
     public Flight findById(long id) {
-       return flightRepository.findById(id)
-                              .orElseThrow(() -> new ResourceNotExistsException("There's no flight with such id"));
+       return repository.findById(id)
+                        .orElseThrow(() -> new ResourceNotExistsException("There's no flight with such id"));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Seat> flightSeats(long id, Boolean free) {
+        if(free == null) {
+            return repository.flightSeats(id);
+        }
+        if(free.booleanValue()) {
+            return repository.flightFreeSeats(id);
+        }
+        return repository.flightOccupiedSeats(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<FlightResponse> search(FlightRequest flightRequest) {
+        List<Passenger> passengers = flightRequest.getPassengers();
+
+        List<Flight> toFlights = repository.search(
+                flightRequest.getFromAirports(),
+                flightRequest.getToAirports(),
+                passengers.size(),
+                flightRequest.getDepartureDate().atStartOfDay(),
+                flightRequest.getDepartureDate().atTime(LocalTime.MAX));
+        List<BigDecimal> toPrices = cost(passengers, toFlights);
+
+        List<Flight> backFlights = null;
+        List<BigDecimal> backPrices = null;
+
+        if(flightRequest.getArrivalDate() != null) {
+            backFlights = repository.search(
+                    flightRequest.getToAirports(),
+                    flightRequest.getFromAirports(),
+                    passengers.size(),
+                    flightRequest.getArrivalDate().atStartOfDay(),
+                    flightRequest.getArrivalDate().atTime(LocalTime.MAX));
+            backPrices = cost(passengers, backFlights);
+        }
+        List<FlightResponse> responses = buildFlightResponse(toFlights, toPrices, backFlights, backPrices);
+        return responses;
     }
 
     @Override
     @Transactional
     public Flight create(Flight flight) {
-        Airplane airplane = airplaneService.findById(flight.getAirplane()
-                                                            .getId());
-        List<Seat> seats = createSeats(airplane);
-        flight.setSeats(seats);
+        if(!airportService.isExists(flight.getFrom().getId())) {
+            throw new ResourceNotExistsException("There is no origin airport with such id");
+        }
+        if(!airportService.isExists(flight.getTo().getId())) {
+            throw new ResourceNotExistsException("There is no destination airport with such id");
+        }
+        if(!airlineService.isExists(flight.getAirline().getId())) {
+            throw new ResourceNotExistsException("There is no airline with such id");
+        }
+        if(!airplaneService.isExists(flight.getAirplane().getId())) {
+            throw new ResourceNotExistsException("There is no airplane with such id");
+        }
 
-        flightRepository.create(flight);
+        Airplane airplane = airplaneService.findById(flight.getAirplane().getId());
+        flight.setSeats( createSeats(airplane) );
+
+        repository.create(flight);
         return flight;
+    }
+
+    @Override
+    @Transactional
+    public Flight updateById(long id, Flight flight) {
+        if(!isExists(id)) {
+            throw new ResourceNotExistsException("There is no flight with such id");
+        }
+        flight.setId(id);
+        if(!airlineService.isExists(flight.getAirline().getId())) {
+            throw new ResourceNotExistsException("There is no airline with such id");
+        }
+        repository.update(flight);
+        return flight;
+    }
+
+    @Override
+    @Transactional
+    public void bookSeat(long id, int number) {
+        repository.bookSeat(id, number);
+    }
+
+    @Override
+    @Transactional
+    public void removeById(long id) {
+        repository.removeById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean isExists(long id) {
+        return repository.isExistsById(id);
     }
 
     private List<Seat> createSeats(Airplane airplane) {
@@ -53,55 +147,11 @@ public class FlightServiceImpl implements FlightService {
         for(short i = 1; i <= rowNo; i++) {
             for(byte j = 1; j <= seatInRow; j++) {
                 char c = (char)(64 + j);
-                Seat seat = new Seat(Short.toString(i) + c);
+                Seat seat = new Seat((i - 1) * seatInRow + j - 1,Short.toString(i) + c);
                 seats.add(seat);
             }
         }
         return seats;
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<FlightResponse> search(FlightRequest flightRequest) {
-        List<Passenger> passengers = flightRequest.getPassengers();
-
-        List<Flight> toFlights = flightRepository.search(
-                flightRequest.getFromAirports(),
-                flightRequest.getToAirports(),
-                flightRequest.getDepartureDate().atStartOfDay(),
-                flightRequest.getDepartureDate().atTime(LocalTime.MAX));
-        List<BigDecimal> toPrices = cost(passengers, toFlights);
-
-        List<Flight> backFlights = null;
-        List<BigDecimal> backPrices = null;
-
-        if(flightRequest.getArrivalDate() != null) {
-            backFlights = flightRepository.search(
-                    flightRequest.getToAirports(),
-                    flightRequest.getFromAirports(),
-                    flightRequest.getArrivalDate().atStartOfDay(),
-                    flightRequest.getArrivalDate().atTime(LocalTime.MAX));
-            backPrices = cost(passengers, backFlights);
-        }
-        List<FlightResponse> responses = buildFlightResponse(toFlights, toPrices, backFlights, backPrices);
-        return responses;
-    }
-
-    @Override
-    public List<Seat> freeSeats(long id) {
-        return flightRepository.freeSeats(id)
-                               .orElseThrow(() -> new ResourceNotExistsException("There's no flight with such id"))
-                               .getSeats();
-    }
-
-    @Override
-    public void bookSeat(String number) {
-        flightRepository.bookSeat(number);
-    }
-
-    @Override
-    public boolean isExists(long id) {
-        return flightRepository.isExistsById(id);
     }
 
     private List<FlightResponse> buildFlightResponse(List<Flight> toFlights, List<BigDecimal> toPrices,

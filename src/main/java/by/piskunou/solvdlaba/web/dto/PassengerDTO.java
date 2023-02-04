@@ -2,13 +2,22 @@ package by.piskunou.solvdlaba.web.dto;
 
 import by.piskunou.solvdlaba.domain.Country;
 import by.piskunou.solvdlaba.domain.Passenger;
-import by.piskunou.solvdlaba.domain.Passport;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.validation.constraints.Null;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
+
+@Getter
+@Setter
+@NoArgsConstructor
 public class PassengerDTO {
 
+    @Null(message = "Id should be null")
     private Long id;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -18,9 +27,10 @@ public class PassengerDTO {
     private String surname;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Passport passport;
+    private PassportDTO passport;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dateOfBirth;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)

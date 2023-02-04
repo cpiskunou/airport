@@ -24,8 +24,9 @@
         insert into countries(name) values(#{name})
     </insert>
 
-    <update id="updateNameById">
-        update countries set name = #{updatedName} where id = #{id}
+    <update id="update">
+        update countries set name = #{name}
+        where id = #{id}
     </update>
 
     <delete id="removeById">
@@ -37,7 +38,7 @@
     </select>
 
     <select id="isExistsByName" resultType="boolean">
-        select exists (select from countries where name = #{name})
+        select exists (select from countries where name = #{name} and id != #{id})
     </select>
 
 </mapper>

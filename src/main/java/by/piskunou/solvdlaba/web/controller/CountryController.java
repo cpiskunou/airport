@@ -31,16 +31,15 @@ public class CountryController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CountryDTO create(@RequestBody @Validated CountryDTO countryDTO) {
-        Country country = mapper.toEntity(countryDTO);
-
-        country = service.create(country);
-        return mapper.toDTO(country);
+    public CountryDTO create(@RequestBody @Validated CountryDTO dto) {
+        Country country = mapper.toEntity(dto);
+        return mapper.toDTO( service.create(country) );
     }
 
     @PutMapping("/{id}")
-    public CountryDTO updateNameById(@PathVariable long id, @RequestParam("updated-name") String updatedName) {
-        return mapper.toDTO( service.updateNameById(id, updatedName) );
+    public CountryDTO updateById(@PathVariable long id, @RequestBody @Validated CountryDTO dto) {
+        Country country = mapper.toEntity(dto);
+        return mapper.toDTO( service.update(id, country) );
     }
 
     @DeleteMapping("/{id}")

@@ -1,6 +1,6 @@
 package by.piskunou.solvdlaba.domain;
 
-import by.piskunou.solvdlaba.domain.flights.Flight;
+import by.piskunou.solvdlaba.domain.flight.Flight;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

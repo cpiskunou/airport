@@ -42,27 +42,21 @@ public class CityServiceImpl implements CityService {
     @Override
     @Transactional
     public City create(long countryId, City city) {
-        if(!countryService.isExists(countryId)) {
-            throw new ResourceNotExistsException("There's no country with such id");
-        }
-        if(isExists(city.getName())) {
-            throw new ResourceAlreadyExistsException("City with such name has already exists");
-        }
+        checkIsEntityValid(countryId, city);
         repository.create(countryId, city);
         return city;
     }
 
     @Override
     @Transactional
-    public City updateNameById(long id, String updatedName) {
+    public City update(long id, long countryId, City city) {
         if(!isExists(id)) {
-            throw new ResourceNotExistsException("There's no city with such id");
+            return create(countryId, city);
         }
-        if(isExists(updatedName)) {
-            throw new ResourceNotExistsException("City with such name has already exists");
-        }
-        repository.updateNameById(id, updatedName);
-        return new City(id, updatedName);
+        city.setId(id);
+        checkIsEntityValid(countryId, city);
+        repository.update(countryId, city);
+        return city;
     }
 
     @Override
@@ -72,13 +66,25 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public boolean isExists(long id) {
         return repository.isExistsById(id);
     }
 
     @Override
-    public boolean isExists(String name) {
-        return repository.isExistsByName(name);
+    @Transactional(readOnly = true)
+    public boolean isExists(long id, String name) {
+        return repository.isExistsByName(id, name);
+    }
+
+    private void checkIsEntityValid(long countryId, City city) {
+        long id = city.getId() != null ? city.getId() : 0;
+        if(!countryService.isExists(countryId)) {
+            throw new ResourceNotExistsException("There's no country with such id");
+        }
+        if(isExists(id, city.getName())) {
+            throw new ResourceAlreadyExistsException("City with such name has already exists");
+        }
     }
 
 }

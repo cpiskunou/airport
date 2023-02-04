@@ -14,18 +14,18 @@ public interface UserRepository {
 
     Optional<User> findById(long id);
 
-    Optional<User> findByUsername(String username);
+    Optional<User> findByIdWithTickets(long id);
 
-    Optional<User> findUserTickets(long id);
+    List<User> search(User user);
 
-    void register(User user);
+    void create(User user);
 
-    void updateUsernameById(@Param("id") long id, @Param("username") String username);
+    void update(User user);
 
     void removeById(long id);
 
     boolean isExistsById(long id);
 
-    boolean isExistsByUsername(String username);
+    boolean isExistsByUsername(@Param("id") long id, @Param("username") String username);
 
 }

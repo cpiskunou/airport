@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 @Service
 @RequiredArgsConstructor
@@ -36,83 +38,85 @@ public class AirportServiceImpl implements AirportService {
     @Override
     @Transactional(readOnly = true)
     public List<Airport> search(Airport airport) {
-        airport.setName('%' + airport.getName() + '%');
-        airport.setIata('%' + airport.getIata() + '%');
-        airport.setIcao('%' + airport.getIcao() + '%');
+        setSearchValue(airport::getName, airport::setName);
+        setSearchValue(airport::getIata, airport::setIata);
+        setSearchValue(airport::getIcao, airport::setIcao);
         return repository.search(airport);
     }
 
     @Override
     @Transactional
     public Airport create(long cityId, Airport airport) {
-        if(!cityService.isExists(cityId)) {
-            throw new ResourceNotExistsException("There's is no city with such id");
-        }
-        if(isExists(airport.getName())) {
-            throw new ResourceAlreadyExistsException("Airport with such name has already exists");
-        }
-        if(!isValidIata(airport.getIata())) {
-            throw new InvalidResourceParamException("Invalid IATA code");
-        }
-        if(!isValidIcao(airport.getIcao())) {
-            throw new InvalidResourceParamException("Invalid ICAO code");
-        }
+        checkIsEntityValid(cityId, airport);
         repository.create(cityId, airport);
         return airport;
     }
 
     @Override
-    public Airport updateNameById(long id, String updatedName) {
+    @Transactional
+    public Airport update(long id, long cityId, Airport airport) {
         if(!isExists(id)) {
-            throw new ResourceNotExistsException("There's is no airport with such id");
+            return create(cityId, airport);
         }
-        if(isExists(updatedName)) {
-            throw new ResourceAlreadyExistsException("Airport with such name has already exists");
-        }
-        repository.updateNameById(id, updatedName);
-        return new Airport(id, updatedName);
+        airport.setId(id);
+        checkIsEntityValid(cityId, airport);
+        repository.update(cityId, airport);
+        return airport;
     }
 
-    @Override
-    public Airport updateNameByCode(String code, String updatedName) {
-        if(!isValidIata(code) || !isValidIcao(code)) {
-            throw new InvalidResourceParamException("Invalid designator");
-        }
-        if(isExists(updatedName)) {
-            throw new ResourceAlreadyExistsException("Airport with such name has already exists");
-        }
-        repository.updateNameByCode(code, updatedName);
-        return new Airport(updatedName);
-    }
 
     @Override
+    @Transactional
     public void removeById(long id) {
         repository.removeById(id);
     }
 
     @Override
-    public void removeByCode(String code) {
-        repository.removeByCode(code);
-    }
-
-    @Override
+    @Transactional(readOnly = true)
     public boolean isExists(long id) {
         return repository.isExistsById(id);
     }
 
     @Override
-    public boolean isExists(String name) {
-        return repository.isExistsByName(name);
+    @Transactional(readOnly = true)
+    public boolean isExistsByName(long id, String name) {
+        return repository.isExistsByName(id, name);
     }
 
     @Override
-    public boolean isValidIata(String iata) {
-        return true;
+    @Transactional(readOnly = true)
+    public boolean isExistsByIata(long id, String iata) {
+        return repository.isExistsByIata(id, iata);
     }
 
     @Override
-    public boolean isValidIcao(String icao) {
-        return true;
+    @Transactional(readOnly = true)
+    public boolean isExistsByIcao(long id, String icao) {
+        return repository.isExistsByIcao(id, icao);
+    }
+
+    private void setSearchValue(Supplier<String> getter, Consumer<String> setter) {
+        if(getter.get() != null) {
+            setter.accept('%' + getter.get() + '%');
+        } else {
+            setter.accept("%%");
+        }
+    }
+
+    private void checkIsEntityValid(long cityId, Airport airport) {
+        long id = airport.getId() != null ? airport.getId() : 0;
+        if(!cityService.isExists(cityId)) {
+            throw new ResourceNotExistsException("There's is no city with such id");
+        }
+        if(isExistsByName(id, airport.getName())) {
+            throw new ResourceAlreadyExistsException("Airport with such name has already exists");
+        }
+        if(isExistsByIata(id, airport.getIata())) {
+            throw new ResourceAlreadyExistsException("Airport with such IATA has already exists");
+        }
+        if(isExistsByIcao(id, airport.getIcao())) {
+            throw new ResourceAlreadyExistsException("Airport with such ICAO has already exists");
+        }
     }
 
 }

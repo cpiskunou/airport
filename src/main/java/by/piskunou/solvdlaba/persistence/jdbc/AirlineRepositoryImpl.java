@@ -20,23 +20,43 @@ public class AirlineRepositoryImpl implements AirlineRepository {
     private final DataSourceConfig config;
     private final AirlineMapper airlineMapper;
 
-    private final static String FIND_BY_ID = """
-            select id as airline_id,
-                   name as airline_name
-            from airlines where id = ?""";
-
-    private final static String FIND_BY_NAME = """
-            select id as airline_id,
-                   name as airline_name
-            from airlines where name = ?""";
-
     private final static String FIND_ALL = """
-            select id as airline_id,
-                   name as airline_name
-            from airlines""";
+        select id as airline_id,
+               name as airline_name,
+               iata as airline_iata_code,
+               icao as airline_icao_code,
+               callsign as airline_callsign
+        from airlines""";
 
-    private static final String CREATE = "insert into airlines(name) values(?)";
-    private static final String UPDATE = "update airlines set name = ? where id = ?";
+    private final static String FIND_BY_ID = """
+        select id as airline_id,
+               name as airline_name,
+               iata as airline_iata_code,
+               icao as airline_icao_code,
+               callsign as airline_callsign
+        from airlines
+        where id = ?""";
+
+    private final static String SEARCH = """
+            select id as airline_id,
+                   name as airline_name,
+                   iata as airline_iata_code,
+                   icao as airline_icao_code,
+                   callsign as airline_callsign
+            from airlines
+            where name like ? and
+                  iata like ? and
+                  icao like ? and
+                  callsign like ?""";
+
+    private static final String CREATE = "insert into airlines(name, iata, icao, callsign) values(?, ?, ?, ?)";
+    private static final String UPDATE = """
+        update airlines set name = ?,
+                            iata = ?,
+                            icao = ?,
+                            callsign = ?
+        where id = ?""";
+
     private static final String DELETE = "delete from airlines where id = ?";
     private static final String EXISTS_BY_ID = "select exists (select from airlines where id = ?)";
     private static final String EXISTS_BY_NAME = "select exists (select from airlines where name = ?)";
@@ -105,19 +125,16 @@ public class AirlineRepositoryImpl implements AirlineRepository {
 
     @Override
     @SneakyThrows
-    public void updateNameById(long id, String updatedName) {
+    public void update(Airline airline) {
         Connection conn = config.getConnection();
 
         try(PreparedStatement preparedStatement = conn.prepareStatement(UPDATE)) {
-            preparedStatement.setString(1, updatedName);
-            preparedStatement.setLong(2, id);
+            preparedStatement.setString(1, airline.getName());
+            preparedStatement.setLong(2, airline.getId());
 
             preparedStatement.executeUpdate();
         }
     }
-
-    @Override
-    public void updateNameByCode(String code, String updatedName) {}
 
     @Override
     @SneakyThrows
@@ -130,9 +147,6 @@ public class AirlineRepositoryImpl implements AirlineRepository {
             preparedStatement.executeUpdate();
         }
     }
-
-    @Override
-    public void removeByCode(String designator) {}
 
     @Override
     @SneakyThrows
@@ -151,7 +165,7 @@ public class AirlineRepositoryImpl implements AirlineRepository {
 
     @Override
     @SneakyThrows
-    public boolean isExistsByName(String name) {
+    public boolean isExistsByName(long id, String name) {
         Connection conn = config.getConnection();
 
         try (PreparedStatement preparedStatement = conn.prepareStatement(EXISTS_BY_NAME)) {
@@ -162,6 +176,21 @@ public class AirlineRepositoryImpl implements AirlineRepository {
                 return resultSet.getBoolean("exists");
             }
         }
+    }
+
+    @Override
+    public boolean isExistsByIata(long id, String iata) {
+        return false;
+    }
+
+    @Override
+    public boolean isExistsByIcao(long id, String icao) {
+        return false;
+    }
+
+    @Override
+    public boolean isExistsByCallsign(long id, String callsign) {
+        return false;
     }
 
 }

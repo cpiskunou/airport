@@ -11,18 +11,18 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class PassengerServiceImpl implements PassengerService {
 
-    private final PassengerRepository passengerRepository;
+    private final PassengerRepository repository;
 
     @Override
     @Transactional
     public Passenger create(Passenger passenger) {
-        passengerRepository.create(passenger);
+        repository.create(passenger);
         return passenger;
     }
 
     @Override
     public boolean isExists(long id) {
-        return passengerRepository.isExistsById(id);
+        return repository.isExistsById(id);
     }
 
 }

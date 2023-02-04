@@ -10,6 +10,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 //@Repository
@@ -24,7 +26,7 @@ public class TicketRepositoryImpl implements TicketRepository {
 
     @Override
     @SneakyThrows
-    public void create(Ticket ticket, long userId) {
+    public void create(long userId, Ticket ticket) {
         Connection conn = config.getConnection();
 
         try(PreparedStatement preparedStatement =
@@ -47,7 +49,12 @@ public class TicketRepositoryImpl implements TicketRepository {
     }
 
     @Override
-    public Optional<Ticket> findById(long id) {
+    public List<Ticket> findAll(long userId) {
+         return Collections.emptyList();
+    }
+
+    @Override
+    public Optional<Ticket> findById(long id, long userId) {
         return Optional.empty();
     }
 

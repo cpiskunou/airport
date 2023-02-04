@@ -12,9 +12,6 @@ public interface AirportMapper {
 
     AirportDTO toDTO(Airport entity);
 
-    @Mapping(target = "name", defaultValue = "")
-    @Mapping(target = "iata", defaultValue = "")
-    @Mapping(target = "icao", defaultValue = "")
     Airport toEntity(AirportDTO dto);
 
     List<AirportDTO> toDTO(List<Airport> entities);

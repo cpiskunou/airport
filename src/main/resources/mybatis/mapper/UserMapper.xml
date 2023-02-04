@@ -2,45 +2,43 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="by.piskunou.solvdlaba.persistence.UserRepository">
 
-    <resultMap id="userMap" type="User" autoMapping="false">
+    <resultMap id="elementaryMap" type="User" autoMapping="false">
         <id property="id" column="user_id"/>
         <result property="username" column="user_name"/>
+    </resultMap>
+
+    <resultMap id="fullMap" type="User" autoMapping="false" extends="elementaryMap">
         <result property="role" column="user_role"/>
     </resultMap>
 
-    <resultMap id="userWithTickets" type="User" autoMapping="false" extends="userMap">
+    <resultMap id="withTicketsMap" type="User" autoMapping="false" extends="fullMap">
         <collection property="tickets" ofType="Ticket" javaType="java.util.List" autoMapping="false"
-                    resultMap="by.piskunou.solvdlaba.persistence.TicketRepository.ticketMap"/>
+                    resultMap="by.piskunou.solvdlaba.persistence.TicketRepository.fullMap"/>
     </resultMap>
 
-    <select id="findAll" resultType="User">
+    <select id="findAll" resultMap="fullMap">
         select id as user_id,
                username as user_name,
                role as user_role
         from users
     </select>
 
-    <select id="findById" resultType="User">
+    <select id="findById" resultMap="fullMap">
         select id as user_id,
                username as user_name,
                role as user_role
-        from users where id = #{id}
+        from users
+        where id = #{id}
     </select>
 
-    <select id="findByUsername" resultType="User">
-        select id as user_id,
-               username as user_name,
-               role as user_role
-        from users where username = #{username}
-    </select>
-
-    <select id="findUserTickets" resultMap="userWithTickets">
+    <select id="findByIdWithTickets" resultMap="withTicketsMap">
         select users.id as user_id,
                users.username as user_name,
                role as user_role,
 
                tickets.id as ticket_id,
                tickets.seat_no as ticket_seat_no,
+               tickets.place as tikcet_place,
 
                passengers.id as passenger_id,
                passengers.firstname as passenger_firstname,
@@ -51,12 +49,19 @@
 
                airport_from.id as airport_from_id,
                airport_from.name as airport_from_name,
+               airport_from.iata as airport_from_iata_code,
+               airport_from.icao as airport_from_icao_code,
 
                airport_to.id as airport_to_id,
                airport_to.name as airport_to_name,
+               airport_to.iata as airport_to_iata_code,
+               airport_to.icao as airport_to_icao_code,
 
                airlines.id as airline_id,
-               airlines.name airline_name
+               airlines.name as airline_name,
+               airlines.iata as airline_iata_code,
+               airlines.icao as airline_icao_code,
+               airlines.callsign as airline_callsign
 
         from users left join tickets on users.id = tickets.fk_owner_id
                    left join passengers on tickets.fk_passenger_id = passengers.id
@@ -66,13 +71,24 @@
                    left join airlines on flights.fk_airline_id = airlines.id
         where users.id = #{id}
     </select>
+    
+    <select id="search" resultMap="elementaryMap">
+        select id as user_id,
+               username as user_name
+        from users
+        where username like #{username}
+    </select>
 
-    <insert id="register" useGeneratedKeys="true" keyProperty="id">
-        insert into users (username, password, role) values(#{username}, #{password}, #{role});
+    <insert id="create" useGeneratedKeys="true" keyProperty="id">
+        insert into users (username, password, role)
+        values(#{username}, #{password}, #{role});
     </insert>
 
-    <update id="updateUsernameById">
-        update users set username = #{username} where id = #{id}
+    <update id="update">
+        update users set username = #{username},
+                         password = #{password},
+                         role = #{role}
+        where id = #{id}
     </update>
 
     <delete id="removeById">
@@ -80,11 +96,11 @@
     </delete>
 
     <select id="isExistsById" resultType="boolean">
-        select exists (select from "user" where id = #{id})
+        select exists (select from users where id = #{id})
     </select>
 
     <select id="isExistsByUsername" resultType="boolean">
-        select exists (select from "user" where username = #{username})
+        select exists (select from users where username = #{username} and id != #{id})
     </select>
 
 </mapper>

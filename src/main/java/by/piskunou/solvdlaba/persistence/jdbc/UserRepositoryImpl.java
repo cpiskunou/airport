@@ -72,7 +72,6 @@ public class UserRepositoryImpl implements UserRepository {
     private static final String EXISTS_BY_ID = "select exists (select from users where id = ?)";
     private static final String EXISTS_BY_NAME = "select exists (select from users where username = ?)";
 
-    @Override
     @SneakyThrows
     public void register(User user) {
         Connection conn = config.getConnection();
@@ -112,6 +111,25 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public Optional<User> findByIdWithTickets(long id) {
+        return Optional.empty();
+    }
+
+    @Override
+    public List<User> search(User user) {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public void create(User user) {
+
+    }
+
+    @Override
+    public void update(User user) {
+
+    }
+
     @SneakyThrows
     public Optional<User> findByUsername(String username) {
         Connection conn = config.getConnection();
@@ -146,7 +164,6 @@ public class UserRepositoryImpl implements UserRepository {
         }
     }
 
-    @Override
     @SneakyThrows
     public Optional<User> findUserTickets(long id) {
         Connection conn = config.getConnection();
@@ -167,7 +184,6 @@ public class UserRepositoryImpl implements UserRepository {
         }
     }
 
-    @Override
     @SneakyThrows
     public void updateUsernameById(long id, String username) {
         Connection conn = config.getConnection();
@@ -209,7 +225,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     @SneakyThrows
-    public boolean isExistsByUsername(String name) {
+    public boolean isExistsByUsername(long id, String name) {
         Connection conn = config.getConnection();
 
         try (PreparedStatement preparedStatement = conn.prepareStatement(EXISTS_BY_NAME)) {

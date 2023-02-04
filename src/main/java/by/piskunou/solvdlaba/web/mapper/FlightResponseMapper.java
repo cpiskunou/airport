@@ -1,6 +1,6 @@
 package by.piskunou.solvdlaba.web.mapper;
 
-import by.piskunou.solvdlaba.domain.flights.FlightResponse;
+import by.piskunou.solvdlaba.domain.flight.FlightResponse;
 import by.piskunou.solvdlaba.web.dto.flight.FlightResponseDTO;
 import org.mapstruct.Mapper;
 

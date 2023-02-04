@@ -1,4 +1,4 @@
-package by.piskunou.solvdlaba.domain.flights;
+package by.piskunou.solvdlaba.domain.flight;
 
 import by.piskunou.solvdlaba.domain.Airline;
 import by.piskunou.solvdlaba.domain.Airport;

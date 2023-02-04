@@ -93,7 +93,7 @@ create table if not exists tickets(
     fk_owner_id bigint references users(id) on delete set null on update no action,
     fk_flight_id bigint not null references flights(id) on delete cascade on update no action,
     fk_passenger_id bigint not null references passengers(id) on delete cascade on update no action,
-    seat_no varchar(5) not null
+    seat_no int not null
 );
 --rollback drop table tickets
 

@@ -12,7 +12,6 @@ public interface CityMapper {
 
     CityDTO toDTO(City entity);
 
-    @Mapping(target = "name", defaultValue = "")
     City toEntity(CityDTO dto);
 
     List<CityDTO> toDTO(List<City> entities);

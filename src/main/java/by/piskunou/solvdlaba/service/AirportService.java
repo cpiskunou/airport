@@ -14,20 +14,16 @@ public interface AirportService {
 
     Airport create(long cityId, Airport airport);
 
-    Airport updateNameById(long id, String updatedName);
-
-    Airport updateNameByCode(String code, String updatedName);
+    Airport update(long id, long cityId, Airport airport);
 
     void removeById(long id);
 
-    void removeByCode(String code);
-
     boolean isExists(long id);
 
-    boolean isExists(String name);
+    boolean isExistsByName(long id, String name);
 
-    boolean isValidIata(String iata);
+    boolean isExistsByIata(long id, String iata);
 
-    boolean isValidIcao(String icao);
+    boolean isExistsByIcao(long id, String icao);
 
 }

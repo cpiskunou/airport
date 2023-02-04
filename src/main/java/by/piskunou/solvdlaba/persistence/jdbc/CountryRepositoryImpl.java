@@ -172,17 +172,7 @@ public class CountryRepositoryImpl implements CountryRepository {
     }
 
     @Override
-    @SneakyThrows
-    public void updateNameById(long id, String updatedName) {
-        Connection conn = config.getConnection();
-
-        try(PreparedStatement preparedStatement = conn.prepareStatement(UPDATE)) {
-            preparedStatement.setString(1, updatedName);
-            preparedStatement.setLong(2, id);
-
-            preparedStatement.executeUpdate();
-        }
-    }
+    public void update(Country country) {}
 
     @Override
     @SneakyThrows
@@ -213,7 +203,7 @@ public class CountryRepositoryImpl implements CountryRepository {
 
     @Override
     @SneakyThrows
-    public boolean isExistsByName(String name) {
+    public boolean isExistsByName(long id, String name) {
         Connection conn = config.getConnection();
 
         try (PreparedStatement preparedStatement = conn.prepareStatement(EXISTS_BY_NAME)) {

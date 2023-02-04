@@ -15,12 +15,12 @@ public interface AirplaneService {
 
     Airplane create(Airplane airplane);
 
-    Airplane updateModelById(long id, String updatedModel);
+    Airplane update(long id, Airplane airplane);
 
     void removeById(long id);
 
-    boolean isExists(String name);
-
     boolean isExists(long id);
+
+    boolean isExists(long id, String name);
 
 }

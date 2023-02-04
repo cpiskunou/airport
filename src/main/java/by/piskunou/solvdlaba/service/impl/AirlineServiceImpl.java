@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 @Service
 @RequiredArgsConstructor
@@ -34,56 +36,31 @@ public class AirlineServiceImpl implements AirlineService {
     @Override
     @Transactional
     public List<Airline> search(Airline airline) {
-        airline.setName('%' + airline.getName() + '%');
-        airline.setIata('%' + airline.getIata() + '%');
-        airline.setIcao('%' + airline.getIcao() + '%');
-        airline.setCallsign('%' + airline.getCallsign() + '%');
+        setSearchValue(airline::getName, airline::setName);
+        setSearchValue(airline::getIata, airline::setIata);
+        setSearchValue(airline::getIcao, airline::setIcao);
+        setSearchValue(airline::getCallsign, airline::setCallsign);
         return repository.search(airline);
     }
 
     @Override
     @Transactional
     public Airline create(Airline airline) {
-        if(isExists(airline.getName())) {
-            throw new ResourceAlreadyExistsException("Airline with such name has already exists");
-        }
-        if(!isValidIata(airline.getIata())) {
-            throw new InvalidResourceParamException("Invalid IATA");
-        }
-        if(!isValidIcao(airline.getIcao())) {
-            throw new InvalidResourceParamException("Invalid ICAO");
-        }
-        if(!isValidIcao(airline.getCallsign())) {
-            throw new InvalidResourceParamException("Invalid callsign");
-        }
+        checkIsEntityValid(airline);
         repository.create(airline);
         return airline;
     }
 
     @Override
     @Transactional
-    public Airline updateNameById(long id, String updatedName) {
+    public Airline update(long id, Airline airline) {
         if(!isExists(id)) {
-            throw new ResourceNotExistsException("There's no airline with such id");
+            return create(airline);
         }
-        if(isExists(updatedName)) {
-            throw new ResourceAlreadyExistsException("Airline with such name has already exists");
-        }
-        repository.updateNameById(id, updatedName);
-        return new Airline(id, updatedName);
-    }
-
-    @Override
-    @Transactional
-    public Airline updateNameByCode(String code, String updatedName) {
-        if(!isValidIata(code) || !isValidIcao(code) || !isValidCallsign(code)) {
-            throw new InvalidResourceParamException("Invalid designator");
-        }
-        if(isExists(updatedName)) {
-            throw new ResourceAlreadyExistsException("Airline with such name has already exists");
-        }
-        repository.updateNameByCode(code, updatedName);
-        return new Airline(updatedName);
+        airline.setId(id);
+        checkIsEntityValid(airline);
+        repository.update(airline);
+        return airline;
     }
 
     @Override
@@ -93,34 +70,57 @@ public class AirlineServiceImpl implements AirlineService {
     }
 
     @Override
-    @Transactional
-    public void removeByCode(String code) {
-        repository.removeByCode(code);
-    }
-
-    @Override
+    @Transactional(readOnly = true)
     public boolean isExists(long id) {
         return repository.isExistsById(id);
     }
 
     @Override
-    public boolean isExists(String name) {
-        return repository.isExistsByName(name);
+    @Transactional(readOnly = true)
+    public boolean isExistsByName(long id, String name) {
+        return repository.isExistsByName(id, name);
     }
 
     @Override
-    public boolean isValidIata(String iata) {
-        return true;
+    @Transactional(readOnly = true)
+    public boolean isExistsByIata(long id, String iata) {
+        return repository.isExistsByIata(id, iata);
     }
 
     @Override
-    public boolean isValidIcao(String icao) {
-        return true;
+    @Transactional(readOnly = true)
+    public boolean isExistsByIcao(long id, String icao) {
+        return repository.isExistsByIcao(id, icao);
     }
 
     @Override
-    public boolean isValidCallsign(String callsign) {
-        return true;
+    @Transactional(readOnly = true)
+    public boolean isExistsByCallsign(long id, String callsign) {
+        return repository.isExistsByCallsign(id, callsign);
+    }
+
+    private void setSearchValue(Supplier<String> getter, Consumer<String> setter) {
+        if(getter.get() != null) {
+            setter.accept('%' + getter.get() + '%');
+        } else {
+            setter.accept("%%");
+        }
+    }
+
+    private void checkIsEntityValid(Airline airline) {
+        long id = airline.getId() != null ? airline.getId() : 0;
+        if(isExistsByName(id, airline.getName())) {
+            throw new ResourceAlreadyExistsException("Airline with such name has already exists");
+        }
+        if(isExistsByIata(id, airline.getIata())) {
+            throw new ResourceAlreadyExistsException("Airline with such IATA has already exists");
+        }
+        if(isExistsByIcao(id, airline.getIcao())) {
+            throw new ResourceAlreadyExistsException("Airline with such ICAO has already exists");
+        }
+        if(isExistsByCallsign(id, airline.getCallsign())) {
+            throw new ResourceAlreadyExistsException("Airline with such callsign has already exists");
+        }
     }
 
 }

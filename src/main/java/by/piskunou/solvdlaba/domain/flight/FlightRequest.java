@@ -1,4 +1,4 @@
-package by.piskunou.solvdlaba.domain.flights;
+package by.piskunou.solvdlaba.domain.flight;
 
 import by.piskunou.solvdlaba.domain.Passenger;
 import lombok.Getter;
@@ -13,8 +13,8 @@ import java.util.List;
 @NoArgsConstructor
 public class FlightRequest {
 
-    private List<Long> fromAirports;
-    private List<Long> toAirports;
+    private List<String> fromAirports;
+    private List<String> toAirports;
     private List<Passenger> passengers;
     private LocalDate departureDate;
     private LocalDate arrivalDate;

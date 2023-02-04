@@ -16,12 +16,12 @@ public interface CountryRepository {
 
     void create(Country country);
 
-    void updateNameById(@Param("id") long id, @Param("updatedName") String updatedName);
+    void update(Country country);
 
     void removeById(long id);
 
     boolean isExistsById(long id);
 
-    boolean isExistsByName(String name);
+    boolean isExistsByName(@Param("id") long id, @Param("name") String name);
 
 }

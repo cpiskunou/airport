@@ -19,11 +19,11 @@ public interface AirplaneRepository {
 
     void create(Airplane airplane);
 
-    void updatedModelById(@Param("id") long id, @Param("updatedModel") String updatedModel);
+    void update(Airplane airplane);
 
     void removeById(long id);
 
-    boolean isExistsByModel(String model);
+    boolean isExistsByModel(@Param("id") long id, @Param("model") String model);
 
     boolean isExistsById(long id);
 
