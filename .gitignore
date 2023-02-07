@@ -212,7 +212,7 @@ buildNumber.properties
 draft.sql
 testData.sql
 text.txt
-*/resources/application.yaml
-*/ZTestTest.java
+**/test/**/application.yaml
+**/ZTestTest.java
 
 # End of https://www.toptal.com/developers/gitignore/api/git,maven,intellij,macos,java
