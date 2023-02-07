@@ -17,7 +17,7 @@ import lombok.Setter;
 @Schema(description = "Airplane ifo")
 public class AirplaneDTO {
 
-    @Schema(description = "Airplane's unique identification number", type = "$byte")
+    @Schema(description = "Airplane's unique identification number")
     @Null(groups = onCreate.class, message = "Id should be null")
     private Long id;
 

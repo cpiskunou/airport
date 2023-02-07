@@ -20,4 +20,10 @@ public class City {
         this.name = name;
     }
 
+    public City(Long id, String name, Country country) {
+        this.id = id;
+        this.name = name;
+        this.country = country;
+    }
+
 }

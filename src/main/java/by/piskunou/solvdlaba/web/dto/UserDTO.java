@@ -29,7 +29,7 @@ public class UserDTO {
 
     }
 
-    @Schema(description = "Unique identification number")
+    @Schema(description = "The user's unique identification id")
     @Null(groups = {onSignUp.class, onLogin.class, onUpdate.class, onSearch.class}, message = "Id should be null")
     private Long id;
 

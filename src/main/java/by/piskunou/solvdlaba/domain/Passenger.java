@@ -1,5 +1,6 @@
 package by.piskunou.solvdlaba.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,6 +10,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Passenger {
 
     public enum Gender {
@@ -36,4 +38,5 @@ public class Passenger {
         this.firstname = firstname;
         this.surname = surname;
     }
+
 }
