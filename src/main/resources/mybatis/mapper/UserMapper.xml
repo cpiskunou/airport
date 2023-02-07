@@ -7,7 +7,11 @@
         <result property="username" column="user_name"/>
     </resultMap>
 
-    <resultMap id="fullMap" type="User" autoMapping="false" extends="elementaryMap">
+    <resultMap id="withPasswordMap" type="User" autoMapping="false">
+        <result property="password" column="user_password"/>
+    </resultMap>
+
+    <resultMap id="fullMap" type="User" autoMapping="false" extends="withPasswordMap">
         <result property="role" column="user_role"/>
     </resultMap>
 
@@ -29,6 +33,15 @@
                role as user_role
         from users
         where id = #{id}
+    </select>
+
+    <select id="findByUsername" resultMap="fullMap">
+        select id as user_id,
+               username as user_name,
+               password as user_password,
+               role as user_role
+        from users
+        where username = #{username}
     </select>
 
     <select id="findByIdWithTickets" resultMap="withTicketsMap">

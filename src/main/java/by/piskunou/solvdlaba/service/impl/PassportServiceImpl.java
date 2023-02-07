@@ -4,6 +4,7 @@ import by.piskunou.solvdlaba.domain.Passport;
 import by.piskunou.solvdlaba.persistence.PassportRepository;
 import by.piskunou.solvdlaba.service.PassportService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,10 +13,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class PassportServiceImpl implements PassportService {
 
     private final PassportRepository passportRepository;
+    private final PasswordEncoder encoder;
 
     @Override
     @Transactional
     public Passport create(Passport passport) {
+        passport.setNumber( encoder.encode(passport.getNumber()) );
+        passport.setIdentificationNo( encoder.encode(passport.getIdentificationNo()) );
         passportRepository.create(passport);
         return passport;
     }

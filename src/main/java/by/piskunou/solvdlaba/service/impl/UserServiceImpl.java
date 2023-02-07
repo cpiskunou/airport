@@ -6,6 +6,7 @@ import by.piskunou.solvdlaba.persistence.UserRepository;
 import by.piskunou.solvdlaba.domain.User;
 import by.piskunou.solvdlaba.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,9 +17,10 @@ import java.util.function.Supplier;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService { //UserDetailsService {
+public class UserServiceImpl implements UserService {
 
     private final UserRepository repository;
+    private final PasswordEncoder encoder;
 
     @Override
     @Transactional(readOnly = true)
@@ -33,13 +35,12 @@ public class UserServiceImpl implements UserService { //UserDetailsService {
         return user.orElseThrow(() -> new ResourceNotExistsException("There's no user with such id"));
     }
 
-//    @Override
-//    @Transactional
-//    public UserDetails loadUserByUsername(String username) {
-//        User user = userRepository.findByUsername(username)
-//                                  .orElseThrow(() -> new UsernameNotFoundException("There's no user with such username"));
-//        return new UserDetailsImpl(user);
-//    }
+    @Override
+    @Transactional(readOnly = true)
+    public User findByUsername(String username) {
+        return repository.findByUsername(username)
+                         .orElseThrow(() -> new ResourceNotExistsException("There's no user with username id"));
+    }
 
     @Override
     @Transactional(readOnly = true)
@@ -51,9 +52,9 @@ public class UserServiceImpl implements UserService { //UserDetailsService {
     @Override
     @Transactional
     public User create(User user) {
-//        user.setRole(User.Role.USER);
-        checkIsEntityValid(user);
+        user.setPassword( encoder.encode(user.getPassword()) );
         user.setRole(User.Role.USER);
+        checkIsEntityValid(user);
         repository.create(user);
         return user;
     }

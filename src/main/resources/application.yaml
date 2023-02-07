@@ -17,6 +17,3 @@ mybatis:
   mapper-locations: classpath:mybatis/mapper/*.xml
   type-aliases-package: by.piskunou.solvdlaba.domain
 
-# JWT
-jwt-secret: ${jwt-secret}
-

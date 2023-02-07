@@ -16,6 +16,8 @@ public interface UserRepository {
 
     Optional<User> findByIdWithTickets(long id);
 
+    Optional<User> findByUsername(String username);
+
     List<User> search(User user);
 
     void create(User user);

@@ -1,105 +1,77 @@
 package by.piskunou.solvdlaba.service.impl;
 
+import by.piskunou.solvdlaba.domain.UserDetailsImpl;
 import by.piskunou.solvdlaba.service.JwtService;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.auth0.jwt.interfaces.JWTVerifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.time.Instant;
+import java.time.ZonedDateTime;
 
 @Service
 public class JwtServiceImpl implements JwtService {
 
-//    @Value("${jwt-secret}")
-//    private static String SECRET_KEY;
-//
-//    @Override
-//    public String extractUsername(String token) {
-//        return extractClaim(token, Claims::getSubject);
-//    }
-//
-//    @Override
-//    public String generateAccessToken(UserDetails userDetails) {
-//        return generateAccessToken(Collections.emptyMap(), userDetails);
-//    }
-//
-//    @Override
-//    public String generateRefreshToken(UserDetails userDetails) {
-//        return generateRefreshToken(Collections.emptyMap(), userDetails);
-//    }
-//
-//    @Override
-//    public String generateAccessToken(Map<String, Object> claims, UserDetails userDetails) {
-//        return Jwts.builder()
-//                .setClaims(claims)
-//                .setSubject(userDetails.getUsername())
-//                .setIssuedAt(Date.from(ZonedDateTime.now().toInstant()))
-//                .setExpiration(Date.from(ZonedDateTime.now().plusMinutes(60).toInstant()))
-//                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
-//                .compact();
-//    }
-//
-//    @Override
-//    public String generateRefreshToken(Map<String, Object> claims, UserDetails userDetails) {
-//        return Jwts.builder()
-//                .setClaims(claims)
-//                .setSubject(userDetails.getUsername())
-//                .setIssuedAt(Date.from(ZonedDateTime.now().toInstant()))
-//                .setExpiration(Date.from(ZonedDateTime.now().plusWeeks(1).toInstant()))
-//                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
-//                .compact();
-//    }
-//
-//    @Override
-//    public boolean isTokenExpired(String token) {
-//        try {
-//            Jws<Claims> claims = Jwts
-//                    .parserBuilder()
-//                    .setSigningKey(SECRET_KEY)
-//                    .build()
-//                    .parseClaimsJws(token);
-//            return !claims.getBody().getExpiration().before(new Date());
-//        } catch (JwtException | IllegalArgumentException e) {
-//            return false;
-//        }
-//    }
-//
-//    @Override
-//    public AuthEntity refresh(AuthEntity authEntity) {
-//        UserDetails userDetails = new UserDetailsImpl(new User(extractUsername(authEntity.getRefreshToken())));
-//        String newRefreshToken = generateRefreshToken(userDetails);
-//        authEntity.setRefreshToken(newRefreshToken);
-//        return authEntity;
-//    }
-//
-//    @Override
-//    public AuthEntity getNewAccessToken(AuthEntity authEntity) {
-//        if(isTokenExpired(authEntity.getRefreshToken())) {
-//            throw new AccessDeniedException("Access denied");
-//        }
-//        UserDetails userDetails = new UserDetailsImpl(new User(extractUsername(authEntity.getAccessToken())));
-//        String newAccessToken = generateAccessToken(userDetails);
-//        authEntity.setAccessToken(newAccessToken);
-//        return authEntity;
-//    }
-//
-//    @Override
-//    public Claims extractAllClaims(String token) {
-//        return Jwts.parserBuilder()
-//                   .setSigningKey(getSignInKey())
-//                   .build()
-//                   .parseClaimsJws(token)
-//                   .getBody();
-//    }
-//
-//    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-//        final Claims claims = extractAllClaims(token);
-//        return claimsResolver.apply(claims);
-//    }
-//
-//    public ZonedDateTime extractExpiration(String token) {
-//        return ZonedDateTime.ofInstant(extractClaim(token, Claims::getExpiration).toInstant(), ZoneId.systemDefault());
-//    }
-//
-//    private Key getSignInKey() {
-//        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
-//        return Keys.hmacShaKeyFor(keyBytes);
-//    }
+    @Value("${jwt-secret}")
+    private String SECRET_KEY;
+
+    @Override
+    public String extractUsername(String jwt) {
+        DecodedJWT decodedJwt = JWT.decode(jwt);
+        return decodedJwt.getClaim("username").asString();
+    }
+
+    @Override
+    public String generateAccessToken(UserDetailsImpl userDetails) {
+        return JWT.create()
+                  .withSubject("Access token")
+                  .withClaim("username", userDetails.getUsername())
+                  .withIssuer("Airport")
+                  .withIssuedAt(Instant.now())
+                  .withExpiresAt( ZonedDateTime.now().plusHours(2).toInstant() )
+                  .sign(Algorithm.HMAC256(SECRET_KEY));
+    }
+
+    @Override
+    public String generateRefreshToken(UserDetailsImpl userDetails) {
+        return JWT.create()
+                  .withSubject("Refresh token")
+                  .withIssuer("Airport")
+                  .withIssuedAt(Instant.now())
+                  .withExpiresAt( ZonedDateTime.now().plusWeeks(1).toInstant() )
+                  .sign(Algorithm.HMAC256(SECRET_KEY));
+    }
+
+    @Override
+    public boolean isValidAccessToken(String jwt) {
+        try {
+            JWTVerifier verifier = JWT.require(Algorithm.HMAC256(SECRET_KEY))
+                    .withSubject("Access token")
+                    .withIssuer("Airport")
+                    .build();
+            DecodedJWT decodedJwt = verifier.verify(jwt);
+            return true;
+        } catch (JWTVerificationException e) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean isValidRefreshToken(String jwt) {
+        try {
+            JWTVerifier verifier = JWT.require(Algorithm.HMAC256(SECRET_KEY))
+                                      .withSubject(" Refresh token")
+                                      .withIssuer("Airport")
+                                      .build();
+            DecodedJWT decodedJwt = verifier.verify(jwt);
+            return true;
+        } catch (JWTVerificationException e) {
+            return false;
+        }
+    }
 
 }

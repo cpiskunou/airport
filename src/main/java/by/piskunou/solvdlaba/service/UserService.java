@@ -6,9 +6,11 @@ import java.util.List;
 
 public interface UserService {
 
+    List<User> findAll();
+
     User findById(long id, boolean withTickets);
 
-    List<User> findAll();
+    User findByUsername(String username);
 
     List<User> search(User user);
 

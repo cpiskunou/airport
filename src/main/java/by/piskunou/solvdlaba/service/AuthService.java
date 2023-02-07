@@ -5,12 +5,10 @@ import by.piskunou.solvdlaba.domain.User;
 
 public interface AuthService {
 
-    AuthEntity register(User user);
+    AuthEntity signUp(User user);
 
-    AuthEntity authenticate(User user);
+    AuthEntity login(User user);
 
     AuthEntity refresh(AuthEntity authEntity);
-
-    AuthEntity getNewAccessToken(AuthEntity authEntity);
 
 }

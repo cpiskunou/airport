@@ -5,6 +5,7 @@ import by.piskunou.solvdlaba.domain.exception.ResourceAlreadyExistsException;
 import by.piskunou.solvdlaba.domain.exception.ResourceNotExistsException;
 import by.piskunou.solvdlaba.web.dto.ErrorResponseDTO;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -15,7 +16,7 @@ import java.util.List;
 @RestControllerAdvice
 public class AdviceController {
 
-    @ExceptionHandler({ResourceNotExistsException.class}) //UsernameNotFoundException.class})
+    @ExceptionHandler({ResourceNotExistsException.class, UsernameNotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponseDTO handleNotFoundException(Exception e) {
         return new ErrorResponseDTO(e.getMessage());
@@ -37,10 +38,10 @@ public class AdviceController {
                 .toList();
     }
 
-//    @ExceptionHandler(Exception.class)
-//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-//    public ErrorResponseDTO handleException(Exception e) {
-//        return new ErrorResponseDTO("Internal Server Error. Please try later");
-//    }
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponseDTO handleException(Exception e) {
+        return new ErrorResponseDTO("Internal Server Error. Please try later");
+    }
 
 }
