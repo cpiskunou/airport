@@ -2,9 +2,9 @@ spring:
 # Configuration data sources
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: ${spring.datasource.url}
+    url:
     username: postgres
-    password: ${spring.datasource.password}
+    password:
 
   #Liquibase
   liquibase:
@@ -16,4 +16,6 @@ spring:
 mybatis:
   mapper-locations: classpath:mybatis/mapper/*.xml
   type-aliases-package: by.piskunou.solvdlaba.domain
+
+jwt-secret:
 

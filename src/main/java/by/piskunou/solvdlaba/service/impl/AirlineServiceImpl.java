@@ -1,7 +1,6 @@
 package by.piskunou.solvdlaba.service.impl;
 
 import by.piskunou.solvdlaba.domain.Airline;
-import by.piskunou.solvdlaba.domain.exception.InvalidResourceParamException;
 import by.piskunou.solvdlaba.domain.exception.ResourceAlreadyExistsException;
 import by.piskunou.solvdlaba.domain.exception.ResourceNotExistsException;
 import by.piskunou.solvdlaba.persistence.AirlineRepository;

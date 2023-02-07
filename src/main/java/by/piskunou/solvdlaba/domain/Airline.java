@@ -1,12 +1,8 @@
 package by.piskunou.solvdlaba.domain;
 
-import io.swagger.v3.oas.annotations.Hidden;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@Hidden
+@Builder
 @Getter
 @Setter
 @NoArgsConstructor
@@ -14,6 +10,7 @@ import lombok.Setter;
 public class Airline {
 
     private Long id;
+
     private String name;
     private String iata;
     private String icao;
@@ -26,6 +23,13 @@ public class Airline {
     public Airline(Long id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public Airline(String name, String iata, String icao, String callsign) {
+        this.name = name;
+        this.iata = iata;
+        this.icao = icao;
+        this.callsign = callsign;
     }
 
 }
