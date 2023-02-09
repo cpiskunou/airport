@@ -9,7 +9,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.stubbing.Answer;
 
 import java.util.Optional;
 
@@ -54,9 +56,19 @@ class CountryServiceTest {
         Country country = Country.builder()
                                  .name("Poland")
                                  .build();
+        doAnswer(new Answer() {
+            @Override
+            public Void answer(InvocationOnMock invocation) throws Throwable {
+                Country country = invocation.getArgument(0);
+                country.setId(1L);
+                return null;
+            }
+        }).when(repository).create(country);
+
         assertEquals(country, service.create(country));
-        verify(repository).isExistsByName(0, "Poland");
+        verify(repository).isExistsByName(null, "Poland");
         verify(repository).create(country);
+        assertEquals(1, country.getId());
     }
 
     @Test
@@ -64,9 +76,9 @@ class CountryServiceTest {
         Country country = Country.builder()
                                  .name("Poland")
                                  .build();
-        when(service.isExists(0, "Poland")).thenReturn(true);
+        when(service.isExists(null, "Poland")).thenReturn(true);
         assertThrows(ResourceAlreadyExistsException.class, () -> service.create(country));
-        verify(repository).isExistsByName(0, "Poland");
+        verify(repository).isExistsByName(null, "Poland");
     }
 
 
@@ -100,14 +112,14 @@ class CountryServiceTest {
 
     @Test
     void verifyIsExistsTest() {
-        service.isExists(0);
+        assertFalse(service.isExists(0));
         verify(repository).isExistsById(0);
     }
 
     @Test
     void verifyIsExistsByNameTest() {
-        service.isExists(0,"Poland");
-        verify(repository).isExistsByName(0, "Poland");
+        assertFalse(service.isExists(0L,"Poland"));
+        verify(repository).isExistsByName(0L, "Poland");
     }
 
 }

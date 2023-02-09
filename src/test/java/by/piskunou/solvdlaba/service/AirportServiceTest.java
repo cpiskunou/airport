@@ -5,11 +5,14 @@ import by.piskunou.solvdlaba.domain.exception.ResourceAlreadyExistsException;
 import by.piskunou.solvdlaba.domain.exception.ResourceNotExistsException;
 import by.piskunou.solvdlaba.persistence.AirportRepository;
 import by.piskunou.solvdlaba.service.impl.AirportServiceImpl;
+import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.stubbing.Answer;
 
 import java.util.Optional;
 
@@ -75,13 +78,22 @@ class AirportServiceTest {
                                  .icao("GMAD")
                                  .build();
         when(cityService.isExists(85)).thenReturn(true);
+        doAnswer(new Answer() {
+            @Override
+            public Void answer(InvocationOnMock invocation) throws Throwable {
+                Airport airport = invocation.getArgument(1);
+                airport.setId(1L);
+                return null;
+            }
+        }).when(repository).create(85, airport);
 
         assertEquals(airport, airportService.create(85, airport));
         verify(cityService).isExists(85);
-        verify(repository).isExistsByName(0, "Agadir – Al Massira Airport");
-        verify(repository).isExistsByIata(0, "AGA");
-        verify(repository).isExistsByIcao(0, "GMAD");
+        verify(repository).isExistsByName(null, "Agadir – Al Massira Airport");
+        verify(repository).isExistsByIata(null, "AGA");
+        verify(repository).isExistsByIcao(null, "GMAD");
         verify(repository).create(85, airport);
+        assertEquals(1, airport.getId());
     }
 
     @Test
@@ -96,11 +108,11 @@ class AirportServiceTest {
                                  .name("Minsk National Airport")
                                  .build();
         when(cityService.isExists(85)).thenReturn(true);
-        when(airportService.isExistsByName(0, "Minsk National Airport")).thenReturn(true);
+        when(airportService.isExistsByName(null, "Minsk National Airport")).thenReturn(true);
 
         assertThrows(ResourceAlreadyExistsException.class, () -> airportService.create(85, airport));
         verify(cityService).isExists(85);
-        verify(repository).isExistsByName(0, "Minsk National Airport");
+        verify(repository).isExistsByName(null, "Minsk National Airport");
     }
 
     @Test
@@ -110,12 +122,12 @@ class AirportServiceTest {
                                  .iata("MSQ")
                                  .build();
         when(cityService.isExists(85)).thenReturn(true);
-        when(airportService.isExistsByIata(0, "MSQ")).thenReturn(true);
+        when(airportService.isExistsByIata(null, "MSQ")).thenReturn(true);
 
         assertThrows(ResourceAlreadyExistsException.class, () -> airportService.create(85, airport));
         verify(cityService).isExists(85);
-        verify(repository).isExistsByName(0, "Agadir – Al Massira Airport");
-        verify(repository).isExistsByIata(0, "MSQ");
+        verify(repository).isExistsByName(null, "Agadir – Al Massira Airport");
+        verify(repository).isExistsByIata(null, "MSQ");
     }
 
     @Test
@@ -126,13 +138,13 @@ class AirportServiceTest {
                                  .icao("UMMS")
                                  .build();
         when(cityService.isExists(85)).thenReturn(true);
-        when(airportService.isExistsByIcao(0, "UMMS")).thenReturn(true);
+        when(airportService.isExistsByIcao(null, "UMMS")).thenReturn(true);
 
         assertThrows(ResourceAlreadyExistsException.class, () -> airportService.create(85, airport));
         verify(cityService).isExists(85);
-        verify(repository).isExistsByName(0, "Agadir – Al Massira Airport");
-        verify(repository).isExistsByIata(0, "AGA");
-        verify(repository).isExistsByIcao(0, "UMMS");
+        verify(repository).isExistsByName(null, "Agadir – Al Massira Airport");
+        verify(repository).isExistsByIata(null, "AGA");
+        verify(repository).isExistsByIcao(null, "UMMS");
     }
 
     @Test
@@ -172,34 +184,26 @@ class AirportServiceTest {
 
     @Test
     void verifyIsExistsTest() {
-        airportService.isExists(1);
+        assertFalse(airportService.isExists(1));
         verify(repository).isExistsById(1);
     }
 
     @Test
-    void verifyIsExistsFailedTest() {
-        airportService.isExists(Long.MAX_VALUE);
-        verify(repository).isExistsById(Long.MAX_VALUE);
-    }
-
-    @Test
     void verifyIsExistsByNameTest() {
-        airportService.isExistsByName(0, "Minsk National Airport");
-        verify(repository).isExistsByName(0, "Minsk National Airport");
+        assertFalse(airportService.isExistsByName(0L, "Minsk National Airport"));
+        verify(repository).isExistsByName(0L, "Minsk National Airport");
     }
 
     @Test
     void verifyIsExistsByIataTest() {
-        airportService.isExistsByIata(0, "MSQ");
-        verify(repository).isExistsByIata(0, "MSQ");
+        assertFalse(airportService.isExistsByIata(0L, "MSQ"));
+        verify(repository).isExistsByIata(0L, "MSQ");
     }
 
     @Test
     void verifyIsExistsByIcaoTest() {
-        airportService.isExistsByIcao(0, "UMMS");
-        verify(repository).isExistsByIcao(0, "UMMS");
+        assertFalse(airportService.isExistsByIcao(0L, "UMMS"));
+        verify(repository).isExistsByIcao(0L, "UMMS");
     }
-
-    //TODO Спытаць пра адмоўныя галіны
 
 }

@@ -10,7 +10,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.stubbing.Answer;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.LinkedList;
@@ -119,12 +121,21 @@ class UserServiceTest {
                         .username("Cool boy333")
                         .password("MTIzNA==")
                         .build();
+        doAnswer(new Answer() {
+            @Override
+            public Void answer(InvocationOnMock invocation) throws Throwable {
+                User user = invocation.getArgument(0);
+                user.setId(1L);
+                return null;
+            }
+        }).when(repository).create(user);
 
         assertEquals(user, service.create(user));
         verify(encoder).encode("MTIzNA==");
         assertEquals(User.Role.USER, user.getRole());
-        verify(repository).isExistsByUsername(0, "Cool boy333");
+        verify(repository).isExistsByUsername(null, "Cool boy333");
         verify(repository).create(user);
+        assertEquals(1, user.getId());
     }
 
     @Test
@@ -133,12 +144,12 @@ class UserServiceTest {
                         .username("Cool boy333")
                         .password("MTIzNA==")
                         .build();
-        when(service.isExists(0, "Cool boy333")).thenReturn(true);
+        when(service.isExists(null, "Cool boy333")).thenReturn(true);
 
         assertThrows(ResourceAlreadyExistsException.class, () -> service.create(user));
         verify(encoder).encode("MTIzNA==");
         assertEquals(User.Role.USER, user.getRole());
-        verify(repository).isExistsByUsername(0, "Cool boy333");
+        verify(repository).isExistsByUsername(null, "Cool boy333");
     }
 
     @Test
@@ -171,14 +182,14 @@ class UserServiceTest {
 
     @Test
     void verifyIsExistsTest() {
-        service.isExists(1);
+        assertFalse(service.isExists(1));
         verify(repository).isExistsById(1);
     }
 
     @Test
     void verifyIsExistsByUsernameTest() {
-        service.isExists(0, "John");
-        verify(repository).isExistsByUsername(0, "John");
+        assertFalse(service.isExists(0L, "John"));
+        verify(repository).isExistsByUsername(0L, "John");
     }
 
 }

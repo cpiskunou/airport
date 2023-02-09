@@ -159,7 +159,7 @@ public class FlightRepositoryImpl implements FlightRepository {
     }
 
     @Override
-    public void bookSeat(long id, int number) {
+    public void bookSeat(Long id, int number) {
 
     }
 

@@ -225,7 +225,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     @SneakyThrows
-    public boolean isExistsByUsername(long id, String name) {
+    public boolean isExistsByUsername(Long id, String name) {
         Connection conn = config.getConnection();
 
         try (PreparedStatement preparedStatement = conn.prepareStatement(EXISTS_BY_NAME)) {

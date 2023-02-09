@@ -1,5 +1,6 @@
 package by.piskunou.solvdlaba.service;
 
+import by.piskunou.solvdlaba.domain.Airline;
 import by.piskunou.solvdlaba.domain.airplane.Airplane;
 import by.piskunou.solvdlaba.domain.airplane.AirplaneRequest;
 import by.piskunou.solvdlaba.domain.exception.ResourceAlreadyExistsException;
@@ -10,7 +11,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.stubbing.Answer;
 
 import java.util.Optional;
 
@@ -68,10 +71,19 @@ class AirplaneServiceTest {
                                     .seatsInRow((byte) 6)
                                     .rowNo((short) 40)
                                     .build();
+        doAnswer(new Answer() {
+            @Override
+            public Void answer(InvocationOnMock invocation) throws Throwable {
+                Airplane airplane = invocation.getArgument(0);
+                airplane.setId(1L);
+                return null;
+            }
+        }).when(repository).create(airplane);
 
         assertEquals(airplane, service.create(airplane));
-        verify(repository).isExistsByModel(0, "A321P2F");
+        verify(repository).isExistsByModel(null, "A321P2F");
         verify(repository).create(airplane);
+        assertEquals(1, airplane.getId());
     }
 
     @Test
@@ -81,10 +93,10 @@ class AirplaneServiceTest {
                 .seatsInRow((byte) 6)
                 .rowNo((short) 40)
                 .build();
-        when(repository.isExistsByModel(0, "Boeing Next-Genetation 737")).thenReturn(true);
+        when(repository.isExistsByModel(null, "Boeing Next-Genetation 737")).thenReturn(true);
 
         assertThrows(ResourceAlreadyExistsException.class, () -> service.create(airplane));
-        verify(repository).isExistsByModel(0, "Boeing Next-Genetation 737");
+        verify(repository).isExistsByModel(null, "Boeing Next-Genetation 737");
         verify(repository, times(0)).create(airplane);
     }
 
@@ -122,14 +134,14 @@ class AirplaneServiceTest {
 
     @Test
     void verifyIsExistTest() {
-        service.isExists(1);
+        assertFalse(service.isExists(1));
         verify(repository).isExistsById(1);
     }
 
     @Test
     void verifyIsExistsByModelTest() {
-        service.isExists(1, "Boeing Next-Genetation 737");
-        verify(repository).isExistsByModel(1, "Boeing Next-Genetation 737");
+        assertFalse(service.isExists(1L, "Boeing Next-Genetation 737"));
+        verify(repository).isExistsByModel(1L, "Boeing Next-Genetation 737");
     }
     
 }

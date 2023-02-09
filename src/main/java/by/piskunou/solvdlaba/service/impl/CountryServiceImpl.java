@@ -63,13 +63,12 @@ public class CountryServiceImpl implements CountryService {
     }
 
     @Override
-    public boolean isExists(long id, String name) {
+    public boolean isExists(Long id, String name) {
         return repository.isExistsByName(id, name);
     }
 
     private void checkIsEntityValid(Country country) {
-        long id = country.getId() != null ? country.getId() : 0;
-        if(isExists(id, country.getName())) {
+        if(isExists(country.getId(), country.getName())) {
             throw new ResourceAlreadyExistsException("Country with such name has already exists");
         }
     }

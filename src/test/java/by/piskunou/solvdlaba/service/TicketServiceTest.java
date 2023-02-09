@@ -12,8 +12,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.core.parameters.P;
+import org.mockito.stubbing.Answer;
 
 import java.util.Optional;
 
@@ -80,6 +81,14 @@ class TicketServiceTest {
         when(userService.isExists(1)).thenReturn(true);
         when(flightService.isExists(3)).thenReturn(true);
         when(passengerService.isExists(2)).thenReturn(true);
+        doAnswer(new Answer() {
+            @Override
+            public Void answer(InvocationOnMock invocation) throws Throwable {
+                Ticket ticket = invocation.getArgument(1);
+                ticket.setId(10L);
+                return null;
+            }
+        }).when(repository).create(1, ticket);
 
         assertEquals(ticket, ticketService.create(1, ticket));
         verify(userService).isExists(1);
@@ -87,6 +96,7 @@ class TicketServiceTest {
         verify(passengerService).isExists(2);
         verify(flightService).bookSeat(3, 1);
         verify(repository).create(1, ticket);
+        assertEquals(10, ticket.getId());
     }
 
     @Test

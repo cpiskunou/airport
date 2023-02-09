@@ -203,7 +203,7 @@ public class CountryRepositoryImpl implements CountryRepository {
 
     @Override
     @SneakyThrows
-    public boolean isExistsByName(long id, String name) {
+    public boolean isExistsByName(Long id, String name) {
         Connection conn = config.getConnection();
 
         try (PreparedStatement preparedStatement = conn.prepareStatement(EXISTS_BY_NAME)) {
