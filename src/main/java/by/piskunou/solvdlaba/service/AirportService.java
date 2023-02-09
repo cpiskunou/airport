@@ -20,10 +20,10 @@ public interface AirportService {
 
     boolean isExists(long id);
 
-    boolean isExistsByName(long id, String name);
+    boolean isExistsByName(Long id, String name);
 
-    boolean isExistsByIata(long id, String iata);
+    boolean isExistsByIata(Long id, String iata);
 
-    boolean isExistsByIcao(long id, String icao);
+    boolean isExistsByIcao(Long id, String icao);
 
 }

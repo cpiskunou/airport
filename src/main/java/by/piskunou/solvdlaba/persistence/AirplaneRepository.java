@@ -25,6 +25,6 @@ public interface AirplaneRepository {
 
     boolean isExistsById(long id);
 
-    boolean isExistsByModel(@Param("id") long id, @Param("model") String model);
+    boolean isExistsByModel(@Param("id") Long id, @Param("model") String model);
 
 }

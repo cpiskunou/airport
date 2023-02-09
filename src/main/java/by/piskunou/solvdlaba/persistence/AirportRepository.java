@@ -24,10 +24,10 @@ public interface AirportRepository {
 
     boolean isExistsById(long id);
 
-    boolean isExistsByName(@Param("id") long id, @Param("name") String name);
+    boolean isExistsByName(@Param("id") Long id, @Param("name") String name);
 
-    boolean isExistsByIata(@Param("id") long id, @Param("iata") String iata);
+    boolean isExistsByIata(@Param("id") Long id, @Param("iata") String iata);
 
-    boolean isExistsByIcao(@Param("id") long id, @Param("icao") String icao);
+    boolean isExistsByIcao(@Param("id") Long id, @Param("icao") String icao);
 
 }

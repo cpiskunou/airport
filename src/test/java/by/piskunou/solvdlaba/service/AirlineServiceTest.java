@@ -9,7 +9,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.stubbing.Answer;
 
 import java.util.Optional;
 
@@ -66,19 +68,28 @@ class AirlineServiceTest {
 
     @Test
     void verifyCreateTest() {
-        Airline airline =  Airline.builder()
+        Airline airline = Airline.builder()
                                   .name("Royal Air Maroc")
                                   .iata("AT")
                                   .icao("RAM")
                                   .callsign("ROYAL AIR MAROC")
                                   .build();
+        doAnswer(new Answer() {
+            @Override
+            public Void answer(InvocationOnMock invocation) throws Throwable {
+                Airline airline = invocation.getArgument(0);
+                airline.setId(1L);
+                return null;
+            }
+        }).when(repository).create(airline);
 
         assertEquals(airline, service.create(airline));
-        verify(repository).isExistsByName(0, "Royal Air Maroc");
-        verify(repository).isExistsByIata(0, "AT");
-        verify(repository).isExistsByIcao(0, "RAM");
-        verify(repository).isExistsByCallsign(0, "ROYAL AIR MAROC");
+        verify(repository).isExistsByName(null, "Royal Air Maroc");
+        verify(repository).isExistsByIata(null, "AT");
+        verify(repository).isExistsByIcao(null, "RAM");
+        verify(repository).isExistsByCallsign(null, "ROYAL AIR MAROC");
         verify(repository).create(airline);
+        assertEquals(1, airline.getId());
     }
 
 
@@ -88,66 +99,56 @@ class AirlineServiceTest {
                                  .name("Belavia Belarusian Airlines")
                                  .build();
 
-        when(repository.isExistsByName(0, "Belavia Belarusian Airlines")).thenReturn(true);
+        when(repository.isExistsByName(null, "Belavia Belarusian Airlines")).thenReturn(true);
 
         assertThrows(ResourceAlreadyExistsException.class, () -> service.create(airline));
-
-        verify(repository).isExistsByName(0, "Belavia Belarusian Airlines");
-        verify(repository, times(0)).isExistsByIata(anyLong(), anyString());
-        verify(repository, times(0)).isExistsByIcao(anyLong(), anyString());
-        verify(repository, times(0)).isExistsByCallsign(anyLong(), anyString());
-        verify(repository, times(0)).create(any(Airline.class));
+        verify(repository).isExistsByName(null, "Belavia Belarusian Airlines");
     }
 
     @Test
     void verifyCreateIataFailedTest() {
         Airline airline = Airline.builder()
+                                 .name("Belavia Belarusian Airlines")
                                  .iata("B2")
                                  .build();
+        when(repository.isExistsByIata(null, "B2")).thenReturn(true);
 
-        when(repository.isExistsByIata(0, "B2")).thenReturn(true);
 
         assertThrows(ResourceAlreadyExistsException.class, () -> service.create(airline));
-
-        verify(repository).isExistsByName(0, null);
-        verify(repository).isExistsByIata(0, "B2");
-        verify(repository, times(0)).isExistsByIcao(anyLong(), anyString());
-        verify(repository, times(0)).isExistsByCallsign(anyLong(), anyString());
-        verify(repository, times(0)).create(any(Airline.class));
+        verify(repository).isExistsByName(null, "Belavia Belarusian Airlines");
+        verify(repository).isExistsByIata(null, "B2");
     }
 
     @Test
     void verifyCreateIcaoFailedTest() {
         Airline airline = Airline.builder()
-                .icao("BRU")
-                .build();
-
-        when(repository.isExistsByIcao(0, "BRU")).thenReturn(true);
+                                 .name("Belavia Belarusian Airlines")
+                                 .iata("B2")
+                                 .icao("BRU")
+                                 .build();
+        when(repository.isExistsByIcao(null, "BRU")).thenReturn(true);
 
         assertThrows(ResourceAlreadyExistsException.class, () -> service.create(airline));
-
-        verify(repository).isExistsByName(0, null);
-        verify(repository).isExistsByIata(0, null);
-        verify(repository).isExistsByIcao(0, "BRU");
-        verify(repository, times(0)).isExistsByCallsign(anyLong(), anyString());
-        verify(repository, times(0)).create(any(Airline.class));
+        verify(repository).isExistsByName(null, "Belavia Belarusian Airlines");
+        verify(repository).isExistsByIata(null, "B2");
+        verify(repository).isExistsByIcao(null, "BRU");
     }
 
     @Test
     void verifyCreateCallsignFailedTest() {
         Airline airline = Airline.builder()
+                                 .name("Belavia Belarusian Airlines")
+                                 .iata("B2")
+                                 .icao("BRU")
                                  .callsign("BELAVIA")
                                  .build();
-
-        when(repository.isExistsByCallsign(0, "BELAVIA")).thenReturn(true);
+        when(repository.isExistsByCallsign(null, "BELAVIA")).thenReturn(true);
 
         assertThrows(ResourceAlreadyExistsException.class, () -> service.create(airline));
-
-        verify(repository).isExistsByName(0, null);
-        verify(repository).isExistsByIata(0, null);
-        verify(repository).isExistsByIcao(0, null);
-        verify(repository).isExistsByCallsign(0, "BELAVIA");
-        verify(repository, times(0)).create(any(Airline.class));
+        verify(repository).isExistsByName(null, "Belavia Belarusian Airlines");
+        verify(repository).isExistsByIata(null, "B2");
+        verify(repository).isExistsByIcao(null, "BRU");
+        verify(repository).isExistsByCallsign(null, "BELAVIA");
     }
 
 
@@ -187,32 +188,43 @@ class AirlineServiceTest {
 
     @Test
     void verifyIsExistsTest() {
-        service.isExists(1);
+        when(repository.isExistsById(1)).thenReturn(true);
+        assertTrue(service.isExists(1L));
         verify(repository).isExistsById(1);
     }
 
     @Test
+    void verifyIsExistsFailedTest() {
+        assertFalse(service.isExists(0L));
+        verify(repository).isExistsById(0);
+    }
+
+    @Test
     void verifyIsExistsByNameTest() {
-        service.isExistsByName(1, "Belavia Belarusian Airlines");
-        verify(repository).isExistsByName(1, "Belavia Belarusian Airlines");
+        when(repository.isExistsByName(1L,"Belavia Belarusian Airlines" )).thenReturn(true);
+        assertTrue(service.isExistsByName(1L, "Belavia Belarusian Airlines"));
+        verify(repository).isExistsByName(1L, "Belavia Belarusian Airlines");
     }
 
     @Test
     void verifyIsExistsByIataTest() {
-        service.isExistsByIata(1, "B2");
-        verify(repository).isExistsByIata(1, "B2");
+        when(repository.isExistsByIata(1L, "B2")).thenReturn(true);
+        assertTrue(service.isExistsByIata(1L, "B2"));
+        verify(repository).isExistsByIata(1L, "B2");
     }
 
     @Test
     void verifyIsExistsByIcaoTest() {
-        service.isExistsByIcao(0, "BRU");
-        verify(repository).isExistsByIcao(0, "BRU");
+        when(repository.isExistsByIcao(0L, "BRU")).thenReturn(true);
+        assertTrue(service.isExistsByIcao(0L, "BRU"));
+        verify(repository).isExistsByIcao(0L, "BRU");
     }
 
     @Test
     void verifyIsExistsByCallsignTest() {
-        service.isExistsByCallsign(1, "BELAVIA");
-        verify(repository).isExistsByCallsign(1, "BELAVIA");
+        when(repository.isExistsByCallsign(1L, "BELAVIA")).thenReturn(true);
+        assertTrue(service.isExistsByCallsign(1L, "BELAVIA"));
+        verify(repository).isExistsByCallsign(1L, "BELAVIA");
     }
 
 

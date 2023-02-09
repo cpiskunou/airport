@@ -125,7 +125,7 @@ public class AirplaneRepositoryImpl implements AirplaneRepository {
 
     @Override
     @SneakyThrows
-    public boolean isExistsByModel(long id, String model) {
+    public boolean isExistsByModel(Long id, String model) {
         Connection conn = config.getConnection();
 
         try (PreparedStatement preparedStatement = conn.prepareStatement(EXISTS_BY_MODEL)) {

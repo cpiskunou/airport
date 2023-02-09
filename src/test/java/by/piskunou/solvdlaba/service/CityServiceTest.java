@@ -11,7 +11,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.stubbing.Answer;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -34,6 +36,7 @@ class CityServiceTest {
 
     @Test
     void verifyFindAllTest() {
+        //TODO create list
         cityService.findAll();
         verify(repository).findAll();
     }
@@ -85,11 +88,20 @@ class CityServiceTest {
                         .name("Warsaw")
                         .build();
         when(countryService.isExists(4)).thenReturn(true);
+        doAnswer(new Answer() {
+            @Override
+            public Void answer(InvocationOnMock invocation) throws Throwable {
+                City city = invocation.getArgument(1);
+                city.setId(1L);
+                return null;
+            }
+        }).when(repository).create(4, city);
 
         assertEquals(city, cityService.create(4, city));
         verify(countryService).isExists(4);
-        verify(repository).isExistsByName(0, "Warsaw");
+        verify(repository).isExistsByName(null, "Warsaw");
         verify(repository).create(4, city);
+        assertEquals(1, city.getId());
     }
 
     @Test
@@ -98,11 +110,11 @@ class CityServiceTest {
                         .name("Warsaw")
                         .build();
         when(countryService.isExists(4)).thenReturn(true);
-        when(cityService.isExists(0, "Warsaw")).thenReturn(true);
+        when(cityService.isExists(null, "Warsaw")).thenReturn(true);
 
         assertThrows(ResourceAlreadyExistsException.class, () -> cityService.create(4, city));
         verify(countryService).isExists(4);
-        verify(repository).isExistsByName(0, "Warsaw");
+        verify(repository).isExistsByName(null, "Warsaw");
     }
 
     @Test
@@ -144,14 +156,14 @@ class CityServiceTest {
 
     @Test
     void verifyIsExistsTest() {
-        cityService.isExists(1);
+        assertFalse(cityService.isExists(1));
         verify(repository).isExistsById(1);
     }
 
     @Test
     void verifyIsExistsByNameTest() {
-        cityService.isExists(0, "Poland");
-        verify(repository).isExistsByName(0, "Poland");
+        assertFalse(cityService.isExists(0L, "Poland"));
+        verify(repository).isExistsByName(0L, "Poland");
     }
     
 }

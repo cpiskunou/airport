@@ -14,7 +14,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.stubbing.Answer;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -184,17 +186,26 @@ class FlightServiceTest {
                               .build();
         when(airportService.isExists(1)).thenReturn(true);
         when(airportService.isExists(2)).thenReturn(true);
-        when(airlineService.isExists(3)).thenReturn(true);
+        when(airlineService.isExists(3L)).thenReturn(true);
         when(airplaneService.isExists(4)).thenReturn(true);
         when(airplaneService.findById(4)).thenReturn(airplane);
+        doAnswer(new Answer() {
+            @Override
+            public Void answer(InvocationOnMock invocation) throws Throwable {
+                Flight flight = invocation.getArgument(0);
+                flight.setId(1L);
+                return null;
+            }
+        }).when(repository).create(flight);
 
         assertEquals(flight, flightService.create(flight));
         verify(airportService).isExists(1);
         verify(airportService).isExists(2);
-        verify(airlineService).isExists(3);
+        verify(airlineService).isExists(3L);
         verify(airplaneService).isExists(4);
         verify(airplaneService).findById(4);
         verify(repository).create(flight);
+        assertEquals(1, flight.getId());
     }
 
     @Test
@@ -233,7 +244,7 @@ class FlightServiceTest {
         assertThrows(ResourceNotExistsException.class, () -> flightService.create(flight));
         verify(airportService).isExists(1);
         verify(airportService).isExists(2);
-        verify(airlineService).isExists(3);
+        verify(airlineService).isExists(3L);
     }
 
     @Test
@@ -246,12 +257,12 @@ class FlightServiceTest {
                             .build();
         when(airportService.isExists(1)).thenReturn(true);
         when(airportService.isExists(2)).thenReturn(true);
-        when(airlineService.isExists(3)).thenReturn(true);
+        when(airlineService.isExists(3L)).thenReturn(true);
 
         assertThrows(ResourceNotExistsException.class, () -> flightService.create(flight));
         verify(airportService).isExists(1);
         verify(airportService).isExists(2);
-        verify(airlineService).isExists(3);
+        verify(airlineService).isExists(3L);
         verify(airplaneService).isExists(4);
     }
 
@@ -264,12 +275,12 @@ class FlightServiceTest {
                               .price(BigDecimal.valueOf(150))
                               .build();
         when(flightService.isExists(1)).thenReturn(true);
-        when(airlineService.isExists(2)).thenReturn(true);
+        when(airlineService.isExists(2L)).thenReturn(true);
 
         assertEquals(flight, flightService.updateById(1, flight));
         verify(repository).isExistsById(1);
         assertEquals(1, flight.getId());
-        verify(airlineService).isExists(2);
+        verify(airlineService).isExists(2L);
         verify(repository).update(flight);
     }
 
@@ -295,7 +306,7 @@ class FlightServiceTest {
     @Test
     void bookSeat() {
         flightService.bookSeat(1, 1);
-        verify(repository).bookSeat(1, 1);
+        verify(repository).bookSeat(1L, 1);
     }
 
     @Test
@@ -306,7 +317,7 @@ class FlightServiceTest {
 
     @Test
     void verifyIsExistsTest() {
-        flightService.isExists(1);
+        assertFalse(flightService.isExists(1));
         verify(repository).isExistsById(1);
     }
 

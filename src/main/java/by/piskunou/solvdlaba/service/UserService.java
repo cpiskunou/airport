@@ -22,6 +22,6 @@ public interface UserService {
 
     boolean isExists(long id);
 
-    boolean isExists(long id, String username);
+    boolean isExists(Long id, String username);
 
 }

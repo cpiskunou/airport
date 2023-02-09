@@ -86,7 +86,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public boolean isExists(long id, String username) {
+    public boolean isExists(Long id, String username) {
         return repository.isExistsByUsername(id, username);
     }
 
@@ -99,8 +99,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private void checkIsEntityValid(User user) {
-        long id = user.getId() != null ? user.getId() : 0;
-        if(isExists(id, user.getUsername())) {
+        if(isExists(user.getId(), user.getUsername())) {
             throw new ResourceAlreadyExistsException("Such username has already exists");
         }
     }
