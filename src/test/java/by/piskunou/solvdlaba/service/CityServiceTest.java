@@ -36,7 +36,6 @@ class CityServiceTest {
 
     @Test
     void verifyFindAllTest() {
-        //TODO create list
         cityService.findAll();
         verify(repository).findAll();
     }

@@ -51,7 +51,7 @@ public class WebConfig {
                                             .scheme("bearer")
                                             .bearerFormat("JWT")))
                 .info(new Info().title("Airport API")
-                                .description("Pet project of ticket search service")
+                                .description("Pet project of ticket buy&search service")
                                 .version("v1"));
     }
 
