@@ -1,14 +1,14 @@
-package by.piskunou.solvdlaba.service.impl;
+package by.piskunou.solvdlaba.service;
 
 import by.piskunou.solvdlaba.domain.User;
 import by.piskunou.solvdlaba.domain.UserDetailsImpl;
 import by.piskunou.solvdlaba.persistence.UserRepository;
+import by.piskunou.solvdlaba.service.impl.UserDetailsServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.Optional;
@@ -17,7 +17,7 @@ import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-class UserDetailsServiceImplTest {
+class UserDetailsServiceTest {
 
     @Mock
     private UserRepository repository;
