@@ -165,7 +165,7 @@ public class AirlineRepositoryImpl implements AirlineRepository {
 
     @Override
     @SneakyThrows
-    public boolean isExistsByName(long id, String name) {
+    public boolean isExistsByName(Long id, String name) {
         Connection conn = config.getConnection();
 
         try (PreparedStatement preparedStatement = conn.prepareStatement(EXISTS_BY_NAME)) {
@@ -179,17 +179,17 @@ public class AirlineRepositoryImpl implements AirlineRepository {
     }
 
     @Override
-    public boolean isExistsByIata(long id, String iata) {
+    public boolean isExistsByIata(Long id, String iata) {
         return false;
     }
 
     @Override
-    public boolean isExistsByIcao(long id, String icao) {
+    public boolean isExistsByIcao(Long id, String icao) {
         return false;
     }
 
     @Override
-    public boolean isExistsByCallsign(long id, String callsign) {
+    public boolean isExistsByCallsign(Long id, String callsign) {
         return false;
     }
 

@@ -26,6 +26,6 @@ public interface CityRepository {
 
     boolean isExistsById(long id);
 
-    boolean isExistsByName(@Param("id") long id, @Param("name") String name);
+    boolean isExistsByName(@Param("id") Long id, @Param("name") String name);
 
 }

@@ -70,31 +70,31 @@ public class AirlineServiceImpl implements AirlineService {
 
     @Override
     @Transactional(readOnly = true)
-    public boolean isExists(long id) {
+    public boolean isExists(Long id) {
         return repository.isExistsById(id);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public boolean isExistsByName(long id, String name) {
+    public boolean isExistsByName(Long id, String name) {
         return repository.isExistsByName(id, name);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public boolean isExistsByIata(long id, String iata) {
+    public boolean isExistsByIata(Long id, String iata) {
         return repository.isExistsByIata(id, iata);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public boolean isExistsByIcao(long id, String icao) {
+    public boolean isExistsByIcao(Long id, String icao) {
         return repository.isExistsByIcao(id, icao);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public boolean isExistsByCallsign(long id, String callsign) {
+    public boolean isExistsByCallsign(Long id, String callsign) {
         return repository.isExistsByCallsign(id, callsign);
     }
 
@@ -107,7 +107,7 @@ public class AirlineServiceImpl implements AirlineService {
     }
 
     private void checkIsEntityValid(Airline airline) {
-        long id = airline.getId() != null ? airline.getId() : 0;
+        Long id = airline.getId();
         if(isExistsByName(id, airline.getName())) {
             throw new ResourceAlreadyExistsException("Airline with such name has already exists");
         }

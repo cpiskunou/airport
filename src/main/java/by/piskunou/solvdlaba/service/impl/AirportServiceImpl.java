@@ -78,19 +78,19 @@ public class AirportServiceImpl implements AirportService {
 
     @Override
     @Transactional(readOnly = true)
-    public boolean isExistsByName(long id, String name) {
+    public boolean isExistsByName(Long id, String name) {
         return repository.isExistsByName(id, name);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public boolean isExistsByIata(long id, String iata) {
+    public boolean isExistsByIata(Long id, String iata) {
         return repository.isExistsByIata(id, iata);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public boolean isExistsByIcao(long id, String icao) {
+    public boolean isExistsByIcao(Long id, String icao) {
         return repository.isExistsByIcao(id, icao);
     }
 
@@ -106,7 +106,7 @@ public class AirportServiceImpl implements AirportService {
         if(!cityService.isExists(cityId)) {
             throw new ResourceNotExistsException("There's is no city with such id");
         }
-        long id = airport.getId() != null ? airport.getId() : 0;
+        Long id = airport.getId();
         if(isExistsByName(id, airport.getName())) {
             throw new ResourceAlreadyExistsException("Airport with such name has already exists");
         }

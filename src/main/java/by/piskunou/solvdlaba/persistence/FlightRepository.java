@@ -30,7 +30,7 @@ public interface FlightRepository {
 
     void update(Flight flight);
 
-    void bookSeat(@Param("id") long id, @Param("number") int number);
+    void bookSeat(@Param("id") Long id, @Param("number") int number);
 
     void removeById(long id);
 

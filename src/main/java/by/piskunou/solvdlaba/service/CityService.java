@@ -20,6 +20,6 @@ public interface CityService {
 
     boolean isExists(long id);
 
-    boolean isExists(long id, String name);
+    boolean isExists(Long id, String name);
 
 }

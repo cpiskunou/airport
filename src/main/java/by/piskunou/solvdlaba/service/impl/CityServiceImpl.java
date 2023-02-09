@@ -73,7 +73,7 @@ public class CityServiceImpl implements CityService {
 
     @Override
     @Transactional(readOnly = true)
-    public boolean isExists(long id, String name) {
+    public boolean isExists(Long id, String name) {
         return repository.isExistsByName(id, name);
     }
 
@@ -81,8 +81,7 @@ public class CityServiceImpl implements CityService {
         if(!countryService.isExists(countryId)) {
             throw new ResourceNotExistsException("There's no country with such id");
         }
-        long id = city.getId() != null ? city.getId() : 0;
-        if(isExists(id, city.getName())) {
+        if(isExists(city.getId(), city.getName())) {
             throw new ResourceAlreadyExistsException("City with such name has already exists");
         }
     }

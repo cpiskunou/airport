@@ -1,4 +1,4 @@
-package by.piskunou.solvdlaba.web.security;
+package by.piskunou.solvdlaba.web;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -18,7 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @RequiredArgsConstructor
-public class AppConfig {
+public class WebConfig {
 
     private final UserDetailsService userDetailsService;
 

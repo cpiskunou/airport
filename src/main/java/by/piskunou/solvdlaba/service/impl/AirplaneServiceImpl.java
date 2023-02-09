@@ -72,13 +72,12 @@ public class AirplaneServiceImpl implements AirplaneService {
 
     @Override
     @Transactional(readOnly = true)
-    public boolean isExists(long id, String model) {
+    public boolean isExists(Long id, String model) {
         return repository.isExistsByModel(id, model);
     }
 
     private void checkIsEntityValid(Airplane airplane) {
-        long id = airplane.getId() != null ? airplane.getId() : 0;
-        if(isExists(id, airplane.getModel())) {
+        if(isExists(airplane.getId(), airplane.getModel())) {
             throw new ResourceAlreadyExistsException("Such model of airplane already exists");
         }
     }
