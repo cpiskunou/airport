@@ -72,7 +72,7 @@ public class AirportController {
     public AirportDTO updateById(@PathVariable long id, @RequestParam("city-id") long cityId,
                                  @RequestBody @Validated(onCreate.class) AirportDTO dto) {
         Airport airport = mapper.toEntity(dto);
-        return mapper.toDTO( service.update(id, cityId, airport) );
+        return mapper.toDTO( service.updateById(id, cityId, airport) );
     }
 
     @DeleteMapping("/{id}")

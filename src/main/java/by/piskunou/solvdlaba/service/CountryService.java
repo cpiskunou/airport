@@ -12,7 +12,7 @@ public interface CountryService {
 
     Country create(Country country);
 
-    Country update(long id, Country country);
+    Country updateById(long id, Country country);
 
     void removeById(long id);
 

@@ -48,7 +48,7 @@ public class AirplaneServiceImpl implements AirplaneService {
 
     @Override
     @Transactional
-    public Airplane update(long id, Airplane airplane) {
+    public Airplane updateById(long id, Airplane airplane) {
         if(!isExists(id)) {
             return create(airplane);
         }

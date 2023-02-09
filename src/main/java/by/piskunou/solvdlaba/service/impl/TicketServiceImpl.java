@@ -2,18 +2,14 @@ package by.piskunou.solvdlaba.service.impl;
 
 import by.piskunou.solvdlaba.domain.Passenger;
 import by.piskunou.solvdlaba.domain.Passport;
-import by.piskunou.solvdlaba.domain.Seat;
 import by.piskunou.solvdlaba.domain.Ticket;
 import by.piskunou.solvdlaba.domain.exception.ResourceNotExistsException;
 import by.piskunou.solvdlaba.persistence.TicketRepository;
 import by.piskunou.solvdlaba.service.*;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.Type;
 import java.util.List;
 
 @Service
@@ -25,7 +21,6 @@ public class TicketServiceImpl implements TicketService {
     private final PassengerService passengerService;
     private final PassportService passportService;
     private final TicketRepository repository;
-    private final Gson gson;
 
     @Override
     @Transactional(readOnly = true)
@@ -49,10 +44,11 @@ public class TicketServiceImpl implements TicketService {
         Passenger passenger = ticket.getPassenger();
         long id = passenger.getId() != null ? passenger.getId() : 0;
         if(!passengerService.isExists(id)) {
-            passenger = passengerService.create(passenger);
-
             Passport passport = passenger.getPassport();
-            passport.setId(passenger.getId());
+
+            passengerService.create(passenger);
+
+            passport.setId( passenger.getId() );
 
             passportService.create(passport);
         }

@@ -1,12 +1,10 @@
 package by.piskunou.solvdlaba.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 
+@Builder
 @Getter
 @Setter
 @NoArgsConstructor
@@ -29,8 +27,17 @@ public class Passenger {
     private Age age;
     private Gender gender;
 
+    public Passenger(Long id) {
+        this.id = id;
+    }
+
     public Passenger(Age age) {
         this.age = age;
+    }
+
+    public Passenger(Long id, Passport passport) {
+        this.id = id;
+        this.passport = passport;
     }
 
     public Passenger(long id, String firstname, String surname) {

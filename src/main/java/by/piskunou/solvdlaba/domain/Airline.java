@@ -16,6 +16,10 @@ public class Airline {
     private String icao;
     private String callsign;
 
+    public Airline(Long id) {
+        this.id = id;
+    }
+
     public Airline(String name) {
         this.name = name;
     }

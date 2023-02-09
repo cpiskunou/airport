@@ -1,6 +1,5 @@
 package by.piskunou.solvdlaba.domain;
 
-import by.piskunou.solvdlaba.domain.User;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;

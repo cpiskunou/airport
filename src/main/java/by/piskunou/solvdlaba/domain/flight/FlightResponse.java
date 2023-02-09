@@ -1,12 +1,10 @@
 package by.piskunou.solvdlaba.domain.flight;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 
+@Builder
 @Getter
 @Setter
 @NoArgsConstructor

@@ -23,8 +23,8 @@ public interface AirplaneRepository {
 
     void removeById(long id);
 
-    boolean isExistsByModel(@Param("id") long id, @Param("model") String model);
-
     boolean isExistsById(long id);
+
+    boolean isExistsByModel(@Param("id") long id, @Param("model") String model);
 
 }

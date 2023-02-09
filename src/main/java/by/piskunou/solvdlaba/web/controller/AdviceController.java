@@ -1,6 +1,5 @@
 package by.piskunou.solvdlaba.web.controller;
 
-import by.piskunou.solvdlaba.domain.exception.InvalidResourceParamException;
 import by.piskunou.solvdlaba.domain.exception.ResourceAlreadyExistsException;
 import by.piskunou.solvdlaba.domain.exception.ResourceNotExistsException;
 import by.piskunou.solvdlaba.web.dto.ErrorResponseDTO;
@@ -22,7 +21,7 @@ public class AdviceController {
         return new ErrorResponseDTO(e.getMessage());
     }
 
-    @ExceptionHandler({ResourceAlreadyExistsException.class, IllegalArgumentException.class, InvalidResourceParamException.class})
+    @ExceptionHandler({ResourceAlreadyExistsException.class, IllegalArgumentException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponseDTO handleBadRequestException(Exception e) {
         return new ErrorResponseDTO(e.getMessage());

@@ -17,7 +17,7 @@ public interface FlightRepository {
     Optional<Flight> findById(long id);
 
     List<Flight> search(@Param("fromAirports") List<String> fromAirports, @Param("toAirports") List<String> toAirports,
-                        @Param("passengerAmount") long passengerAmount,
+                        @Param("passengerAmount") int passengerAmount,
                         @Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 
     List<Seat> flightSeats(long id);

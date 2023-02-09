@@ -52,7 +52,7 @@ public class AirlineServiceImpl implements AirlineService {
 
     @Override
     @Transactional
-    public Airline update(long id, Airline airline) {
+    public Airline updateById(long id, Airline airline) {
         if(!isExists(id)) {
             return create(airline);
         }

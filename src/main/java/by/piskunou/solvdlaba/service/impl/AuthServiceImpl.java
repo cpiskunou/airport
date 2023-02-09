@@ -37,7 +37,7 @@ public class AuthServiceImpl implements AuthService {
         UserDetailsImpl userDetails = new UserDetailsImpl(user);
         UsernamePasswordAuthenticationToken authInputToken =
                 new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword());
-        Authentication authentication = authManager.authenticate(authInputToken);
+        authManager.authenticate(authInputToken);
         String accessToken = jwtService.generateAccessToken(userDetails);
         String refreshToken = jwtService.generateRefreshToken(userDetails);
         return new AuthEntity(accessToken, refreshToken);
@@ -45,12 +45,12 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthEntity refresh(AuthEntity authEntity) {
-        if(jwtService.isValidRefreshToken(authEntity.getRefreshToken())) {
+        if(!jwtService.isValidRefreshToken(authEntity.getRefreshToken())) {
             throw new AccessDeniedException("Access denied");
         }
-        String username = jwtService.extractUsername(authEntity.getAccessToken());
-        UserDetailsImpl userDetails = new UserDetailsImpl(userService.findByUsername(username));
-        authEntity.setAccessToken(jwtService.generateAccessToken(userDetails));
+        String username = jwtService.extractUsername( authEntity.getRefreshToken() );
+        UserDetailsImpl userDetails = new UserDetailsImpl( userService.findByUsername(username) );
+        authEntity.setAccessToken( jwtService.generateAccessToken(userDetails)  );
         return authEntity;
     }
 

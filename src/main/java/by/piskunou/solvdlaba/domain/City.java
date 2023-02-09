@@ -1,13 +1,14 @@
 package by.piskunou.solvdlaba.domain;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
 import java.util.List;
 
+@Builder
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class City {
 
     private Long id;

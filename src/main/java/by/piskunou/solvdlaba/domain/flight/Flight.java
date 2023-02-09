@@ -4,17 +4,13 @@ import by.piskunou.solvdlaba.domain.Airline;
 import by.piskunou.solvdlaba.domain.Airport;
 import by.piskunou.solvdlaba.domain.Seat;
 import by.piskunou.solvdlaba.domain.airplane.Airplane;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.stereotype.Component;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Component
+@Builder
 @Getter
 @Setter
 @NoArgsConstructor
@@ -31,16 +27,20 @@ public class Flight {
     private LocalDateTime arrivalTime;
     private List<Seat> seats;
 
-    public Flight(long id, BigDecimal price, LocalDateTime departureTime, LocalDateTime arrivalTime) {
+    public Flight(Long id) {
         this.id = id;
-        this.price = price;
-        this.departureTime = departureTime;
-        this.arrivalTime = arrivalTime;
     }
 
     public Flight(long id, LocalDateTime departureTime) {
         this.id = id;
         this.departureTime = departureTime;
+    }
+
+    public Flight(long id, BigDecimal price, LocalDateTime departureTime, LocalDateTime arrivalTime) {
+        this.id = id;
+        this.price = price;
+        this.departureTime = departureTime;
+        this.arrivalTime = arrivalTime;
     }
 
 }

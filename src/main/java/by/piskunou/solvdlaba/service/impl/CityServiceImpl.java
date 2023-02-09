@@ -49,7 +49,7 @@ public class CityServiceImpl implements CityService {
 
     @Override
     @Transactional
-    public City update(long id, long countryId, City city) {
+    public City updateById(long id, long countryId, City city) {
         if(!isExists(id)) {
             return create(countryId, city);
         }
@@ -78,10 +78,10 @@ public class CityServiceImpl implements CityService {
     }
 
     private void checkIsEntityValid(long countryId, City city) {
-        long id = city.getId() != null ? city.getId() : 0;
         if(!countryService.isExists(countryId)) {
             throw new ResourceNotExistsException("There's no country with such id");
         }
+        long id = city.getId() != null ? city.getId() : 0;
         if(isExists(id, city.getName())) {
             throw new ResourceAlreadyExistsException("City with such name has already exists");
         }

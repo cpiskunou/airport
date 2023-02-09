@@ -171,7 +171,7 @@ public class FlightRepositoryImpl implements FlightRepository {
     @Override
     @SneakyThrows
     public List<Flight> search(List<String> fromAirports, List<String> toAirports,
-                               long passengerAmount, LocalDateTime start, LocalDateTime end) {
+                               int passengerAmount, LocalDateTime start, LocalDateTime end) {
         Connection conn = config.getConnection();
         try(PreparedStatement preparedStatement = conn.prepareStatement(SEARCH,
                 ResultSet.TYPE_SCROLL_INSENSITIVE,

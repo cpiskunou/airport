@@ -14,7 +14,7 @@ public interface AirportService {
 
     Airport create(long cityId, Airport airport);
 
-    Airport update(long id, long cityId, Airport airport);
+    Airport updateById(long id, long cityId, Airport airport);
 
     void removeById(long id);
 
