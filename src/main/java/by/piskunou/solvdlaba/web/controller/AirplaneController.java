@@ -69,7 +69,7 @@ public class AirplaneController {
     })
     public AirplaneDTO updateById(@PathVariable long id, @RequestBody @Validated(onCreate.class) AirplaneDTO dto) {
         Airplane airplane = airplaneMapper.toEntity(dto);
-        return airplaneMapper.toDTO( service.update(id, airplane) );
+        return airplaneMapper.toDTO( service.updateById(id, airplane) );
     }
 
     @DeleteMapping("/{id}")

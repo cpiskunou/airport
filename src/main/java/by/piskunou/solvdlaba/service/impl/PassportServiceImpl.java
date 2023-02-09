@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class PassportServiceImpl implements PassportService {
 
-    private final PassportRepository passportRepository;
+    private final PassportRepository repository;
     private final PasswordEncoder encoder;
 
     @Override
@@ -20,7 +20,7 @@ public class PassportServiceImpl implements PassportService {
     public Passport create(Passport passport) {
         passport.setNumber( encoder.encode(passport.getNumber()) );
         passport.setIdentificationNo( encoder.encode(passport.getIdentificationNo()) );
-        passportRepository.create(passport);
+        repository.create(passport);
         return passport;
     }
 

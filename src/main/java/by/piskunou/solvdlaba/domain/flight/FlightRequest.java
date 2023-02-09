@@ -1,16 +1,16 @@
 package by.piskunou.solvdlaba.domain.flight;
 
 import by.piskunou.solvdlaba.domain.Passenger;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@Builder
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class FlightRequest {
 
     private List<String> fromAirports;

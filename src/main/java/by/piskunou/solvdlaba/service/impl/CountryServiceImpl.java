@@ -28,7 +28,7 @@ public class CountryServiceImpl implements CountryService {
     @Transactional(readOnly = true)
     public Country findById(long id) {
         return repository.findById(id)
-                                .orElseThrow(() -> new ResourceNotExistsException("There's no country with such id"));
+                         .orElseThrow(() -> new ResourceNotExistsException("There's no country with such id"));
     }
 
     @Override
@@ -41,11 +41,12 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     @Transactional
-    public Country update(long id, Country country) {
+    public Country updateById(long id, Country country) {
         if(!isExists(id)){
             return create(country);
         }
         country.setId(id);
+        checkIsEntityValid(country);
         repository.update(country);
         return country;
     }

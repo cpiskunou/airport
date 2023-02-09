@@ -40,6 +40,7 @@ public class JwtServiceImpl implements JwtService {
     public String generateRefreshToken(UserDetailsImpl userDetails) {
         return JWT.create()
                   .withSubject("Refresh token")
+                  .withClaim("username", userDetails.getUsername())
                   .withIssuer("Airport")
                   .withIssuedAt(Instant.now())
                   .withExpiresAt( ZonedDateTime.now().plusWeeks(1).toInstant() )
@@ -50,9 +51,9 @@ public class JwtServiceImpl implements JwtService {
     public boolean isValidAccessToken(String jwt) {
         try {
             JWTVerifier verifier = JWT.require(Algorithm.HMAC256(SECRET_KEY))
-                    .withSubject("Access token")
-                    .withIssuer("Airport")
-                    .build();
+                                      .withSubject("Access token")
+                                      .withIssuer("Airport")
+                                      .build();
             DecodedJWT decodedJwt = verifier.verify(jwt);
             return true;
         } catch (JWTVerificationException e) {

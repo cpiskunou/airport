@@ -75,7 +75,7 @@ public class CityController {
     public CityDTO updateById(@PathVariable long id, @RequestParam("country-id") long countryId,
                               @RequestBody @Validated CityDTO dto) {
         City city = mapper.toEntity(dto);
-        return mapper.toDTO( service.update(id, countryId, city) );
+        return mapper.toDTO( service.updateById(id, countryId, city) );
     }
 
     @DeleteMapping("/{id}")

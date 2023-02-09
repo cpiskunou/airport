@@ -1,13 +1,14 @@
 package by.piskunou.solvdlaba.domain;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
 import java.util.List;
 
+@Builder
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class City {
 
     private Long id;
@@ -18,6 +19,12 @@ public class City {
     public City(long id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public City(Long id, String name, Country country) {
+        this.id = id;
+        this.name = name;
+        this.country = country;
     }
 
 }

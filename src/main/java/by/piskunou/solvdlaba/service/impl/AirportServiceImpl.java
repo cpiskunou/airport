@@ -1,7 +1,6 @@
 package by.piskunou.solvdlaba.service.impl;
 
 import by.piskunou.solvdlaba.domain.Airport;
-import by.piskunou.solvdlaba.domain.exception.InvalidResourceParamException;
 import by.piskunou.solvdlaba.domain.exception.ResourceAlreadyExistsException;
 import by.piskunou.solvdlaba.domain.exception.ResourceNotExistsException;
 import by.piskunou.solvdlaba.persistence.AirportRepository;
@@ -54,7 +53,7 @@ public class AirportServiceImpl implements AirportService {
 
     @Override
     @Transactional
-    public Airport update(long id, long cityId, Airport airport) {
+    public Airport updateById(long id, long cityId, Airport airport) {
         if(!isExists(id)) {
             return create(cityId, airport);
         }
@@ -104,10 +103,10 @@ public class AirportServiceImpl implements AirportService {
     }
 
     private void checkIsEntityValid(long cityId, Airport airport) {
-        long id = airport.getId() != null ? airport.getId() : 0;
         if(!cityService.isExists(cityId)) {
             throw new ResourceNotExistsException("There's is no city with such id");
         }
+        long id = airport.getId() != null ? airport.getId() : 0;
         if(isExistsByName(id, airport.getName())) {
             throw new ResourceAlreadyExistsException("Airport with such name has already exists");
         }

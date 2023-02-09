@@ -14,7 +14,7 @@ public interface AirlineService {
 
     Airline create(Airline airline);
 
-    Airline update(long id, Airline airline);
+    Airline updateById(long id, Airline airline);
 
     void removeById(long id);
 

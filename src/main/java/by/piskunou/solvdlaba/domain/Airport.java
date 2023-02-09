@@ -1,10 +1,8 @@
 package by.piskunou.solvdlaba.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+@Builder
 @Getter
 @Setter
 @NoArgsConstructor
@@ -15,6 +13,10 @@ public class Airport {
     private String name;
     private String iata;
     private String icao;
+
+    public Airport(Long id) {
+        this.id = id;
+    }
 
     public Airport(String name) {
         this.name = name;

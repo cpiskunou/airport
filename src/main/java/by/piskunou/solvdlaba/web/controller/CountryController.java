@@ -41,7 +41,7 @@ public class CountryController {
     @PutMapping("/{id}")
     public CountryDTO updateById(@PathVariable long id, @RequestBody @Validated CountryDTO dto) {
         Country country = mapper.toEntity(dto);
-        return mapper.toDTO( service.update(id, country) );
+        return mapper.toDTO( service.updateById(id, country) );
     }
 
     @DeleteMapping("/{id}")

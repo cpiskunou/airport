@@ -66,7 +66,7 @@ public class AirlineController {
     })
     public AirlineDTO updateById(@PathVariable long id, @RequestBody @Validated(onCreate.class) AirlineDTO dto) {
         Airline airline = mapper.toEntity(dto);
-        return mapper.toDTO( service.update(id, airline) );
+        return mapper.toDTO( service.updateById(id, airline) );
     }
 
     @DeleteMapping("/{id}")

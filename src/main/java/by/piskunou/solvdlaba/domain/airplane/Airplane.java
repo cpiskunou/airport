@@ -1,10 +1,8 @@
 package by.piskunou.solvdlaba.domain.airplane;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+@Builder
 @Getter
 @Setter
 @NoArgsConstructor
@@ -15,6 +13,10 @@ public class Airplane {
     private String model;
     private Byte seatsInRow;
     private Short rowNo;
+
+    public Airplane(Long id) {
+        this.id = id;
+    }
 
     public Airplane(Long id, String model) {
         this.id = id;

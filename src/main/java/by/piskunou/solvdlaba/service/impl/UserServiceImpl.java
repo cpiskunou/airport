@@ -66,6 +66,7 @@ public class UserServiceImpl implements UserService {
             throw new ResourceNotExistsException("There's no user with such id");
         }
         user.setId(id);
+        user.setPassword( encoder.encode(user.getPassword()) );
         checkIsEntityValid(user);
         repository.update(user);
         return user;

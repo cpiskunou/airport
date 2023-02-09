@@ -14,7 +14,7 @@ public interface CityService {
 
     City create(long countryId, City city);
 
-    City update(long id, long countryId, City city);
+    City updateById(long id, long countryId, City city);
 
     void removeById(long id);
 
