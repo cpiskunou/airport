@@ -24,6 +24,7 @@
         <junit.version>5.9.2</junit.version>
         <mockito.version>5.1.1</mockito.version>
         <jacoco.version>0.8.8</jacoco.version>
+        <junit.surefire.provider>1.3.2</junit.surefire.provider>
     </properties>
 
     <dependencies>
@@ -184,7 +185,7 @@
                     <dependency>
                         <groupId>org.junit.platform</groupId>
                         <artifactId>junit-platform-surefire-provider</artifactId>
-                        <version>1.3.2</version>
+                        <version>${junit.surefire.provider}</version>
                     </dependency>
                 </dependencies>
             </plugin>
