@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>by.piskunou.solvdlaba</groupId>
-    <artifactId>Airport</artifactId>
+    <artifactId>airport</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Airport</name>
     <description>Airport</description>

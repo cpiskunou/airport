@@ -2,20 +2,19 @@ spring:
 # Configuration data sources
   datasource:
     driver-class-name: org.postgresql.Driver
-    url:
-    username: postgres
-    password:
+    url: ${POSTGRES_URL}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
 
   #Liquibase
   liquibase:
     enabled: true
     change-log: classpath:db/changelog/db.changelog-master.yaml
-    default-schema: airport
+    default-schema: ${POSTGRES_SCHEMA}
 
 # MyBatis
 mybatis:
   mapper-locations: classpath:mybatis/mapper/*.xml
   type-aliases-package: by.piskunou.solvdlaba.domain
 
-jwt-secret:
-
+jwt-secret: ${JWT_SECRET}
