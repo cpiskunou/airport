@@ -1,9 +1,9 @@
 package by.piskunou.solvdlaba.web.controller;
 
-import by.piskunou.solvdlaba.domain.User;
 import by.piskunou.solvdlaba.domain.AuthEntity;
-import by.piskunou.solvdlaba.web.dto.AuthEntityDTO;
+import by.piskunou.solvdlaba.domain.User;
 import by.piskunou.solvdlaba.service.AuthService;
+import by.piskunou.solvdlaba.web.dto.AuthEntityDTO;
 import by.piskunou.solvdlaba.web.dto.UserDTO;
 import by.piskunou.solvdlaba.web.mapper.AuthMapper;
 import by.piskunou.solvdlaba.web.mapper.UserMapper;
@@ -12,7 +12,10 @@ import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor

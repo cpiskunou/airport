@@ -1,7 +1,6 @@
 package by.piskunou.solvdlaba.service;
 
 import by.piskunou.solvdlaba.domain.Ticket;
-import by.piskunou.solvdlaba.web.dto.TicketDTO;
 
 import java.util.List;
 

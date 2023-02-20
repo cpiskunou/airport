@@ -1,11 +1,8 @@
 package by.piskunou.solvdlaba.web.dto;
 
-import by.piskunou.solvdlaba.web.groups.onCreate;
-import by.piskunou.solvdlaba.web.groups.onSearch;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;

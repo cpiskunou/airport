@@ -1,6 +1,7 @@
 package by.piskunou.solvdlaba.persistence.jdbc.mapper;
 
-import by.piskunou.solvdlaba.domain.*;
+import by.piskunou.solvdlaba.domain.Airline;
+import by.piskunou.solvdlaba.domain.Airport;
 import by.piskunou.solvdlaba.domain.airplane.Airplane;
 import by.piskunou.solvdlaba.domain.flight.Flight;
 import lombok.RequiredArgsConstructor;

@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>by.piskunou.solvdlaba</groupId>
-    <artifactId>Airport</artifactId>
+    <artifactId>airport</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Airport</name>
     <description>Airport</description>
@@ -24,6 +24,7 @@
         <mockito.version>5.1.1</mockito.version>
         <jacoco.version>0.8.8</jacoco.version>
         <junit.surefire.provider>1.3.2</junit.surefire.provider>
+        <preliquibase.version>1.3.0</preliquibase.version>
     </properties>
 
     <dependencies>
@@ -78,6 +79,12 @@
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
             <version>${liquibase.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/net.lbruun.springboot/preliquibase-spring-boot-starter -->
+        <dependency>
+            <groupId>net.lbruun.springboot</groupId>
+            <artifactId>preliquibase-spring-boot-starter</artifactId>
+            <version>${preliquibase.version}</version>
         </dependency>
 
         <!-- Lombok -->

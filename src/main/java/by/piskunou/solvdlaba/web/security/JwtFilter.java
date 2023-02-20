@@ -1,6 +1,5 @@
 package by.piskunou.solvdlaba.web.security;
 
-import by.piskunou.solvdlaba.domain.User;
 import by.piskunou.solvdlaba.service.JwtService;
 import by.piskunou.solvdlaba.service.impl.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;

@@ -1,8 +1,8 @@
 package by.piskunou.solvdlaba.persistence.jdbc;
 
 import by.piskunou.solvdlaba.domain.Ticket;
-import by.piskunou.solvdlaba.persistence.TicketRepository;
 import by.piskunou.solvdlaba.persistence.DataSourceConfig;
+import by.piskunou.solvdlaba.persistence.TicketRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 

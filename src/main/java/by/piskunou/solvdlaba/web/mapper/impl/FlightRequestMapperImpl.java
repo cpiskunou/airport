@@ -1,7 +1,7 @@
 package by.piskunou.solvdlaba.web.mapper.impl;
 
-import by.piskunou.solvdlaba.domain.flight.FlightRequest;
 import by.piskunou.solvdlaba.domain.Passenger;
+import by.piskunou.solvdlaba.domain.flight.FlightRequest;
 import by.piskunou.solvdlaba.web.dto.flight.FlightRequestDTO;
 import by.piskunou.solvdlaba.web.mapper.FlightRequestMapper;
 import org.springframework.stereotype.Component;

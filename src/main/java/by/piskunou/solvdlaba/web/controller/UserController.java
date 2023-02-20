@@ -2,10 +2,10 @@ package by.piskunou.solvdlaba.web.controller;
 
 import by.piskunou.solvdlaba.domain.User;
 import by.piskunou.solvdlaba.service.UserService;
+import by.piskunou.solvdlaba.web.dto.UserDTO;
 import by.piskunou.solvdlaba.web.groups.onSearch;
 import by.piskunou.solvdlaba.web.groups.onUpdate;
 import by.piskunou.solvdlaba.web.mapper.UserMapper;
-import by.piskunou.solvdlaba.web.dto.UserDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -28,14 +28,14 @@ public class UserController {
     private final UserMapper mapper;
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @Operation(summary = "Information about all users")
     public List<UserDTO> findAll() {
         return mapper.toDTO( service.findAll() );
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasUser(#id) or hasRole('ADMIN')")
+    @PreAuthorize("hasUser(#id) or hasAuthority('ADMIN')")
     @Operation(summary = "Full user's information by id")
     @Parameters({
             @Parameter (name = "id", description = "User's id"),
@@ -54,7 +54,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasUser(#id) or hasRole('ADMIN')")
+    @PreAuthorize("hasUser(#id) or hasAuthority('ADMIN')")
     @Operation(summary = "Update all user's fields by id")
     @Parameters({
             @Parameter(name = "id", description = "User identification number"),
@@ -66,7 +66,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasUser(#id) or hasRole('ADMIN')")
+    @PreAuthorize("hasUser(#id) or hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Remove by id")
     @Parameter(name = "id", description = "User identification number")

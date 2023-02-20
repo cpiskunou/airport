@@ -45,7 +45,6 @@ public class CustomMethodSecurityExpressionRoot extends SecurityExpressionRoot i
         return authentication.getName().equals(user.getUsername());
     }
 
-
     @Override
     public Object getThis() {
         return target;

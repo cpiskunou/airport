@@ -1,6 +1,5 @@
 package by.piskunou.solvdlaba.web.security;
 
-import by.piskunou.solvdlaba.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,11 +22,23 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity https) throws Exception {
         return https.csrf().disable()
                 .authorizeHttpRequests().requestMatchers("/sign-up").permitAll()
+                .requestMatchers("/airlines",
+                                           "/airlines/*",
+                                           "/airplanes",
+                                           "/airplanes/*",
+                                           "/airports",
+                                           "/airports/*",
+                                           "/countries",
+                                           "/countries/*").hasAuthority("ADMIN")
                 .requestMatchers("/refresh",
                                            "/login",
                                            "/swagger-ui/*",
-                                           "/v3/api-docs*").permitAll()
+                                           "/v3/api-docs*",
+                                           "/cities/search").permitAll()
                 .anyRequest().authenticated()
+                .and()
+                .logout().logoutUrl("/logout")
+                         .logoutSuccessUrl("/login")
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()

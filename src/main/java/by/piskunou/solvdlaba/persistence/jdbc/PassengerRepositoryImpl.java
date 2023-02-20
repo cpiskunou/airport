@@ -1,8 +1,8 @@
 package by.piskunou.solvdlaba.persistence.jdbc;
 
 import by.piskunou.solvdlaba.domain.Passenger;
-import by.piskunou.solvdlaba.persistence.PassengerRepository;
 import by.piskunou.solvdlaba.persistence.DataSourceConfig;
+import by.piskunou.solvdlaba.persistence.PassengerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 

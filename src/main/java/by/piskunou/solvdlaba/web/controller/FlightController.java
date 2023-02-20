@@ -3,10 +3,10 @@ package by.piskunou.solvdlaba.web.controller;
 import by.piskunou.solvdlaba.domain.flight.Flight;
 import by.piskunou.solvdlaba.domain.flight.FlightRequest;
 import by.piskunou.solvdlaba.service.FlightService;
+import by.piskunou.solvdlaba.web.dto.SeatDTO;
 import by.piskunou.solvdlaba.web.dto.flight.FlightDTO;
 import by.piskunou.solvdlaba.web.dto.flight.FlightRequestDTO;
 import by.piskunou.solvdlaba.web.dto.flight.FlightResponseDTO;
-import by.piskunou.solvdlaba.web.dto.SeatDTO;
 import by.piskunou.solvdlaba.web.groups.onCreate;
 import by.piskunou.solvdlaba.web.groups.onUpdate;
 import by.piskunou.solvdlaba.web.mapper.FlightMapper;
@@ -38,14 +38,14 @@ public class FlightController {
     private final SeatMapper seatMapper;
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @Operation(summary = "Information about all flights")
     public List<FlightDTO> findAll(){
         return flightMapper.toDTO( service.findAll() );
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @Operation(summary = "Full information about certain flight by its id")
     @Parameter(name = "id", description = "The flight's unique identification number")
     public FlightDTO findById(@PathVariable long id) {
@@ -73,7 +73,7 @@ public class FlightController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @Operation(summary = "Create flight")
     @Parameter(name = "dto", description = "Created flight")
     public FlightDTO create(@RequestBody @Validated(onCreate.class) FlightDTO dto) {
@@ -82,7 +82,7 @@ public class FlightController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @Operation(summary = "Update flight by its id")
     @Parameters({
             @Parameter(name = "id", description = "The flight's unique identification number"),
@@ -95,7 +95,7 @@ public class FlightController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @Operation(summary = "Remove flight by its id")
     @Parameter(name = "id", description = "The flight's unique identification number")
     public void removeById(@PathVariable long id) {

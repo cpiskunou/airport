@@ -60,7 +60,10 @@
     </select>
 
     <select id="isExistsByModel" resultType="boolean">
-        select exists (select from airplanes where model = #{model} and id != #{id})
+        select exists (select from airplanes where model = #{model}
+        <if test="id != null">
+            and id != #{id}
+        </if>)
     </select>
 
 </mapper>

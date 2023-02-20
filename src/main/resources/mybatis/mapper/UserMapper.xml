@@ -7,7 +7,7 @@
         <result property="username" column="user_name"/>
     </resultMap>
 
-    <resultMap id="withPasswordMap" type="User" autoMapping="false">
+    <resultMap id="withPasswordMap" type="User" autoMapping="false" extends="elementaryMap">
         <result property="password" column="user_password"/>
     </resultMap>
 
@@ -113,7 +113,10 @@
     </select>
 
     <select id="isExistsByUsername" resultType="boolean">
-        select exists (select from users where username = #{username} and id != #{id})
+        select exists (select from users where username = #{username}
+        <if test="id != null">
+            and id != #{id}
+        </if>)
     </select>
 
 </mapper>

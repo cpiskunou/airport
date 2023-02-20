@@ -26,14 +26,14 @@ public class CityController {
     private final CityMapper mapper;
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @Operation(summary = "Information about all cities")
     public List<CityDTO> findAll() {
         return mapper.toDTO( service.findAll() );
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @Operation(summary = "Information about certain city by its id")
     @Parameters({
             @Parameter(name = "id", description = "City's unique identification number"),
@@ -52,7 +52,7 @@ public class CityController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @Operation(summary = "Create city")
     @Parameters({
             @Parameter(name = "countryId", description = "The country's unique id which this city belongs to"),
@@ -65,7 +65,7 @@ public class CityController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @Operation(summary = "Update city by its id")
     @Parameters({
             @Parameter(name = "id", description = "The unique city's identification number"),
@@ -80,7 +80,7 @@ public class CityController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @Operation(summary = "Remove city from system by its id")
     @Parameter(name = "id", description = "The unique city's identification number")
     public void removeById(@PathVariable long id) {

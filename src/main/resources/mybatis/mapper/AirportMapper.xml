@@ -76,15 +76,24 @@
     </select>
 
     <select id="isExistsByName" resultType="boolean">
-        select exists (select from airports where name = #{name} and id != #{id})
+        select exists (select from airports where name = #{name}
+        <if test="id != null">
+            and id != #{id}
+        </if>)
     </select>
 
     <select id="isExistsByIata" resultType="boolean">
-        select exists (select from airports where iata = #{iata} and id != #{id})
+        select exists (select from airports where iata = #{iata}
+        <if test="id != null">
+            and id != #{id}
+        </if>)
     </select>
 
     <select id="isExistsByIcao" resultType="boolean">
-        select exists (select from airports where icao = #{icao} and id != #{id})
+        select exists (select from airports where icao = #{icao}
+        <if test="id != null">
+            and id != #{id}
+        </if>)
     </select>
 
 </mapper>
