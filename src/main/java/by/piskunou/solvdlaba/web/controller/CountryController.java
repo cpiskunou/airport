@@ -6,7 +6,6 @@ import by.piskunou.solvdlaba.web.dto.CountryDTO;
 import by.piskunou.solvdlaba.web.mapper.CountryMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +14,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/countries")
 @RequiredArgsConstructor
-@PreAuthorize("hasRole('ADMIN')")
 public class CountryController {
 
     private final CountryService service;

@@ -1,9 +1,9 @@
 package by.piskunou.solvdlaba.service.impl;
 
+import by.piskunou.solvdlaba.domain.User;
 import by.piskunou.solvdlaba.domain.exception.ResourceAlreadyExistsException;
 import by.piskunou.solvdlaba.domain.exception.ResourceNotExistsException;
 import by.piskunou.solvdlaba.persistence.UserRepository;
-import by.piskunou.solvdlaba.domain.User;
 import by.piskunou.solvdlaba.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public User findByUsername(String username) {
         return repository.findByUsername(username)
-                         .orElseThrow(() -> new ResourceNotExistsException("There's no user with username id"));
+                         .orElseThrow(() -> new ResourceNotExistsException("There's no user with such username"));
     }
 
     @Override

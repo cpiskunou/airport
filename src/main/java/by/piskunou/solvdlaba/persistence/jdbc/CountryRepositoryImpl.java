@@ -7,7 +7,10 @@ import by.piskunou.solvdlaba.persistence.jdbc.mapper.CountryMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;

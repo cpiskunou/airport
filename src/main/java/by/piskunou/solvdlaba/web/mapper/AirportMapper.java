@@ -3,7 +3,6 @@ package by.piskunou.solvdlaba.web.mapper;
 import by.piskunou.solvdlaba.domain.Airport;
 import by.piskunou.solvdlaba.web.dto.AirportDTO;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 import java.util.List;
 

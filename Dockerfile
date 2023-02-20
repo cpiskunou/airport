@@ -2,6 +2,7 @@
 
 FROM eclipse-temurin:17-jdk-jammy as base
 WORKDIR /app
+RUN mvn wrapper:wrapper
 COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
 

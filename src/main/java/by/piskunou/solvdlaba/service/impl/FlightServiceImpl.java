@@ -1,6 +1,7 @@
 package by.piskunou.solvdlaba.service.impl;
 
-import by.piskunou.solvdlaba.domain.*;
+import by.piskunou.solvdlaba.domain.Passenger;
+import by.piskunou.solvdlaba.domain.Seat;
 import by.piskunou.solvdlaba.domain.airplane.Airplane;
 import by.piskunou.solvdlaba.domain.exception.ResourceNotExistsException;
 import by.piskunou.solvdlaba.domain.flight.Flight;

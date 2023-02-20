@@ -18,7 +18,7 @@ public interface AirlineService {
 
     void removeById(long id);
 
-    boolean isExists(Long id);
+    boolean isExists(long id);
 
     boolean isExistsByName(Long id, String name);
 

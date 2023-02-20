@@ -91,7 +91,10 @@
     </select>
 
     <select id="isExistsByName" resultType="boolean">
-        select exists (select from cities where name = #{name} and id != #{id})
+        select exists (select from cities where name = #{name}
+        <if test="id != null">
+            and id != #{id}
+        </if>)
     </select>
 
 </mapper>

@@ -1,9 +1,9 @@
 package by.piskunou.solvdlaba.web.dto.flight;
 
 import by.piskunou.solvdlaba.web.dto.AirlineDTO;
-import by.piskunou.solvdlaba.web.dto.airplane.AirplaneDTO;
 import by.piskunou.solvdlaba.web.dto.AirportDTO;
 import by.piskunou.solvdlaba.web.dto.SeatDTO;
+import by.piskunou.solvdlaba.web.dto.airplane.AirplaneDTO;
 import by.piskunou.solvdlaba.web.groups.onCreate;
 import by.piskunou.solvdlaba.web.groups.onUpdate;
 import com.fasterxml.jackson.annotation.JsonFormat;

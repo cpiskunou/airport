@@ -11,8 +11,11 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +24,7 @@ public class AuthServiceImpl implements AuthService {
     private final UserService userService;
     private final JwtService jwtService;
     private final AuthenticationManager authManager;
+    private final PasswordEncoder encoder;
 
     @Override
     @Transactional
@@ -34,10 +38,10 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthEntity login(User user) {
-        UserDetailsImpl userDetails = new UserDetailsImpl(user);
         UsernamePasswordAuthenticationToken authInputToken =
-                new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword());
-        authManager.authenticate(authInputToken);
+                new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
+        Authentication authentication = authManager.authenticate(authInputToken);
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         String accessToken = jwtService.generateAccessToken(userDetails);
         String refreshToken = jwtService.generateRefreshToken(userDetails);
         return new AuthEntity(accessToken, refreshToken);

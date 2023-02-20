@@ -1,8 +1,8 @@
 package by.piskunou.solvdlaba.persistence.jdbc;
 
 import by.piskunou.solvdlaba.domain.Passport;
-import by.piskunou.solvdlaba.persistence.PassportRepository;
 import by.piskunou.solvdlaba.persistence.DataSourceConfig;
+import by.piskunou.solvdlaba.persistence.PassportRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 

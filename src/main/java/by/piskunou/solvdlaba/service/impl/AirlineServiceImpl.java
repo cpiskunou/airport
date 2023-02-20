@@ -70,7 +70,7 @@ public class AirlineServiceImpl implements AirlineService {
 
     @Override
     @Transactional(readOnly = true)
-    public boolean isExists(Long id) {
+    public boolean isExists(long id) {
         return repository.isExistsById(id);
     }
 

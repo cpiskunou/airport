@@ -1,7 +1,5 @@
 package by.piskunou.solvdlaba.web.dto;
 
-import by.piskunou.solvdlaba.domain.flight.Flight;
-import by.piskunou.solvdlaba.domain.Passenger;
 import by.piskunou.solvdlaba.web.dto.flight.FlightDTO;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;

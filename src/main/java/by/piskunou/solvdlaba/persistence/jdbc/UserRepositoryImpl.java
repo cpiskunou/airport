@@ -1,8 +1,8 @@
 package by.piskunou.solvdlaba.persistence.jdbc;
 
 import by.piskunou.solvdlaba.domain.User;
-import by.piskunou.solvdlaba.persistence.UserRepository;
 import by.piskunou.solvdlaba.persistence.DataSourceConfig;
+import by.piskunou.solvdlaba.persistence.UserRepository;
 import by.piskunou.solvdlaba.persistence.jdbc.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -11,7 +11,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.*;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
 
 //@Repository
 @RequiredArgsConstructor

@@ -1,8 +1,8 @@
 package by.piskunou.solvdlaba.service.impl;
 
 import by.piskunou.solvdlaba.domain.User;
-import by.piskunou.solvdlaba.persistence.UserRepository;
 import by.piskunou.solvdlaba.domain.UserDetailsImpl;
+import by.piskunou.solvdlaba.persistence.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

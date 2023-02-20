@@ -1,9 +1,9 @@
 package by.piskunou.solvdlaba.persistence.jdbc;
 
-import by.piskunou.solvdlaba.domain.flight.Flight;
 import by.piskunou.solvdlaba.domain.Seat;
-import by.piskunou.solvdlaba.persistence.FlightRepository;
+import by.piskunou.solvdlaba.domain.flight.Flight;
 import by.piskunou.solvdlaba.persistence.DataSourceConfig;
+import by.piskunou.solvdlaba.persistence.FlightRepository;
 import by.piskunou.solvdlaba.persistence.jdbc.mapper.FlightMapper;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -13,7 +13,10 @@ import lombok.SneakyThrows;
 import java.lang.reflect.Type;
 import java.sql.*;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 //@Repository
