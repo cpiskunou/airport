@@ -41,6 +41,16 @@ spec:
                 secretKeyRef:
                   name: pg-secrets
                   key: POSTGRES_PASSWORD
+            - name: GMAIL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: airport-secrets
+                  key: GMAIL_USER
+            - name: GMAIL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: airport-secrets
+                  key: GMAIL_PASSWORD
             - name: JWT_SECRET
               valueFrom:
                 secretKeyRef:
