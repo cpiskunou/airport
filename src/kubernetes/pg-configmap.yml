@@ -3,6 +3,6 @@ kind: ConfigMap
 metadata:
   name: pg-configmap
 data:
-  POSTGRES_SCHEMA: public
-  POSTGRES_DB: solvdlaba
-  POSTGRES_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB}?currentSchema=${POSTGRES_SCHEMA}
+  POSTGRES_SCHEMA: airport
+  POSTGRES_DB: postgres
+

@@ -38,8 +38,7 @@ spec:
     - metadata:
         name: postgres-db-disk
       spec:
-        accessModes:
-          - "ReadWriteOnce"
+        accessModes: [ "ReadWriteOnce" ]
         resources:
           requests:
             storage: 1Gi

@@ -30,10 +30,7 @@ spec:
                   name: pg-configmap
                   key: POSTGRES_DB
             - name: POSTGRES_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: pg-configmap
-                  key: POSTGRES_URL
+              value: jdbc:postgresql://postgres:5432/${POSTGRES_DB}?currentSchema=${POSTGRES_SCHEMA}
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
