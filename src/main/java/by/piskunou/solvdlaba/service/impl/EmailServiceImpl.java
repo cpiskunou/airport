@@ -1,5 +1,6 @@
 package by.piskunou.solvdlaba.service.impl;
 
+import by.piskunou.solvdlaba.domain.Email;
 import by.piskunou.solvdlaba.service.EmailService;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -28,7 +29,7 @@ public class EmailServiceImpl implements EmailService {
     private final JavaMailSender emailSender;
 
     @Override
-    public void sendMessage(String email) throws IOException, TemplateException, MessagingException {
+    public void sendMessage(Email email) throws IOException, TemplateException, MessagingException {
         Template freemarkerTemplate = freemarkerConfigurer.getConfiguration().getTemplate("mail.ftl");
 
         Map<String, Object> templateModel = new HashMap<>();
@@ -37,7 +38,7 @@ public class EmailServiceImpl implements EmailService {
         templateModel.put("senderName", "I'm");
 
         String htmlBody = FreeMarkerTemplateUtils.processTemplateIntoString(freemarkerTemplate, templateModel);
-        sendHtmlMessage(email, "Forgot password", htmlBody);
+        sendHtmlMessage(email.getEmail(), "Forgot password", htmlBody);
     }
 
     private void sendHtmlMessage(String to, String subject, String htmlBody) throws MessagingException {

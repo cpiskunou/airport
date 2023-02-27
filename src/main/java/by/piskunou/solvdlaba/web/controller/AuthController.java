@@ -5,13 +5,16 @@ import by.piskunou.solvdlaba.domain.User;
 import by.piskunou.solvdlaba.service.AuthService;
 import by.piskunou.solvdlaba.service.EmailService;
 import by.piskunou.solvdlaba.web.dto.AuthEntityDTO;
+import by.piskunou.solvdlaba.web.dto.EmailDTO;
 import by.piskunou.solvdlaba.web.dto.UserDTO;
 import by.piskunou.solvdlaba.web.mapper.AuthMapper;
+import by.piskunou.solvdlaba.web.mapper.EmailMapper;
 import by.piskunou.solvdlaba.web.mapper.UserMapper;
 import freemarker.template.TemplateException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.mail.MessagingException;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,6 +31,7 @@ public class AuthController {
     private final UserMapper userMapper;
     private final AuthMapper authMapper;
     private final EmailService emailService;
+    private final EmailMapper emailMapper;
 
     @PostMapping("/sign-up")
     @ResponseStatus(HttpStatus.CREATED)
@@ -49,8 +53,8 @@ public class AuthController {
     @GetMapping("/forgot-password")
     @Operation(summary = "Forgot password: put in an email and get link to change password")
     @Parameter(name = "email", description = "Email where to send a change link")
-    public void forgotPassword(@Email String email) throws TemplateException, MessagingException, IOException {
-        emailService.sendMessage(email);
+    public void forgotPassword(@Validated EmailDTO dto) throws TemplateException, MessagingException, IOException {
+        emailService.sendMessage( emailMapper.toEntity(dto) );
     }
 
     @PostMapping("/refresh")

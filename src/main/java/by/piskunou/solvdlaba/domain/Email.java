@@ -7,9 +7,8 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Country {
+public class Email {
 
-    private Long id;
-    private String name;
+    private String email;
 
 }
