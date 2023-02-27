@@ -5,6 +5,7 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -19,12 +20,15 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class EmailServiceImpl implements EmailService {
 
+    @Value("${spring.mail.username}")
+    private String from;
+
     private final FreeMarkerConfigurer freemarkerConfigurer;
     private final JavaMailSender emailSender;
 
     @Override
     public void sendMessage(String email) throws IOException, TemplateException, MessagingException {
-        Template freemarkerTemplate = freemarkerConfigurer.getConfiguration().getTemplate("template/mail.ftl");
+        Template freemarkerTemplate = freemarkerConfigurer.getConfiguration().getTemplate("mail.ftl");
 
         Map<String, Object> templateModel = new HashMap<>();
         templateModel.put("recipientName", "Cichan");
@@ -37,7 +41,7 @@ public class EmailServiceImpl implements EmailService {
 
     private void sendSimpleMessage(String to, String subject, String htmlBody) throws MessagingException {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("6684177pt@gmail.com");
+        message.setFrom(from);
         message.setTo(to);
         message.setSubject(subject);
         message.setText(htmlBody);

@@ -17,7 +17,7 @@ import java.time.ZonedDateTime;
 public class JwtServiceImpl implements JwtService {
 
     @Value("${jwt-secret}")
-    private String SECRET_KEY;
+    private String secretKey;
 
     @Override
     public String extractUsername(String jwt) {
@@ -34,7 +34,7 @@ public class JwtServiceImpl implements JwtService {
                   .withIssuer("Airport")
                   .withIssuedAt(Instant.now())
                   .withExpiresAt( ZonedDateTime.now().plusHours(1).toInstant() )
-                  .sign(Algorithm.HMAC256(SECRET_KEY));
+                  .sign(Algorithm.HMAC256(secretKey));
     }
 
     @Override
@@ -45,13 +45,13 @@ public class JwtServiceImpl implements JwtService {
                   .withIssuer("Airport")
                   .withIssuedAt(Instant.now())
                   .withExpiresAt( ZonedDateTime.now().plusWeeks(1).toInstant() )
-                  .sign(Algorithm.HMAC256(SECRET_KEY));
+                  .sign(Algorithm.HMAC256(secretKey));
     }
 
     @Override
     public boolean isValidAccessToken(String jwt) {
         try {
-            JWTVerifier verifier = JWT.require(Algorithm.HMAC256(SECRET_KEY))
+            JWTVerifier verifier = JWT.require(Algorithm.HMAC256(secretKey))
                                       .withSubject("Access token")
                                       .withIssuer("Airport")
                                       .build();
@@ -65,7 +65,7 @@ public class JwtServiceImpl implements JwtService {
     @Override
     public boolean isValidRefreshToken(String jwt) {
         try {
-            JWTVerifier verifier = JWT.require(Algorithm.HMAC256(SECRET_KEY))
+            JWTVerifier verifier = JWT.require(Algorithm.HMAC256(secretKey))
                                       .withSubject("Refresh token")
                                       .withIssuer("Airport")
                                       .build();
