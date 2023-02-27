@@ -6,10 +6,7 @@ import by.piskunou.solvdlaba.web.groups.onSearch;
 import by.piskunou.solvdlaba.web.groups.onUpdate;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Null;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -49,6 +46,13 @@ public class UserDTO {
             message = "Password should be less than 300 characters")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String password;
+
+    @Schema(description = "Email")
+    @Null(groups = {onSearch.class, onLogin.class}, message = "Email should be null")
+    @NotBlank(groups ={onSignUp.class, onUpdate.class}, message = "Email shouldn't be blank")
+    @Email(groups ={onSignUp.class, onUpdate.class}, message = "String should be valid email")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String email;
 
     @Schema(description = "User's role")
     @Null(groups = {onSignUp.class, onLogin.class, onSearch.class}, message = "Role should be null")
