@@ -4,10 +4,11 @@ import by.piskunou.solvdlaba.service.EmailService;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
@@ -36,15 +37,16 @@ public class EmailServiceImpl implements EmailService {
         templateModel.put("senderName", "I'm");
 
         String htmlBody = FreeMarkerTemplateUtils.processTemplateIntoString(freemarkerTemplate, templateModel);
-        sendSimpleMessage(email, "Forgot password", htmlBody);
+        sendHtmlMessage(email, "Forgot password", htmlBody);
     }
 
-    private void sendSimpleMessage(String to, String subject, String htmlBody) throws MessagingException {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(from);
-        message.setTo(to);
-        message.setSubject(subject);
-        message.setText(htmlBody);
+    private void sendHtmlMessage(String to, String subject, String htmlBody) throws MessagingException {
+        MimeMessage message = emailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+        helper.setFrom(from);
+        helper.setTo(to);
+        helper.setSubject(subject);
+        helper.setText(htmlBody, true);
         emailSender.send(message);
     }
 

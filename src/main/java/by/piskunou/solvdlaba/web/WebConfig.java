@@ -62,7 +62,6 @@ public class WebConfig {
                         .version("v1"));
     }
 
-
     @Bean
     public FreeMarkerConfigurer freemarkerClassLoaderConfig() {
         freemarker.template.Configuration configuration = new freemarker.template.Configuration(freemarker.template.Configuration.VERSION_2_3_31);
