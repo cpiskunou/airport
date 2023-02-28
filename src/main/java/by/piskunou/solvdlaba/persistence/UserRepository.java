@@ -30,4 +30,6 @@ public interface UserRepository {
 
     boolean isExistsByUsername(@Param("id") Long id, @Param("username") String username);
 
+    boolean isExistsByEmail(@Param("id") Long id, @Param("email") String email);
+
 }
