@@ -44,6 +44,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
+    public User findByEmail(String email) {
+        return repository.findByEmail(email)
+                         .orElseThrow(() -> new ResourceNotExistsException("There's no user with such email"));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public List<User> search(User user) {
         setSearchValue(user::getUsername, user::setUsername);
         return repository.search(user);
@@ -70,6 +77,16 @@ public class UserServiceImpl implements UserService {
         repository.update(user);
         return user;
     }
+
+    @Override
+    @Transactional
+    public void updatePasswordByUsername(String password, String username) {
+        if(!isExistsByUsername(null, username)) {
+            throw new ResourceNotExistsException("There's no user with such username");
+        }
+        repository.updatePasswordByUsername(encoder.encode(password), username);
+    }
+
 
     @Override
     @Transactional

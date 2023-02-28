@@ -18,11 +18,15 @@ public interface UserRepository {
 
     Optional<User> findByUsername(String username);
 
+    Optional<User> findByEmail(String email);
+
     List<User> search(User user);
 
     void create(User user);
 
     void update(User user);
+
+    void updatePasswordByUsername(@Param("password") String password, @Param("username") String username);
 
     void removeById(long id);
 
@@ -31,5 +35,6 @@ public interface UserRepository {
     boolean isExistsByUsername(@Param("id") Long id, @Param("username") String username);
 
     boolean isExistsByEmail(@Param("id") Long id, @Param("email") String email);
+
 
 }

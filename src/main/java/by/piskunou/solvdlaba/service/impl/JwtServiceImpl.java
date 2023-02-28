@@ -8,6 +8,7 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -38,7 +39,7 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public String generateRefreshToken(UserDetailsImpl userDetails) {
+    public String generateRefreshToken(UserDetails userDetails) {
         return JWT.create()
                   .withSubject("Refresh token")
                   .withClaim("username", userDetails.getUsername())
@@ -46,6 +47,17 @@ public class JwtServiceImpl implements JwtService {
                   .withIssuedAt(Instant.now())
                   .withExpiresAt( ZonedDateTime.now().plusWeeks(1).toInstant() )
                   .sign(Algorithm.HMAC256(secretKey));
+    }
+
+    @Override
+    public String generateEditPasswordToken(UserDetails userDetails) {
+        return JWT.create()
+                .withSubject("Edit password token")
+                .withClaim("username", userDetails.getUsername())
+                .withIssuer("Airport")
+                .withIssuedAt(Instant.now())
+                .withExpiresAt( ZonedDateTime.now().plusMinutes(5).toInstant() )
+                .sign(Algorithm.HMAC256(secretKey));
     }
 
     @Override
@@ -67,6 +79,20 @@ public class JwtServiceImpl implements JwtService {
         try {
             JWTVerifier verifier = JWT.require(Algorithm.HMAC256(secretKey))
                                       .withSubject("Refresh token")
+                                      .withIssuer("Airport")
+                                      .build();
+            DecodedJWT decodedJwt = verifier.verify(jwt);
+            return true;
+        } catch (JWTVerificationException e) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean isValidEditPasswordToken(String jwt) {
+        try {
+            JWTVerifier verifier = JWT.require(Algorithm.HMAC256(secretKey))
+                                      .withSubject("Edit password token")
                                       .withIssuer("Airport")
                                       .build();
             DecodedJWT decodedJwt = verifier.verify(jwt);

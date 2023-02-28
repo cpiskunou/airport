@@ -35,7 +35,7 @@ public class SecurityConfig {
                                            "/swagger-ui/*",
                                            "/v3/api-docs*",
                                            "/cities/search",
-                                           "/forgot-password").permitAll()
+                                           "/password/*").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .logout().logoutUrl("/logout")

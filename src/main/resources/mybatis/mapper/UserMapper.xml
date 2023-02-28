@@ -48,6 +48,16 @@
         where username = #{username}
     </select>
 
+    <select id="findByEmail" resultMap="fullMap">
+        select id as user_id,
+               username as user_name,
+               email as user_email,
+               password as user_password,
+               role as user_role
+        from users
+        where email = #{email}
+    </select>
+
     <select id="findByIdWithTickets" resultMap="withTicketsMap">
         select users.id as user_id,
                users.username as user_name,
@@ -108,6 +118,10 @@
                          email = #{email},
                          role = #{role}
         where id = #{id}
+    </update>
+
+    <update id="updatePasswordByUsername">
+        update users set password = #{password} where username = #{username}
     </update>
 
     <delete id="removeById">

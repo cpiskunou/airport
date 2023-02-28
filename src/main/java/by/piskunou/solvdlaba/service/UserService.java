@@ -12,11 +12,15 @@ public interface UserService {
 
     User findByUsername(String username);
 
+    User findByEmail(String email);
+
     List<User> search(User user);
 
     User create(User user);
 
     User updateById(long id, User user);
+
+    void updatePasswordByUsername(String password, String username);
 
     void removeById(int id);
 

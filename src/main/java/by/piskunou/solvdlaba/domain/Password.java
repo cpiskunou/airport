@@ -7,8 +7,9 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Email {
+public class Password {
 
-    private String email;
+    private String password;
+    private String confirmPassword;
 
 }

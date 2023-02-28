@@ -134,6 +134,11 @@ public class UserRepositoryImpl implements UserRepository {
 
     }
 
+    @Override
+    public void updatePasswordByUsername(String password, String username) {
+
+    }
+
     @SneakyThrows
     public Optional<User> findByUsername(String username) {
         Connection conn = config.getConnection();
@@ -149,6 +154,11 @@ public class UserRepositoryImpl implements UserRepository {
                 return Optional.ofNullable(user);
             }
         }
+    }
+
+    @Override
+    public Optional<User> findByEmail(String email) {
+        return Optional.empty();
     }
 
     @Override

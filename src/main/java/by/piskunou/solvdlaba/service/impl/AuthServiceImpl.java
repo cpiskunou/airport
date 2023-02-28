@@ -1,19 +1,27 @@
 package by.piskunou.solvdlaba.service.impl;
 
 import by.piskunou.solvdlaba.domain.AuthEntity;
+import by.piskunou.solvdlaba.domain.Password;
 import by.piskunou.solvdlaba.domain.User;
 import by.piskunou.solvdlaba.domain.UserDetailsImpl;
 import by.piskunou.solvdlaba.service.AuthService;
+import by.piskunou.solvdlaba.service.EmailService;
 import by.piskunou.solvdlaba.service.JwtService;
 import by.piskunou.solvdlaba.service.UserService;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import freemarker.template.TemplateException;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +30,7 @@ public class AuthServiceImpl implements AuthService {
     private final UserService userService;
     private final JwtService jwtService;
     private final AuthenticationManager authManager;
-    private final PasswordEncoder encoder;
+    private final EmailService emailService;
 
     @Override
     @Transactional
@@ -54,6 +62,31 @@ public class AuthServiceImpl implements AuthService {
         UserDetailsImpl userDetails = new UserDetailsImpl( userService.findByUsername(username) );
         authEntity.setAccessToken( jwtService.generateAccessToken(userDetails)  );
         return authEntity;
+    }
+
+    @Override
+    public void createPassword(String email) throws TemplateException, MessagingException, IOException {
+        User user = userService.findByEmail(email);
+        UserDetailsImpl userDetails = new UserDetailsImpl(user);
+        String editPasswordToken = jwtService.generateEditPasswordToken(userDetails);
+
+        Map<String, Object> templateModel = new HashMap<>();
+        templateModel.put("user", user);
+        templateModel.put("token", editPasswordToken);
+
+        emailService.sendMessage(email, templateModel);
+    }
+
+    @Override
+    public void editPassword(String token, Password password) {
+        if(!jwtService.isValidEditPasswordToken(token)) {
+            throw new JWTVerificationException("Invalid token");
+        }
+        if(!password.getPassword().equals(password.getConfirmPassword())) {
+            throw new IllegalArgumentException("Password confirmation doesn't match password");
+        }
+        String username = jwtService.extractUsername(token);
+        userService.updatePasswordByUsername(password.getPassword(), username);
     }
 
 }

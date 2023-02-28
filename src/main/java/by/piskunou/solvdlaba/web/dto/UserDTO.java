@@ -42,7 +42,7 @@ public class UserDTO {
     @Schema(description = "User's password", hidden = true)
     @Null(groups = {onSearch.class, onUpdate.class}, message = "Password should be null")
     @NotBlank(groups = {onSignUp.class, onLogin.class}, message = "Password should be not blank")
-    @Size(groups = {onSignUp.class, onLogin.class}, max = 300, message = "Password should be less than 300 characters")
+    @Size(groups = {onSignUp.class, onLogin.class}, min = 8, max = 300, message = "Password should be between 8 and 300 characters")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String password;
 

@@ -3,6 +3,8 @@ package by.piskunou.solvdlaba.web.controller;
 import by.piskunou.solvdlaba.domain.exception.ResourceAlreadyExistsException;
 import by.piskunou.solvdlaba.domain.exception.ResourceNotExistsException;
 import by.piskunou.solvdlaba.web.dto.ErrorResponseDTO;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import jakarta.validation.ValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,9 +24,11 @@ public class AdviceController {
         return new ErrorResponseDTO(e.getMessage());
     }
 
-    @ExceptionHandler({ResourceAlreadyExistsException.class, IllegalArgumentException.class})
+    @ExceptionHandler({ResourceAlreadyExistsException.class, IllegalArgumentException.class, ValidationException.class,
+                       JWTVerificationException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponseDTO handleBadRequestException(Exception e) {
+        System.out.println(e.getMessage());
         return new ErrorResponseDTO(e.getMessage());
     }
 
@@ -33,7 +37,6 @@ public class AdviceController {
     public ErrorResponseDTO handleAccessDeniedException(Exception e) {
         return new ErrorResponseDTO(e.getMessage());
     }
-
 
     @ExceptionHandler(BindException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
