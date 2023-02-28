@@ -40,17 +40,17 @@ public class UserDTO {
     private String username;
 
     @Schema(description = "User's password", hidden = true)
-    @Null(groups = onSearch.class, message = "Password should be null")
-    @NotBlank(groups = {onSignUp.class, onLogin.class, onUpdate.class}, message = "Password should be not blank")
-    @Size(groups = {onSignUp.class, onLogin.class, onUpdate.class}, max = 300,
-            message = "Password should be less than 300 characters")
+    @Null(groups = {onSearch.class, onUpdate.class}, message = "Password should be null")
+    @NotBlank(groups = {onSignUp.class, onLogin.class}, message = "Password should be not blank")
+    @Size(groups = {onSignUp.class, onLogin.class}, max = 300, message = "Password should be less than 300 characters")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String password;
 
     @Schema(description = "Email")
     @Null(groups = {onSearch.class, onLogin.class}, message = "Email should be null")
-    @NotBlank(groups ={onSignUp.class, onUpdate.class}, message = "Email shouldn't be blank")
-    @Email(groups ={onSignUp.class, onUpdate.class}, message = "String should be valid email")
+    @NotBlank(groups = {onSignUp.class, onUpdate.class}, message = "Email shouldn't be blank")
+    @Email(groups = {onSignUp.class, onUpdate.class}, message = "String should be valid email")
+    @Size(groups = {onSignUp.class, onUpdate.class}, max = 100, message = "Email should be less than 100 characters")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String email;
 

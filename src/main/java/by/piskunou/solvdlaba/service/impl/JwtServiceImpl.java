@@ -30,7 +30,7 @@ public class JwtServiceImpl implements JwtService {
         return JWT.create()
                   .withSubject("Access token")
                   .withClaim("username", userDetails.getUsername())
-                  .withClaim("role", userDetails.getUser().getRole().name())
+                  .withClaim("email", userDetails.getUser().getEmail())
                   .withIssuer("Airport")
                   .withIssuedAt(Instant.now())
                   .withExpiresAt( ZonedDateTime.now().plusHours(1).toInstant() )
