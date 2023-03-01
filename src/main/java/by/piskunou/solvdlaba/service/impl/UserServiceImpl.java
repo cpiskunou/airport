@@ -124,7 +124,10 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public boolean isExistsByIdAndPassword(long id, String password) {
-        return repository.isExistsByIdAndPassword(id, password);
+        for(int i = 0; i < 10; i++) {
+            System.out.println(encoder.encode("viktar"));
+        }
+        return repository.isExistsByIdAndPassword(id, encoder.encode(password));
     }
 
     private void setSearchValue(Supplier<String> getter, Consumer<String> setter) {

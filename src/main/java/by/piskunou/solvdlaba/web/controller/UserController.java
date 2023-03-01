@@ -68,7 +68,7 @@ public class UserController {
         return userMapper.toDTO( service.updateById(id, user) );
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/{id}/password/update")
     @PreAuthorize("hasUser(#id)")
     @Operation(summary = "Update password by id")
     @Parameters({

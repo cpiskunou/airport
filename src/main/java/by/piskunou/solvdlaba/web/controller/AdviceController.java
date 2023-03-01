@@ -9,10 +9,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.BindException;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.sql.SQLOutput;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RestControllerAdvice
@@ -28,7 +34,6 @@ public class AdviceController {
                        JWTVerificationException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponseDTO handleBadRequestException(Exception e) {
-        System.out.println(e.getMessage());
         return new ErrorResponseDTO(e.getMessage());
     }
 
@@ -38,14 +43,20 @@ public class AdviceController {
         return new ErrorResponseDTO(e.getMessage());
     }
 
-    @ExceptionHandler(BindException.class)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public List<ErrorResponseDTO> handleBindException(BindException e) {
-        return e.getFieldErrors()
-                .stream()
-                .map(fieldError -> new ErrorResponseDTO(fieldError.getObjectName() + "."
-                                 + fieldError.getField(), fieldError.getDefaultMessage()))
-                .toList();
+    public List<ErrorResponseDTO> handleBindException(MethodArgumentNotValidException e) {
+        List<ErrorResponseDTO> responses = new ArrayList<>();
+        responses.addAll(e.getGlobalErrors()
+                          .stream()
+                          .map(globalError -> new ErrorResponseDTO(globalError.getObjectName(), globalError.getDefaultMessage()))
+                          .toList());
+        responses.addAll(e.getFieldErrors()
+                          .stream()
+                          .map(fieldError -> new ErrorResponseDTO(fieldError.getObjectName() + "."
+                                + fieldError.getField(), fieldError.getDefaultMessage()))
+                          .toList());
+        return responses;
     }
 
     @ExceptionHandler(Exception.class)
