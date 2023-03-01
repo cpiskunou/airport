@@ -9,7 +9,8 @@ import lombok.*;
 @AllArgsConstructor
 public class Password {
 
-    private String password;
+    private String oldPassword;
+    private String newPassword;
     private String confirmPassword;
 
 }

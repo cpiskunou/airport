@@ -1,5 +1,6 @@
 package by.piskunou.solvdlaba.service.impl;
 
+import by.piskunou.solvdlaba.domain.Password;
 import by.piskunou.solvdlaba.domain.User;
 import by.piskunou.solvdlaba.domain.exception.ResourceAlreadyExistsException;
 import by.piskunou.solvdlaba.domain.exception.ResourceNotExistsException;
@@ -80,13 +81,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void updatePasswordByUsername(String password, String username) {
+    public void updatePasswordByUsername(String username, String password) {
         if(!isExistsByUsername(null, username)) {
             throw new ResourceNotExistsException("There's no user with such username");
         }
-        repository.updatePasswordByUsername(encoder.encode(password), username);
+        repository.updatePasswordByUsername(username, encoder.encode(password));
     }
 
+    @Override
+    @Transactional
+    public void updatePasswordById(long id, Password password) {
+        if(!isExistsByIdAndPassword(id, password.getOldPassword())) {
+            throw new IllegalArgumentException("Wrong password");
+        }
+        repository.updatePasswordById(id, encoder.encode(password.getNewPassword()));
+    }
 
     @Override
     @Transactional
@@ -110,6 +119,12 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public boolean isExistsByEmail(Long id, String email) {
         return repository.isExistsByEmail(id, email);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean isExistsByIdAndPassword(long id, String password) {
+        return repository.isExistsByIdAndPassword(id, password);
     }
 
     private void setSearchValue(Supplier<String> getter, Consumer<String> setter) {

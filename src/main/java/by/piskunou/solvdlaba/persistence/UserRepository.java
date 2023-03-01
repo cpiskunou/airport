@@ -26,7 +26,9 @@ public interface UserRepository {
 
     void update(User user);
 
-    void updatePasswordByUsername(@Param("password") String password, @Param("username") String username);
+    void updatePasswordById(@Param("id") long id, @Param("password") String password);
+
+    void updatePasswordByUsername(@Param("username") String username, @Param("password") String password);
 
     void removeById(long id);
 
@@ -36,5 +38,6 @@ public interface UserRepository {
 
     boolean isExistsByEmail(@Param("id") Long id, @Param("email") String email);
 
+    boolean isExistsByIdAndPassword(@Param("id") long id, @Param("password") String password);
 
 }

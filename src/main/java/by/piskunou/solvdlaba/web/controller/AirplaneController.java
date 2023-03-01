@@ -5,7 +5,7 @@ import by.piskunou.solvdlaba.domain.airplane.AirplaneRequest;
 import by.piskunou.solvdlaba.service.AirplaneService;
 import by.piskunou.solvdlaba.web.dto.airplane.AirplaneDTO;
 import by.piskunou.solvdlaba.web.dto.airplane.AirplaneRequestDTO;
-import by.piskunou.solvdlaba.web.groups.onCreate;
+import by.piskunou.solvdlaba.web.dto.groups.onCreate;
 import by.piskunou.solvdlaba.web.mapper.AirplaneMapper;
 import by.piskunou.solvdlaba.web.mapper.AirplaneRequestMapper;
 import io.swagger.v3.oas.annotations.Operation;

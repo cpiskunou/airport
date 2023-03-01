@@ -135,7 +135,12 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void updatePasswordByUsername(String password, String username) {
+    public void updatePasswordById(long id, String newPassword) {
+
+    }
+
+    @Override
+    public void updatePasswordByUsername(String username, String password) {
 
     }
 
@@ -265,6 +270,11 @@ public class UserRepositoryImpl implements UserRepository {
                 return resultSet.getBoolean("exists");
             }
         }
+    }
+
+    @Override
+    public boolean isExistsByIdAndPassword(long id, String password) {
+        return false;
     }
 
 }

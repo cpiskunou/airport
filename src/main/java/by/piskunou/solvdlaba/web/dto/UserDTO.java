@@ -2,8 +2,8 @@ package by.piskunou.solvdlaba.web.dto;
 
 import by.piskunou.solvdlaba.domain.Ticket;
 import by.piskunou.solvdlaba.domain.User;
-import by.piskunou.solvdlaba.web.groups.onSearch;
-import by.piskunou.solvdlaba.web.groups.onUpdate;
+import by.piskunou.solvdlaba.web.dto.groups.onSearch;
+import by.piskunou.solvdlaba.web.dto.groups.onUpdate;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;

@@ -67,7 +67,7 @@ public class AuthController {
     @PostMapping("/password/edit")
     @Operation(summary = "Set up new password")
     @Parameter(name = "token", description = "one-time token to set new password")
-    public void editPassword(@RequestParam("reset_password_token") String token, @RequestBody @Validated PasswordDTO dto) {
+    public void editPassword(@RequestParam("reset_password_token") String token, @RequestBody @Validated(PasswordDTO.onEdit.class) PasswordDTO dto) {
         authService.editPassword(token, passwordMapper.toEntity(dto));
     }
 

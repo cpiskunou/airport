@@ -82,11 +82,8 @@ public class AuthServiceImpl implements AuthService {
         if(!jwtService.isValidEditPasswordToken(token)) {
             throw new JWTVerificationException("Invalid token");
         }
-        if(!password.getPassword().equals(password.getConfirmPassword())) {
-            throw new IllegalArgumentException("Password confirmation doesn't match password");
-        }
         String username = jwtService.extractUsername(token);
-        userService.updatePasswordByUsername(password.getPassword(), username);
+        userService.updatePasswordByUsername(username, password.getNewPassword());
     }
 
 }

@@ -120,6 +120,10 @@
         where id = #{id}
     </update>
 
+    <update id="updatePasswordById">
+        update users set password = #{password} where id = #{id}
+    </update>
+
     <update id="updatePasswordByUsername">
         update users set password = #{password} where username = #{username}
     </update>
@@ -144,6 +148,10 @@
         <if test="id != null">
             and id != #{id}
         </if>)
+    </select>
+
+    <select id="isExistsByIdAndPassword" resultType="boolean">
+        select exists (select from users where id = #{id} and password = #{password})
     </select>
 
 </mapper>

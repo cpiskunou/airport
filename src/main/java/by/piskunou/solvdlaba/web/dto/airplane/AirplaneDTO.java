@@ -1,6 +1,6 @@
 package by.piskunou.solvdlaba.web.dto.airplane;
 
-import by.piskunou.solvdlaba.web.groups.onCreate;
+import by.piskunou.solvdlaba.web.dto.groups.onCreate;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
