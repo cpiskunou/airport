@@ -2,7 +2,6 @@ package by.piskunou.solvdlaba.service;
 
 import by.piskunou.solvdlaba.domain.Password;
 import by.piskunou.solvdlaba.domain.User;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -36,6 +35,6 @@ public interface UserService {
 
     boolean isExistsByEmail(Long id, String email);
 
-    boolean isExistsByIdAndPassword(long id, String password);
+    boolean isValidPassword(long id, String password);
 
 }

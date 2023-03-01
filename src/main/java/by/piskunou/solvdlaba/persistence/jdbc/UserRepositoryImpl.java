@@ -167,6 +167,11 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public String findPasswordById(long id) {
+        return "";
+    }
+
+    @Override
     @SneakyThrows
     public List<User> findAll() {
         Connection conn = config.getConnection();
@@ -270,11 +275,6 @@ public class UserRepositoryImpl implements UserRepository {
                 return resultSet.getBoolean("exists");
             }
         }
-    }
-
-    @Override
-    public boolean isExistsByIdAndPassword(long id, String password) {
-        return false;
     }
 
 }

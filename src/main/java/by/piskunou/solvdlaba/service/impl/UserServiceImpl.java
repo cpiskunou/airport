@@ -91,7 +91,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void updatePasswordById(long id, Password password) {
-        if(!isExistsByIdAndPassword(id, password.getOldPassword())) {
+        if(!isValidPassword(id, password.getOldPassword())) {
             throw new IllegalArgumentException("Wrong password");
         }
         repository.updatePasswordById(id, encoder.encode(password.getNewPassword()));
@@ -123,11 +123,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public boolean isExistsByIdAndPassword(long id, String password) {
-        for(int i = 0; i < 10; i++) {
-            System.out.println(encoder.encode("viktar"));
-        }
-        return repository.isExistsByIdAndPassword(id, encoder.encode(password));
+    public boolean isValidPassword(long id, String password) {
+        return encoder.matches(password, repository.findPasswordById(id));
     }
 
     private void setSearchValue(Supplier<String> getter, Consumer<String> setter) {

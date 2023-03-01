@@ -20,6 +20,8 @@ public interface UserRepository {
 
     Optional<User> findByEmail(String email);
 
+    String findPasswordById(long id);
+
     List<User> search(User user);
 
     void create(User user);
@@ -37,7 +39,5 @@ public interface UserRepository {
     boolean isExistsByUsername(@Param("id") Long id, @Param("username") String username);
 
     boolean isExistsByEmail(@Param("id") Long id, @Param("email") String email);
-
-    boolean isExistsByIdAndPassword(@Param("id") long id, @Param("password") String password);
 
 }
