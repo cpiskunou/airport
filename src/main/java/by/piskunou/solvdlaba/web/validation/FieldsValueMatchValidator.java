@@ -1,6 +1,6 @@
-package by.piskunou.solvdlaba.web.dto.annotation.validator;
+package by.piskunou.solvdlaba.web.validation;
 
-import by.piskunou.solvdlaba.web.dto.annotation.FieldsValueMatch;
+import by.piskunou.solvdlaba.web.validation.annotation.FieldsValueMatch;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.BeanWrapperImpl;

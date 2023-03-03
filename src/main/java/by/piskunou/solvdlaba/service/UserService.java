@@ -21,8 +21,6 @@ public interface UserService {
 
     User updateById(long id, User user);
 
-    //todo: ask bogdan about return type -> 2
-
     void updatePasswordByUsername(String username, String password);
 
     void updatePasswordById(long id, Password password);

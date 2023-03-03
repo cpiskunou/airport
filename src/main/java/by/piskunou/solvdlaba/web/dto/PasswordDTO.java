@@ -1,6 +1,6 @@
 package by.piskunou.solvdlaba.web.dto;
 
-import by.piskunou.solvdlaba.web.dto.annotation.FieldsValueMatch;
+import by.piskunou.solvdlaba.web.validation.annotation.FieldsValueMatch;
 import by.piskunou.solvdlaba.web.dto.groups.onUpdate;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;

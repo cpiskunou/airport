@@ -1,12 +1,10 @@
-package by.piskunou.solvdlaba.web.dto.annotation;
+package by.piskunou.solvdlaba.web.validation.annotation;
 
-import by.piskunou.solvdlaba.web.dto.annotation.validator.FieldsValueMatchValidator;
+import by.piskunou.solvdlaba.web.validation.FieldsValueMatchValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
 import java.lang.annotation.*;
-
-//todo: ask bogdan about package
 
 @Documented
 @Constraint(validatedBy = FieldsValueMatchValidator.class)
