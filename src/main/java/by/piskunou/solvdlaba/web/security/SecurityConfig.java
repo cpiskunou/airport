@@ -34,11 +34,11 @@ public class SecurityConfig {
                                            "/login",
                                            "/swagger-ui/*",
                                            "/v3/api-docs*",
-                                           "/cities/search").permitAll()
+                                           "/cities/search",
+                                           "/password/*").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .logout().logoutUrl("/logout")
-                         .logoutSuccessUrl("/login")
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()

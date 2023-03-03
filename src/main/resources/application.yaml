@@ -15,6 +15,19 @@ spring:
     change-log: classpath:db/changelog/db.changelog-master.yaml
     default-schema: ${POSTGRES_SCHEMA}
 
+  #Email
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${GMAIL_USER}
+    password: ${GMAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
 # MyBatis
 mybatis:
   mapper-locations: classpath:mybatis/mapper/*.xml

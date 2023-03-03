@@ -119,6 +119,7 @@ class UserServiceTest {
     void verifyCreateTest() {
         User user = User.builder()
                         .username("Cool boy333")
+                        .email("lala@gmail.com")
                         .password("MTIzNA==")
                         .build();
         doAnswer(new Answer() {
@@ -142,9 +143,10 @@ class UserServiceTest {
     void verifyCreateExistedNameTest() {
         User user = User.builder()
                         .username("Cool boy333")
+                        .email("lala@gmail.com")
                         .password("MTIzNA==")
                         .build();
-        when(service.isExists(null, "Cool boy333")).thenReturn(true);
+        when(service.isExistsByUsername(null, "Cool boy333")).thenReturn(true);
 
         assertThrows(ResourceAlreadyExistsException.class, () -> service.create(user));
         verify(encoder).encode("MTIzNA==");
@@ -153,10 +155,26 @@ class UserServiceTest {
     }
 
     @Test
+    void verifyCreateExistedEmailTest() {
+        User user = User.builder()
+                        .username("Cool boy333")
+                        .email("lala@gmail.com")
+                        .password("MTIzNA==")
+                        .build();
+        when(service.isExistsByEmail(null, "lala@gmail.com")).thenReturn(true);
+
+        assertThrows(ResourceAlreadyExistsException.class, () -> service.create(user));
+        verify(encoder).encode("MTIzNA==");
+        assertEquals(User.Role.USER, user.getRole());
+        verify(repository).isExistsByUsername(null, "Cool boy333");
+        verify(repository).isExistsByEmail(null, "lala@gmail.com");
+    }
+
+    @Test
     void verifyUpdateByIdTest() {
         User user = User.builder()
                         .username("Cool boy333")
-                        .password("MTIzNA==")
+                        .email("lala@gmail.com")
                         .role(User.Role.USER)
                         .build();
         when(service.isExists(1)).thenReturn(true);
@@ -164,7 +182,6 @@ class UserServiceTest {
         assertEquals(user, service.updateById(1, user));
         verify(repository).isExistsById(1);
         assertEquals(1, user.getId());
-        verify(encoder).encode("MTIzNA==");
         verify(repository).update(user);
     }
 
@@ -188,7 +205,7 @@ class UserServiceTest {
 
     @Test
     void verifyIsExistsByUsernameTest() {
-        assertFalse(service.isExists(0L, "John"));
+        assertFalse(service.isExistsByUsername(0L, "John"));
         verify(repository).isExistsByUsername(0L, "John");
     }
 

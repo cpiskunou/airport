@@ -1,5 +1,6 @@
 package by.piskunou.solvdlaba.service.impl;
 
+import by.piskunou.solvdlaba.domain.Password;
 import by.piskunou.solvdlaba.domain.User;
 import by.piskunou.solvdlaba.domain.exception.ResourceAlreadyExistsException;
 import by.piskunou.solvdlaba.domain.exception.ResourceNotExistsException;
@@ -44,6 +45,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
+    public User findByEmail(String email) {
+        return repository.findByEmail(email)
+                         .orElseThrow(() -> new ResourceNotExistsException("There's no user with such email"));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public List<User> search(User user) {
         setSearchValue(user::getUsername, user::setUsername);
         return repository.search(user);
@@ -66,10 +74,27 @@ public class UserServiceImpl implements UserService {
             throw new ResourceNotExistsException("There's no user with such id");
         }
         user.setId(id);
-        user.setPassword( encoder.encode(user.getPassword()) );
         checkIsEntityValid(user);
         repository.update(user);
         return user;
+    }
+
+    @Override
+    @Transactional
+    public void updatePasswordByUsername(String username, String password) {
+        if(!isExistsByUsername(null, username)) {
+            throw new ResourceNotExistsException("There's no user with such username");
+        }
+        repository.updatePasswordByUsername(username, encoder.encode(password));
+    }
+
+    @Override
+    @Transactional
+    public void updatePasswordById(long id, Password password) {
+        if(!isValidPassword(id, password.getOldPassword())) {
+            throw new IllegalArgumentException("Wrong password");
+        }
+        repository.updatePasswordById(id, encoder.encode(password.getNewPassword()));
     }
 
     @Override
@@ -86,8 +111,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public boolean isExists(Long id, String username) {
+    public boolean isExistsByUsername(Long id, String username) {
         return repository.isExistsByUsername(id, username);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean isExistsByEmail(Long id, String email) {
+        return repository.isExistsByEmail(id, email);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean isValidPassword(long id, String password) {
+        return encoder.matches(password, repository.findPasswordById(id));
     }
 
     private void setSearchValue(Supplier<String> getter, Consumer<String> setter) {
@@ -99,8 +136,11 @@ public class UserServiceImpl implements UserService {
     }
 
     private void checkIsEntityValid(User user) {
-        if(isExists(user.getId(), user.getUsername())) {
+        if(isExistsByUsername(user.getId(), user.getUsername())) {
             throw new ResourceAlreadyExistsException("Such username has already exists");
+        }
+        if(isExistsByEmail(user.getId(), user.getEmail())) {
+            throw new ResourceAlreadyExistsException("Such email has already exists");
         }
     }
 

@@ -16,7 +16,7 @@ public class ErrorResponseDTO {
 
     @Schema(description = "Field where error was invoked")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private String fieldError;
+    private String error;
 
     @Schema(description = "Error message")
     private String message;

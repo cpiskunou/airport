@@ -74,6 +74,7 @@ public class UserRepositoryImpl implements UserRepository {
     private static final String DELETE = "delete from users where id = ?";
     private static final String EXISTS_BY_ID = "select exists (select from users where id = ?)";
     private static final String EXISTS_BY_NAME = "select exists (select from users where username = ?)";
+    private static final String EXISTS_BY_EMAIL = "select exists (select from users where email = ?)";
 
     @SneakyThrows
     public void register(User user) {
@@ -133,6 +134,16 @@ public class UserRepositoryImpl implements UserRepository {
 
     }
 
+    @Override
+    public void updatePasswordById(long id, String newPassword) {
+
+    }
+
+    @Override
+    public void updatePasswordByUsername(String username, String password) {
+
+    }
+
     @SneakyThrows
     public Optional<User> findByUsername(String username) {
         Connection conn = config.getConnection();
@@ -148,6 +159,16 @@ public class UserRepositoryImpl implements UserRepository {
                 return Optional.ofNullable(user);
             }
         }
+    }
+
+    @Override
+    public Optional<User> findByEmail(String email) {
+        return Optional.empty();
+    }
+
+    @Override
+    public String findPasswordById(long id) {
+        return "";
     }
 
     @Override
@@ -233,6 +254,21 @@ public class UserRepositoryImpl implements UserRepository {
 
         try (PreparedStatement preparedStatement = conn.prepareStatement(EXISTS_BY_NAME)) {
             preparedStatement.setString(1, name);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                resultSet.next();
+                return resultSet.getBoolean("exists");
+            }
+        }
+    }
+
+    @Override
+    @SneakyThrows
+    public boolean isExistsByEmail(Long id, String email) {
+        Connection conn = config.getConnection();
+
+        try (PreparedStatement preparedStatement = conn.prepareStatement(EXISTS_BY_EMAIL)) {
+            preparedStatement.setString(1, email);
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 resultSet.next();

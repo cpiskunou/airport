@@ -7,9 +7,10 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Country {
+public class Password {
 
-    private Long id;
-    private String name;
+    private String oldPassword;
+    private String newPassword;
+    private String confirmPassword;
 
 }
