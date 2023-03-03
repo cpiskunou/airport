@@ -1,17 +1,17 @@
-package by.piskunou.solvdlaba.web;
+package by.piskunou.solvdlaba.config;
 
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.cache.TemplateLoader;
+import io.minio.MinioClient;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import lombok.RequiredArgsConstructor;
+import okhttp3.HttpUrl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -21,12 +21,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
-import java.util.Properties;
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 
 @Configuration
 @RequiredArgsConstructor
-public class WebConfig {
+public class AppConfig {
 
+    private final MinioProperties minioProperties;
     private final UserDetailsService userDetailsService;
 
     @Bean
@@ -70,6 +73,15 @@ public class WebConfig {
         FreeMarkerConfigurer freeMarkerConfigurer = new FreeMarkerConfigurer();
         freeMarkerConfigurer.setConfiguration(configuration);
         return freeMarkerConfigurer;
+    }
+
+    @Bean
+    public MinioClient minioClient() {
+        MinioClient minioClient = MinioClient.builder()
+                                             .endpoint(HttpUrl.parse(minioProperties.getUrl()))
+                                             .credentials(minioProperties.getUsername(), minioProperties.getPassword())
+                                             .build();
+        return minioClient;
     }
 
 }
