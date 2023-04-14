@@ -1,4 +1,4 @@
-package by.piskunou.solvdlaba.config;
+package by.piskunou.solvdlaba.persistence;
 
 import lombok.Getter;
 import lombok.Setter;

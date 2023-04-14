@@ -1,6 +1,8 @@
 spring:
   application:
     name: airport
+  config:
+    import: optional:docker.env[.properties]
 
 # Configuration data sources
   datasource:
