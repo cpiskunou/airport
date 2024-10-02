@@ -4,6 +4,7 @@
 create table if not exists users(
     id bigserial primary key,
     username varchar(50) not null unique,
+    email varchar(100) not null unique,
     password varchar(300) not null unique,
     role varchar(10) not null
 );
@@ -82,8 +83,8 @@ create table if not exists passengers(
 --changeset cichan:create-passports-table
 create table if not exists passports(
     fk_passenger_id bigint primary key references passengers(id) on delete cascade on update no action,
-    "number" varchar(20) not null unique,
-    identification_no varchar(20) not null unique
+    "number" varchar(100) not null unique,
+    identification_no varchar(100) not null unique
 );
 --rollback drop table passports
 
@@ -96,7 +97,3 @@ create table if not exists tickets(
     seat_no int not null
 );
 --rollback drop table tickets
-
---changeset cichan:add-email-to-users
-alter table users add column email varchar(100) not null unique;
---rollback alter table users drop column if exists email

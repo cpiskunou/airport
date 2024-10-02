@@ -4,7 +4,7 @@
 
     <insert id="create" parameterType="Passport">
         insert into passports(fk_passenger_id, "number", identification_no)
-        values (#{id}, #{number}, #{identificationNo})
+        values (#{passport.id}, #{passport.number}, #{passport.identificationNo})
     </insert>
 
 </mapper>

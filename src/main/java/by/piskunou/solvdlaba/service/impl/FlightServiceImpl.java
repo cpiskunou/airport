@@ -48,7 +48,7 @@ public class FlightServiceImpl implements FlightService {
         if(free == null) {
             return repository.flightSeats(id);
         }
-        if(free.booleanValue()) {
+        if(free) {
             return repository.flightFreeSeats(id);
         }
         return repository.flightOccupiedSeats(id);
