@@ -2,6 +2,43 @@ spring:
   application:
     name: airport
 
+management:
+  endpoints:
+    web:
+      base-path: /airport/v1/actuator
+      exposure:
+        include: health,info,shutdown
+  endpoint:
+    health:
+      show-details: always
+    shutdown:
+      enabled: true
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+  info:
+    env:
+      enabled: true
+    git:
+      mode: full
+    java:
+      enabled: true
+    os:
+      enabled: true
+
+info:
+  app:
+    source-encoding: @project.build.sourceEncoding@
+    output-encoding: @project.reporting.outputEncoding@
+    java:
+      version: @project.java.version@
+    maven:
+      version: @maven.version@
+      compiler:
+        release: @maven.compiler.release@
+
 # Configuration data sources
   datasource:
     driver-class-name: org.postgresql.Driver
