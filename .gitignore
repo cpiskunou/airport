@@ -215,5 +215,6 @@ text.txt
 **/test/**/application.yaml
 **/ZTestTest.java
 src/main/resources/docker.env
+*.env
 
 # End of https://www.toptal.com/developers/gitignore/api/git,maven,intellij,macos,java
